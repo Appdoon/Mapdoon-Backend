@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Appdoon.Common\Appdoon.Common.csproj" />
-    <ProjectReference Include="..\Appdoon.Domain\Appdoon.Domain.csproj" />
+    <ProjectReference Include="..\Appdoon.Domain\Mapdoon.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
