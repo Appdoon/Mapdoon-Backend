@@ -4,6 +4,7 @@ using Appdoon.Application.Validatores.ChildStepValidatore;
 using Appdoon.Application.Validatores.LinkerValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,8 @@ namespace Appdoon.Application.Services.ChildSteps.Command.CreateChildStepService
 		public string LinkURL { get; set; } = string.Empty;
 	}
 
-	public interface ICreateChildStepService
-	{
+	public interface ICreateChildStepService : ITransientService
+    {
 		ResultDto Execute(CreateChildStepDto childStepDto);
 	}
 	public class CreateChildStepService : ICreateChildStepService

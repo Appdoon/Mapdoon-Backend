@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Appdoon.Application.Interfaces;
+using Mapdoon.Common.Interfaces;
 
 namespace Appdoon.Application.Services.Users.Query.GetUserService
 {
-	public interface IGetUserService
+	public interface IGetUserService : ITransientService
 	{
 		ResultDto<GetUserDto> Execute(int id);
 	}

@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Appdoon.Application.Services.Lessons.Query.SearchLessonsService
         public List<LessonDto> Lessons { get; set; }
         public int RowCount { get; set; }
     }
-    public interface ISearchLessonsService
+    public interface ISearchLessonsService : ITransientService
     {
         ResultDto<AllLessonsDto> Execute(string searched_text, int page_number, int page_size);
     }

@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.Homeworks;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,7 +18,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
         public int MinScore { get; set; }
         public string Title { get; set; }
     }
-    public interface IUpdateHomeworkService
+    public interface IUpdateHomeworkService : ITransientService
     {
         ResultDto Execute(int id, UpdateHomeworkDto updateHomeworkDto);
     }

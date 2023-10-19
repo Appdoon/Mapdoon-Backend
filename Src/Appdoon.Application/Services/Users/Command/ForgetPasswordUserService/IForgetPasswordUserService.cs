@@ -13,6 +13,7 @@ using Appdoon.Common.GenerateTokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Mapdoon.Common.Interfaces;
 
 namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
 {
@@ -34,7 +35,7 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
         public string Body { get; set; } = string.Empty;
         //public List<KeyValuePair<string, string>>? PlaceHolders { get; set; }
     }
-    public interface IForgetPasswordUserService
+    public interface IForgetPasswordUserService : ITransientService
     {
         Task<ResultDto> Execute(UserEmailOptions userEmailOptions);
     }

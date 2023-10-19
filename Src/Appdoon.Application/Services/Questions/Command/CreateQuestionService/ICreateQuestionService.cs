@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.Homeworks;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Appdoon.Application.Services.Questions.Command.CreateQuestionService
     }
     
 
-    public interface ICreateQuestionService
+    public interface ICreateQuestionService : ITransientService
     {
         ResultDto Execute(CreateQuestionDto createQuestionDto);
     }

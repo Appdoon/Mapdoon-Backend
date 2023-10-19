@@ -3,6 +3,7 @@ using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Command.ResetPasswordService
 {
-    public interface IResetPasswordService
+    public interface IResetPasswordService : ITransientService
     {
         Task<ResultDto> Execute(string password, string repeatPassword, int userId);
     }

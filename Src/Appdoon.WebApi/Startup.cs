@@ -1,74 +1,12 @@
-using Appdoon.Application.Interfaces;
-using Appdoon.Application.Services.Categories.Command.CreateCategoryService;
-using Appdoon.Application.Services.Categories.Command.DeleteCategoryService;
-using Appdoon.Application.Services.Categories.Command.UpdateCategoryService;
-using Appdoon.Application.Services.Categories.Query.GetAllCategoriesService;
-using Appdoon.Application.Services.Categories.Query.GetIndividualCategoryService;
-using Appdoon.Application.Services.Categories.Query.SearchCategoriesService;
-using Appdoon.Application.Services.ChildSteps.Command.CreateChildStepService;
-using Appdoon.Application.Services.ChildSteps.Command.DeleteChildStepService;
-using Appdoon.Application.Services.ChildSteps.Command.UpdateChildStepService;
-using Appdoon.Application.Services.ChildSteps.Query.GetAllChildStepsService;
-using Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepService;
-using Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService;
-using Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService;
-using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
-using Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService;
-using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
-using Appdoon.Application.Services.Lessons.Command.CreateLessonService;
-using Appdoon.Application.Services.Lessons.Command.DeleteLessonService;
-using Appdoon.Application.Services.Lessons.Command.UpdateLessonService;
-using Appdoon.Application.Services.Lessons.Query.GetAllLessonsService;
-using Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService;
-using Appdoon.Application.Services.Lessons.Query.SearchLessonsService;
-using Appdoon.Application.Services.Linkers.Command.CreateLinkerService;
-using Appdoon.Application.Services.Linkers.Command.DeleteLinkerService;
-using Appdoon.Application.Services.Linkers.Command.UpdateLinkerService;
-using Appdoon.Application.Services.Linkers.Query.GetAllLinkersService;
-using Appdoon.Application.Services.Linkers.Query.GetIndividualLinkerService;
-using Appdoon.Application.Services.Progress.Command.DoneChildStep;
-using Appdoon.Application.Services.Progress.Command.DoneHomeworkService;
-using Appdoon.Application.Services.Questions.Command.CreateQuestionService;
-using Appdoon.Application.Services.Questions.Command.DeleteQuestionService;
-using Appdoon.Application.Services.Questions.Command.UpdateQuestionService;
-using Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService;
-using Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService;
-using Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService;
-using Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService;
-using Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService;
-using Appdoon.Application.Services.RoadMaps.Command.BookmarkRoadmapService;
-using Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService;
-using Appdoon.Application.Services.RoadMaps.Query.CheckUserRegisterRoadmapService;
-using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
-using Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService;
-using Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService;
-using Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService;
-using Appdoon.Application.Services.Steps.Command.CreateStepService;
-using Appdoon.Application.Services.Steps.Command.DeleteStepService;
-using Appdoon.Application.Services.Steps.Command.UpdateStepService;
-using Appdoon.Application.Services.Steps.Query.GetAllStepService;
-using Appdoon.Application.Services.Steps.Query.GetIndividualStepService;
-
-using Appdoon.Application.Services.Users.Command.CheckUserResetPasswordLinkService;
-
-using Appdoon.Application.Services.Users.Command.EditPasswordService;
-
-using Appdoon.Application.Services.Users.Command.EditUserService;
-using Appdoon.Application.Services.Users.Command.ForgetPasswordUserService;
-using Appdoon.Application.Services.Users.Command.LoginUserService;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
-using Appdoon.Application.Services.Users.Command.ResetPasswordService;
-using Appdoon.Application.Services.Users.Query.GetBookMarkRoadMapService;
-using Appdoon.Application.Services.Users.Query.GetCreatedLessonsService;
-using Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService;
-using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
-using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
-using Appdoon.Application.Services.Users.Query.GetUserService;
-using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.UserRoles;
 using Appdoon.Presistence.Contexts;
 using FluentValidation;
+using Mapdoon.Application;
+using Mapdoon.Common.Interfaces;
+using Mapdoon.Domain;
+using Mapdoon.Presistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -169,137 +107,21 @@ namespace OU_API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OU_API", Version = "v1" });
             });
 
-            // Inject Register User service
-            services.AddScoped<IRegisterUserService, RegisterUserService>();
 
-            // Inject Login User service
-            services.AddScoped<ILoginUserService, LoginUserService>();
+            // Dependecy Injection for All services which inherit from ITransientService
+            services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistanceAssembly), typeof(Program))
+                .AddClasses(classes => classes.AssignableTo<ITransientService>())
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+            // Dependecy Injection for All services which inherit from IScopedService
+            services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistanceAssembly), typeof(Program))
+                .AddClasses(classes => classes.AssignableTo<IScopedService>())
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
 
             // Dependency Injection for Database Context
-            services.AddScoped<IDatabaseContext, DatabaseContext>();
-
-
-            services.AddScoped<IEditPasswordService, EditPasswordService>();
-
-
-            // 
-            services.AddScoped<IGetUserService, GetUserService>();
-
-            //Dependency Injecton Edit user info in profile page
-            services.AddScoped<IEditUserService, EditUserService>();
-
-            //
-            services.AddScoped<IGetRegisteredRoadMapService, GetRegisteredRoadMapService>();
-
-            //
-            services.AddScoped<IGetBookMarkRoadMapService, GetBookMarkRoadMapService>();
-
-
-
-
-
-
-
-
-
-            //Dependency Injecton For Category
-            services.AddScoped<IGetIndividualCategoryService, GetIndividualCategoryService>();
-            services.AddScoped<IGetAllCategoriesService, GetCategoriesService>();
-            services.AddScoped<ICreateCategoryService, CreateCategoryService>();
-            services.AddScoped<IDeleteCategoryService, DeleteCategoryService>();
-            services.AddScoped<IUpdateCategoryService, UpdateCategoryService>();
-            services.AddScoped<ISearchCategoriesService, SearchCategoriesService>();
-
-
-            //Dependency Injecton For Lesson
-            services.AddScoped<IGetIndividualLessonService, GetLessonService>();
-            services.AddScoped<IGetAllLessonsService, GetAllLessonsService>();
-            services.AddScoped<ICreateLessonService, CreateLessonService>();
-            services.AddScoped<IDeleteLessonService, DeleteLessonService>();
-            services.AddScoped<IUpdateLessonService, UpdateLessonService>();
-            services.AddScoped<ISearchLessonsService, SearchLessonsService>();
-
-            //Dependency Injecton For ChildStep
-            services.AddScoped<IGetIndividualChildStepService, GetIndividualChildStepService>();
-            services.AddScoped<IGetAllChildStepsService, GetChildStepsService>();
-            services.AddScoped<ICreateChildStepService, CreateChildStepService>();
-            services.AddScoped<IDeleteChildStepService, DeleteChildStepService>();
-            services.AddScoped<IUpdateChildStepService, UpdateChildStepService>();
-
-            //Dependency Injecton For Linker
-            services.AddScoped<IGetIndividualLinkerService, GetIndividualLinkerService>();
-            services.AddScoped<IGetAllLinkersService, GetAllLinkersService>();
-            services.AddScoped<ICreateLinkerService, AddLinkerService>();
-            services.AddScoped<IDeleteLinkerService, DeleteLinkerService>();
-            services.AddScoped<IUpdateLinkerService, UpdateLinkerService>();
-
-
-            //Dependency Injecton For Roadmap
-            services.AddScoped<IGetIndividualRoadmapService, GetIndividualRoadMapService>();
-            services.AddScoped<IGetAllRoadmapsService, GetAllRoadMapService>();
-            services.AddScoped<ICreateRoadmapService, CreateRoadMapIndividualService>();
-            services.AddScoped<IDeleteRoadmapService, DeleteRoadmapService>();
-            services.AddScoped<IUpdateRoadmapService, UpdateRoadmapService>();
-            services.AddScoped<IFilterRoadmapsService, FilterRoadmapsService>();
-            services.AddScoped<ISearchRoadmapsService, SearchRoadmapsService>();
-
-            //Dependency Injecton For Step
-            services.AddScoped<IGetIndividualStepService, GetIndividualStepService>();
-            services.AddScoped<IGetAllStepsService, GetAllStepService>();
-            services.AddScoped<ICreateStepService, CreateStepService>();
-            services.AddScoped<IDeleteStepService, DeleteStepService>();
-            services.AddScoped<IUpdateStepService, UpdateStepService>();
-
-            // right service for getting roadmaps of user
-            services.AddScoped<IGetUserRoadmapService, GetUserRoadmapService>();
-
-            //Dependency Injecton For Profile
-            services.AddScoped<IGetUserFromCookieService, GetUserFromCookieService>();
-
-
-            //forget and reset password
-            services.AddScoped<IForgetPasswordUserService, ForgetPasswordUserService>();
-            services.AddScoped<ICheckUserResetPasswordLinkService, CheckUserResetPasswordLinkService>();
-            services.AddScoped<IResetPasswordService, ResetPasswordService>();
-
-            // register roadmap
-            services.AddScoped<IRegisterRoadmapService, RegisterRoadmapService>();
-
-            // check user has roadmap or not
-            services.AddScoped<ICheckUserRegisterRoadmapService,CheckUserRegisterRoadmapService>();
-
-            //
-            services.AddScoped<IIsUserBookMarkedRoadmapService, IsUserBookMarkedRoadmapService>();
-
-            // done childstep service
-            services.AddScoped<IDoneChildStepService, DoneChildStepService>();
-
-            // get preview of roadmap for not register users
-            services.AddScoped<IGetPreviewRoadmapService, GetPreviewRoadmapService>();
-
-            // bookmark roadmap service
-            services.AddScoped<IBookmarkRoadmapService,BookmarkRoadmapService>();
-
-            //homework
-            services.AddScoped<IGetHomeworkService, GetHomeworkService>();
-            services.AddScoped<ICreateHomeworkService, CreateHomeworkService>();
-            services.AddScoped<IUpdateHomeworkService, UpdateHomeworkService>();
-            services.AddScoped<IDeleteHomeworkService, DeleteHomeworkService>(); 
-            services.AddScoped<IGetAllHomeworksService, GetAllHomeworksService>();
-
-            services.AddScoped<IDoneHomeworkService, DoneHomeworkService>();
-
-            //Question
-            services.AddScoped<ICreateQuestionService, CreateQuestionService>();
-            services.AddScoped<IUpdateQuestionService, UpdateQuestionService>();
-            services.AddScoped<IDeleteQuestionService, DeleteQuestionService>();
-
-            // get created roadmaps service
-            services.AddScoped<IGetCreatedRoadMapService, GetCreatedRoadMapService>();
-
-            // get created lessons service
-            services.AddScoped<IGetCreatedLessonsService,GetCreatedLessonsService>();
-
+            //services.AddScoped<IDatabaseContext, DatabaseContext>();
 
             // Injection for user validatore
             // Be aware of UserValidatore class in Asp.Net

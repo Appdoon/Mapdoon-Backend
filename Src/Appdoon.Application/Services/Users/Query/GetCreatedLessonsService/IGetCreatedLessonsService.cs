@@ -2,6 +2,7 @@
 using Appdoon.Application.Services.Lessons.Query.GetAllLessonsService;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.UserRoles;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace Appdoon.Application.Services.Users.Query.GetCreatedLessonsService
 		public string CreatorName { get; set; } = string.Empty;
 		public string TopBannerSrc { get; set; } = string.Empty;
 	}
-	public interface IGetCreatedLessonsService
-	{
+	public interface IGetCreatedLessonsService : ITransientService
+    {
 		ResultDto<List<GetLessonsDto>> Execute(int userId);
 	}
 

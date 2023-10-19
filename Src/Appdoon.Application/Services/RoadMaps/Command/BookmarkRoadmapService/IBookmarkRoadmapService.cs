@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.RoadMaps.Command.BookmarkRoadmapService
 {
-	public interface IBookmarkRoadmapService
-	{
+	public interface IBookmarkRoadmapService : ITransientService
+    {
 		ResultDto Execute(int RoadmapId, int UserId);
 	}
 

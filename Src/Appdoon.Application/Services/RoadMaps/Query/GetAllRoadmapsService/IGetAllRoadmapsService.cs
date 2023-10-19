@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
         public List<RoadMapDto> Roadmaps { get; set; }
         public int RowCount { get; set; }
     }
-    public interface IGetAllRoadmapsService
+    public interface IGetAllRoadmapsService : ITransientService
     {
         ResultDto<AllRoadmapsDto> Execute(int page_number, int page_size);
     }

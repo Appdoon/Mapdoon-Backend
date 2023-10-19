@@ -4,6 +4,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
 using Appdoon.Common.UserRoles;
 using Appdoon.Domain.Entities.Users;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Appdoon.Application.Services.Users.Command.RegisterUserService
         public string PhoneNumber { get; set; }
         public string Role { get; set; } = string.Empty;
     }
-    public interface IRegisterUserService
+    public interface IRegisterUserService : ITransientService
     {
         ResultDto<int> Execute(RequestRegisterUserDto user);
     }

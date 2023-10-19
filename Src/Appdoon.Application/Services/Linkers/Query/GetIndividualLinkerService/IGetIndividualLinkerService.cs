@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Linkers.Query.GetIndividualLinkerService
 {
-	public interface IGetIndividualLinkerService
-	{
+	public interface IGetIndividualLinkerService : ITransientService
+    {
 		ResultDto<LinkDto> Execute(int id);
 	}
 	public class LinkDto

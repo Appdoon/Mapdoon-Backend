@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace Appdoon.Application.Services.Linkers.Command.UpdateLinkerService
 		public string Title { get; set; } = string.Empty;
 		public string Link { get; set; } = string.Empty;
 	}
-	public interface IUpdateLinkerService
-	{
+	public interface IUpdateLinkerService : ITransientService
+    {
 		ResultDto Execute(int id, UpdateLinkerLinkerDto category);
 	}
 
