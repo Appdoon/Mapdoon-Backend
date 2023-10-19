@@ -2,6 +2,7 @@
 using Appdoon.Application.Services.Lessons.Command.CreateLessonService;
 using Appdoon.Application.Validatores.LessonValidatore;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 		public string TopBannerSrc { get; set; }
 		public string Text { get; set; }
 	}
-	public interface IUpdateLessonService
-	{
+	public interface IUpdateLessonService : ITransientService
+    {
 		ResultDto Execute(int id, HttpRequest httpRequest, string currentpath);
 	}
 

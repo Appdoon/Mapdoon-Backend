@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Progress.Command.DoneChildStep
 {
-	public interface IDoneChildStepService
-	{
+	public interface IDoneChildStepService : ITransientService
+    {
 		ResultDto Execute(int ChildStepId, int UserId);
 	}
 

@@ -2,6 +2,7 @@
 using Appdoon.Application.Validatores.CategoryValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Appdoon.Application.Services.Categories.Command.CreateCategoryService
         public string Link { get; set; }
 
     }
-    public interface ICreateCategoryService
+    public interface ICreateCategoryService : ITransientService
     {
         ResultDto Execute(CreateCategoryDto requestCreateCategoryDto);
     }

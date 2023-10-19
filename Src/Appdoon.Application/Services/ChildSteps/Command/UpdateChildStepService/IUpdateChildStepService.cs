@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,8 @@ namespace Appdoon.Application.Services.ChildSteps.Command.UpdateChildStepService
 		public string LinkTitle { get; set; } = string.Empty;
 		public string LinkURL { get; set; } = string.Empty;
 	}
-	public interface IUpdateChildStepService
-	{
+	public interface IUpdateChildStepService : ITransientService
+    {
 		ResultDto Execute(int id, UpdateChildStepDto childstep);
 	}
 

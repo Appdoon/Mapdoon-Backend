@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Appdoon.Application.Services.Categories.Query.GetAllCategoriesService
         public List<CategoryDto> Categories { get; set; }
         public int RowCount { get; set; }
     }
-    public interface IGetAllCategoriesService
+    public interface IGetAllCategoriesService : ITransientService
     {
         public ResultDto<AllCategoriesDto> Execute(int page_number, int page_size);
     }

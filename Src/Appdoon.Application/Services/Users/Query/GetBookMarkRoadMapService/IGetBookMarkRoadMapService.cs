@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Appdoon.Domain.Entities.Users;
 using Appdoon.Application.Interfaces;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 
 namespace Appdoon.Application.Services.Users.Query.GetBookMarkRoadMapService
 {
-	public interface IGetBookMarkRoadMapService
-	{
+	public interface IGetBookMarkRoadMapService : ITransientService
+    {
 		ResultDto<List<BookMarkRoadMapDto>> Execute(int id);
 	}
 	public class BookMarkRoadMapDto

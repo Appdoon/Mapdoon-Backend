@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.GenerateTokens;
 using Appdoon.Common.HashFunctions;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Command.CheckUserResetPasswordLinkService
 {
-    public interface ICheckUserResetPasswordLinkService
+    public interface ICheckUserResetPasswordLinkService : ITransientService
     {
         Task<ResultDto<bool>> Execute(int userId, string token);
     }

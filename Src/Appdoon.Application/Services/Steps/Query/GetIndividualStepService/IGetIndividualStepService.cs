@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace Appdoon.Application.Services.Steps.Query.GetIndividualStepService
 		public string Link { get; set; }
 		public int RoadMapId { get; set; }
 	}
-	public interface IGetIndividualStepService
-	{
+	public interface IGetIndividualStepService : ITransientService
+    {
 		ResultDto<IndividualStepDto> Execute(int id);
 	}
 	public class GetIndividualStepService : IGetIndividualStepService

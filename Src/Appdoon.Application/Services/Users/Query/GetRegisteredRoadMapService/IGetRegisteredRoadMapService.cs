@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService
 {
-	public interface IGetRegisteredRoadMapService
-	{
+	public interface IGetRegisteredRoadMapService : ITransientService
+    {
 		ResultDto<List<RegisteredRoadMapDto>> Execute(int id);
 	}
 	public class RegisteredRoadMapDto

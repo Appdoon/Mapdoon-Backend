@@ -3,6 +3,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 {
-	public interface IRegisterRoadmapService
-	{
+	public interface IRegisterRoadmapService : ITransientService
+    {
 		ResultDto Execute(int RoadmapId, int UserId);
 	}
 

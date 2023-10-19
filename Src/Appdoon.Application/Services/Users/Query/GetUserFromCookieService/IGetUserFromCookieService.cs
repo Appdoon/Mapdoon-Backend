@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Query.GetUserFromCookieService
 {
-	public interface IGetUserFromCookieService
-	{
+	public interface IGetUserFromCookieService : ITransientService
+    {
 		ResultDto<UserCookieDto> Execute(int id);
 	}
 
