@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 
@@ -24,8 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Appdoon.Domain\Appdoon.Domain.csproj" />
-    <ProjectReference Include="..\Appdoon.Presistence\Appdoon.Presistence.csproj" />
+    <ProjectReference Include="..\Appdoon.Application\Mapdoon.Application.csproj" />
+    <ProjectReference Include="..\Appdoon.Domain\Mapdoon.Domain.csproj" />
+    <ProjectReference Include="..\Appdoon.Presistence\Mapdoon.Presistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
