@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <DebugType>embedded</DebugType>
+    <UserSecretsId>bdb9f247-c33d-44ec-81d8-042c6876049d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
