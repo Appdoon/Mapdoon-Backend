@@ -91,7 +91,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
-        public int Stars { get; set; }
+        public float? Stars { get; set; }
         public List<Category> Categories { get; set; }
         public List<Step> Steps { get; set; }
         public int CreatorId { get; set; }
