@@ -5,6 +5,7 @@ using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Threading;
@@ -31,6 +32,8 @@ namespace Appdoon.Application.Interfaces
 		int SaveChanges(bool acceptAllChangesOnSuccess);
 		int SaveChanges();
 
+        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
