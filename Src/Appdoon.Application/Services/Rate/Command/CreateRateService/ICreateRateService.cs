@@ -3,6 +3,7 @@ using Appdoon.Domain.Entities.Rates;
 using Appdoon.Common.Dtos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace Appdoon.Application.Services.Rate.Command.CreateRateService
         public float Question5 {get;set;}
     }
 
-    public interface ICreateRateService
+    public interface ICreateRateService : ITransientService
     {
         ResultDto Execute(int roadmapId, int userId , CreateRateDto Rate);
     }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Interfaces
 {
-	public interface IDatabaseContext
+	public interface IDatabaseContext : ITransientService
 	{
 		DbSet<User> Users { get; set; }
 		DbSet<Role> Roles { get; set; }
@@ -29,11 +29,9 @@ namespace Appdoon.Application.Interfaces
 		DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		DbSet<Question> Questions { get; set; }
 		DbSet<RateRoadMap> Rates { get; set; }
-		int SaveChanges(bool acceptAllChangesOnSuccess);
-		int SaveChanges();
+        int SaveChanges(bool acceptAllChangesOnSuccess);
+        int SaveChanges();
 
-        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
