@@ -60,6 +60,8 @@ namespace Appdoon.Presistence.Contexts
 			modelBuilder.Entity<HomeworkProgress>().HasQueryFilter(u => u.IsRemoved == false);
 			modelBuilder.Entity<Question>().HasQueryFilter(u => u.IsRemoved == false);
 
+			modelBuilder.Entity<RateRoadMap>().HasQueryFilter(u => u.IsRemoved == false);
+
 			// Registerd RoadMaps for User
 			modelBuilder.Entity<User>()
 				.HasMany<RoadMap>(u => u.SignedRoadMaps)
@@ -77,16 +79,16 @@ namespace Appdoon.Presistence.Contexts
 				.HasForeignKey(r => r.CreatoreId)
 				.OnDelete(DeleteBehavior.NoAction);
 			
-			// fk user and rate
-			modelBuilder.Entity<RateRoadMap>()
-			.HasOne(r => r.User)
-			.WithOne()
-			.HasForeignKey<RateRoadMap>(r => r.UserId);
-			//fk roadmap and rate
-			modelBuilder.Entity<RateRoadMap>()
-			.HasOne(r => r.RoadMap)
-			.WithOne()
-			.HasForeignKey<RateRoadMap>(r => r.RoadMapId);
+			// // fk user and rate
+			// modelBuilder.Entity<RateRoadMap>()
+			// .HasOne(r => r.User)
+			// .WithOne()
+			// .HasForeignKey<RateRoadMap>(r => r.UserId);
+			// //fk roadmap and rate
+			// modelBuilder.Entity<RateRoadMap>()
+			// .HasOne(r => r.RoadMap)
+			// .WithOne()
+			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
 		}
 	}
 }
