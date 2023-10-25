@@ -1,8 +1,5 @@
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
-
-using Appdoon.Application.Services.Rate.Command.CreateRateService;
-
 using Appdoon.Common.UserRoles;
 using Appdoon.Presistence.Contexts;
 using FluentValidation;
@@ -123,8 +120,8 @@ namespace OU_API
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
-            // create rate for roadmaps service
-            // services.AddScoped<ICreateRateService, CreateRateService>();
+            // Dependency Injection for Database Context
+            //services.AddScoped<IDatabaseContext, DatabaseContext>();
 
             // Injection for user validatore
             // Be aware of UserValidatore class in Asp.Net
