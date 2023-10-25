@@ -124,7 +124,7 @@ namespace OU_API
                 .WithScopedLifetime());
 
             // create rate for roadmaps service
-            services.AddScoped<ICreateRateService, CreateRateService>();
+            // services.AddScoped<ICreateRateService, CreateRateService>();
 
             // Injection for user validatore
             // Be aware of UserValidatore class in Asp.Net
