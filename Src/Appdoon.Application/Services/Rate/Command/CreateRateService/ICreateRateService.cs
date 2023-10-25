@@ -51,7 +51,12 @@ namespace Appdoon.Application.Services.Rate.Command.CreateRateService
                 _context.Rates.Add(rate);
                 var RoadMap = _context.RoadMaps
                 .Where(r => r.Id == roadmapId).First();
-                RoadMap.Stars = (rate.Question1 + rate.Question2 + rate.Question3 + rate.Question4 + rate.Question5) / 5;
+                // RoadMap.AllStars.Add((rate.Question1 + rate.Question2 + rate.Question3 + rate.Question4 + rate.Question5) / 5);
+                // RoadMap.Stars = RoadMap.AllStars.Average();
+                RoadMap.RateCount += 1;
+                var sum = RoadMap.Stars * RoadMap.RateCount ;
+                var NewAvg = (rate.Question1 + rate.Question2 + rate.Question3 + rate.Question4 + rate.Question5) / 5;
+                RoadMap.Stars = (NewAvg + sum )/ (RoadMap.RateCount + 1);
                 _context.SaveChanges();
                 return new ResultDto()
                 {

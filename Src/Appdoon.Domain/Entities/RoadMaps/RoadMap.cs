@@ -1,5 +1,6 @@
 ﻿using Appdoon.Domain.Commons;
 using Appdoon.Domain.Entities.Users;
+using Appdoon.Domain.Entities.Rates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,7 @@ namespace Appdoon.Domain.Entities.RoadMaps
 		public User? Creatore { get; set; }
 		public int CreatoreId { get; set; }
 		public List<User> UsersBookmarked { get; set; } = new();
+		public int RateCount { get; set; } = 0;
+		public List<RateRoadMap> Rates {get;set;} = new();
 	}
 }
