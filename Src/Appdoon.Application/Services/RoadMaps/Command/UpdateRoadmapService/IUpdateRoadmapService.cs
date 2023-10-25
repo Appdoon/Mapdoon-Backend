@@ -2,6 +2,7 @@
 using Appdoon.Application.Validatores.RoadMapValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService
 {
-    public interface IUpdateRoadmapService
+    public interface IUpdateRoadmapService : ITransientService
     {
         ResultDto Execute(int id, HttpRequest httpRequest, string currentpath);
     }

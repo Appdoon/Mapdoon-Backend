@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace Appdoon.Application.Services.Lessons.Query.GetAllLessonsService
 		public List<LessonDto> Lessons { get; set; }
 		public int RowCount { get; set; }
 	}
-	public interface IGetAllLessonsService
-	{
+	public interface IGetAllLessonsService : ITransientService
+    {
 		ResultDto<AllLessonsDto> Execute(int page_number, int page_size);
 	}
 

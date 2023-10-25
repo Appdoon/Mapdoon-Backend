@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
         public List<HomeworkDto> Homeworks { get; set; }
         public int RowCount { get; set; }
     }
-    public interface IGetAllHomeworksService
+    public interface IGetAllHomeworksService : ITransientService
     {
         public ResultDto<AllHomeworksDto> Execute(int page_number, int page_size);
     }

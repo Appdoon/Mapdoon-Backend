@@ -3,6 +3,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.Homeworks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
         public int MinScore { get; set; }
         public List<HomeworkProgress> HomeworkProgresses { get; set; } = new();
     }
-    public interface IGetHomeworkService
+    public interface IGetHomeworkService : ITransientService
     {
         ResultDto<HomeworkDto> Execute(int id);
     }

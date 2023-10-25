@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Application.Services.Progress.Command.DoneChildStep;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Progress.Command.DoneHomeworkService
 {
-    public interface IDoneHomeworkService
+    public interface IDoneHomeworkService : ITransientService
     {
         ResultDto Execute(int homeworkId, int userId);
     }

@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService
 {
-    public interface IGetIndividualRoadmapService
+    public interface IGetIndividualRoadmapService : ITransientService
     {
         ResultDto<IndividualRoadMapDto> Execute(int id);
     }

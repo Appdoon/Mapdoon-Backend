@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Appdoon.Application.Services.Steps.Query.GetAllStepService
 
 		public List<ChildStep> ChildSteps { get; set; }
 	}
-	public interface IGetAllStepsService
+	public interface IGetAllStepsService : ITransientService
     {
         ResultDto<List<StepDto>> Execute();
     }

@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService
 {
-    public interface IIsUserBookMarkedRoadmapService
+    public interface IIsUserBookMarkedRoadmapService : ITransientService
     {
         ResultDto<bool> Execute(int roadmapId, int userId);
     }

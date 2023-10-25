@@ -2,6 +2,7 @@
 using Appdoon.Application.Services.Categories.Command.CreateCategoryService;
 using Appdoon.Application.Validatores.CategoryValidatore;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace Appdoon.Application.Services.Categories.Command.UpdateCategoryService
 		public string Name { get; set; }
 		public string Link { get; set; }
 	}
-	public interface IUpdateCategoryService
-	{
+	public interface IUpdateCategoryService : ITransientService
+    {
 		ResultDto Execute(int id,UpdateCategoryDto category);
 	}
 

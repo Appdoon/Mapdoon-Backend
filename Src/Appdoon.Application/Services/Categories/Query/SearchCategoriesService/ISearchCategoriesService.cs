@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Appdoon.Application.Services.Categories.Query.SearchCategoriesService
         public List<CategoryDto> Categories { get; set; }
         public int RowCount { get; set; }
     }
-    public interface ISearchCategoriesService
+    public interface ISearchCategoriesService : ITransientService
     {
         ResultDto<AllCategoriesDto> Execute(string searched_text, int page_number, int page_size);
     }

@@ -5,6 +5,7 @@ using Appdoon.Common.CommonRegex;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
 using Appdoon.Domain.Entities.Users;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Command.LoginUserService
 {
-	public interface ILoginUserService
+	public interface ILoginUserService : ITransientService
 	{
 		ResultDto<UserLoginInfoDto> Execute(LoginUserDto loginUserDto);
 	}
