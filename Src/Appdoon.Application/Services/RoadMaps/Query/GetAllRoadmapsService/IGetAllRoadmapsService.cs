@@ -17,7 +17,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
-        public int Stars { get; set; }
+        public float? Stars { get; set; }
         public List<Category> Categories { get; set; }
     }
     public class AllRoadmapsDto

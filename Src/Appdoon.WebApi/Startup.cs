@@ -66,6 +66,9 @@ using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
 using Appdoon.Application.Services.Users.Query.GetUserService;
 using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
 using Appdoon.Application.Validatores.UserValidatore;
+
+using Appdoon.Application.Services.Rate.Command.CreateRateService;
+
 using Appdoon.Common.UserRoles;
 using Appdoon.Presistence.Contexts;
 using FluentValidation;
@@ -300,6 +303,8 @@ namespace OU_API
             // get created lessons service
             services.AddScoped<IGetCreatedLessonsService,GetCreatedLessonsService>();
 
+            // create rate for roadmaps service
+            services.AddScoped<ICreateRateService, CreateRateService>();
 
             // Injection for user validatore
             // Be aware of UserValidatore class in Asp.Net

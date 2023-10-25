@@ -13,7 +13,7 @@ namespace Appdoon.Domain.Entities.RoadMaps
 		public string Title { get; set; } = string.Empty;
 		public string? Description { get; set; }
 		public string? ImageSrc { get; set; }
-		public int Stars { get; set; } = 5;
+		public float? Stars { get; set; } 
 		public List<Category> Categories { get; set; } = new();
 		public List<Step> Steps { get; set; } = new();
 		public List<User> Students { get; set; } = new();

@@ -3,6 +3,7 @@ using Appdoon.Common.UserRoles;
 using Appdoon.Domain.Entities.Homeworks;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
+using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ namespace Appdoon.Presistence.Contexts
         public DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		public DbSet<Homework> Homeworks { get; set; }
 		public DbSet<Question> Questions { get; set; }
+		public DbSet<RateRoadMap> Rates { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -74,6 +76,17 @@ namespace Appdoon.Presistence.Contexts
 				.WithMany(u => u.CreatedRoadMaps)
 				.HasForeignKey(r => r.CreatoreId)
 				.OnDelete(DeleteBehavior.NoAction);
+			
+			// fk user and rate
+			modelBuilder.Entity<RateRoadMap>()
+			.HasOne(r => r.User)
+			.WithOne()
+			.HasForeignKey<RateRoadMap>(r => r.UserId);
+			//fk roadmap and rate
+			modelBuilder.Entity<RateRoadMap>()
+			.HasOne(r => r.RoadMap)
+			.WithOne()
+			.HasForeignKey<RateRoadMap>(r => r.RoadMapId);
 		}
 	}
 }
