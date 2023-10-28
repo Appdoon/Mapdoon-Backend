@@ -1,5 +1,4 @@
-﻿using Appdoon.Common.UserRoles;
-using Appdoon.Domain.Commons;
+﻿using Appdoon.Domain.Commons;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
