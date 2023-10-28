@@ -4,31 +4,29 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
-#nullable disable
 
 namespace Appdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231025153806_rate")]
+    partial class rate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CreatorId")
                         .HasColumnType("int");
@@ -63,9 +61,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Answer")
                         .HasColumnType("int");
@@ -116,9 +113,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ChildStepId")
                         .HasColumnType("int");
@@ -157,9 +153,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("HomeworkId")
                         .HasColumnType("int");
@@ -198,9 +193,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
@@ -239,9 +233,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
@@ -278,9 +271,11 @@ namespace Appdoon.Presistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoadMapId");
+                    b.HasIndex("RoadMapId")
+                        .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Rates");
                 });
@@ -289,9 +284,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
@@ -321,9 +315,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -369,9 +362,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
@@ -411,9 +403,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
@@ -444,9 +435,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CreatoreId")
                         .HasColumnType("int");
@@ -463,14 +453,11 @@ namespace Appdoon.Presistence.Migrations
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RateCount")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("RemoveTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<float?>("Stars")
-                        .HasColumnType("real");
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -490,9 +477,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -533,9 +519,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
@@ -561,21 +546,21 @@ namespace Appdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 10, 25, 22, 32, 10, 149, DateTimeKind.Local).AddTicks(5492),
+                            InsertTime = new DateTime(2023, 10, 25, 19, 8, 6, 337, DateTimeKind.Local).AddTicks(7843),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 10, 25, 22, 32, 10, 149, DateTimeKind.Local).AddTicks(5579),
+                            InsertTime = new DateTime(2023, 10, 25, 19, 8, 6, 340, DateTimeKind.Local).AddTicks(7415),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 10, 25, 22, 32, 10, 149, DateTimeKind.Local).AddTicks(5614),
+                            InsertTime = new DateTime(2023, 10, 25, 19, 8, 6, 340, DateTimeKind.Local).AddTicks(7572),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -585,9 +570,8 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -782,14 +766,14 @@ namespace Appdoon.Presistence.Migrations
             modelBuilder.Entity("Appdoon.Domain.Entities.Rates.RateRoadMap", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.RoadMap", "RoadMap")
-                        .WithMany("Rates")
-                        .HasForeignKey("RoadMapId")
+                        .WithOne()
+                        .HasForeignKey("Appdoon.Domain.Entities.Rates.RateRoadMap", "RoadMapId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Appdoon.Domain.Entities.Users.User", "User")
-                        .WithMany("Rates")
-                        .HasForeignKey("UserId")
+                        .WithOne()
+                        .HasForeignKey("Appdoon.Domain.Entities.Rates.RateRoadMap", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -939,8 +923,6 @@ namespace Appdoon.Presistence.Migrations
 
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.RoadMap", b =>
                 {
-                    b.Navigation("Rates");
-
                     b.Navigation("Steps");
                 });
 
@@ -962,8 +944,6 @@ namespace Appdoon.Presistence.Migrations
                     b.Navigation("CreatedRoadMaps");
 
                     b.Navigation("HomeworkProgresses");
-
-                    b.Navigation("Rates");
 
                     b.Navigation("StepProgresses");
                 });
