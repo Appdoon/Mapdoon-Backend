@@ -6,6 +6,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,14 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 {
 	public interface ILoginUserService : ITransientService
 	{
-		ResultDto<UserLoginInfoDto> Execute(LoginUserDto loginUserDto);
+		Task<ResultDto<UserLoginInfoDto>> Execute(LoginUserDto loginUserDto);
 	}
 
 	public class UserLoginInfoDto
 	{
 		public int Id { get; set; }
-		public string Username { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
 	}
 
 	public class LoginUserService : ILoginUserService
@@ -34,7 +36,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 			_context = context;
 		}
 
-		public ResultDto<UserLoginInfoDto> Execute(LoginUserDto loginUserDto)
+		public async Task<ResultDto<UserLoginInfoDto>> Execute(LoginUserDto loginUserDto)
 		{
 			UserValidatore validationRules = new UserValidatore();
 			var validateResult = validationRules.Validate(new RequestRegisterUserDto()
@@ -80,9 +82,9 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 					};
 				}
 
-				var userWithUsername = _context.Users
+				var userWithUsername = await _context.Users
 					.Where(u => u.Username == loginUserDto.Email)
-					.FirstOrDefault();
+					.FirstOrDefaultAsync();
 
 				if(userWithUsername == null)
 				{
@@ -104,6 +106,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 						{
 							Id = userWithUsername.Id,
 							Username = userWithUsername.Username,
+							Email = userWithUsername.Email,
 						},
 					};
 				}
@@ -215,9 +218,9 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 			*/
 			#endregion
 
-			var user = _context.Users
+			var user = await _context.Users
 				.Where(u => u.Email == loginUserDto.Email)
-				.FirstOrDefault();
+				.FirstOrDefaultAsync();
 
 			if(user == null)
 			{
@@ -239,6 +242,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 					{
 						Id = user.Id,
 						Username = user.Username,
+						Email = user.Email,
 					},
 				};
 			}

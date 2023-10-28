@@ -5,7 +5,8 @@ using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Services.Users.Command.ResetPasswordService;
 using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
 using Appdoon.Common.Dtos;
-using Appdoon.Common.UserRoles;
+using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -28,13 +29,15 @@ namespace Appdoon.WebApi.Controllers
         private readonly IResetPasswordService _resetPasswordService;
         private readonly ICheckUserResetPasswordLinkService _checkUserResetPasswordLinkService;
 		private readonly IGetUserFromCookieService _getUserFromCookieService;
+		private readonly ICurrentContext _currentContext;
 
 		public AuthenticationController(IRegisterUserService registerUserService,
 			ILoginUserService loginUserService,
 			IForgetPasswordUserService forgetPasswordUserService,
 			IResetPasswordService resetPasswordService,
 			ICheckUserResetPasswordLinkService checkUserResetPasswordLinkService,
-			IGetUserFromCookieService getUserFromCookieService)
+			IGetUserFromCookieService getUserFromCookieService,
+			ICurrentContext currentContext)
 		{
 			_registerUserService = registerUserService;
 			_loginUserService = loginUserService;
@@ -42,12 +45,13 @@ namespace Appdoon.WebApi.Controllers
 			_resetPasswordService = resetPasswordService;
 			_checkUserResetPasswordLinkService = checkUserResetPasswordLinkService;
 			_getUserFromCookieService = getUserFromCookieService;
+			_currentContext = currentContext;
 		}
 
 		[HttpPost]
-		public JsonResult Login(LoginUserDto user)
+		public async Task<JsonResult> Login(LoginUserDto user)
 		{
-			var result = _loginUserService.Execute(user);
+			var result = await _loginUserService.Execute(user);
 
 			if(result.IsSuccess == true)
 			{
@@ -69,7 +73,7 @@ namespace Appdoon.WebApi.Controllers
 					IsPersistent = Remember,
 				};
 
-				HttpContext.SignInAsync(principal, properties);
+				await HttpContext.SignInAsync(principal, properties);
 			}
 			return new JsonResult(result);
 		}
@@ -147,27 +151,30 @@ namespace Appdoon.WebApi.Controllers
 
 		private int GetIdFromCookie()
 		{
-            try
-            {
-                if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null) { 
-					return -1; 
-				}
+			var user = _currentContext.User;
 
-				var IdStr = HttpContext.User.Identities
-					.FirstOrDefault()
-					.Claims
-					//.Where(c => c.Type == "NameIdentifier")
-					.FirstOrDefault()
-					.Value;
+			return user.Id;
 
-				int Id = int.Parse(IdStr);
-				return Id;
-            }
-            catch (Exception e)
-            {
-				return - 1;
-            }
+    //        try
+    //        {
+    //            if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null) { 
+				//	return -1; 
+				//}
 
+				//var IdStr = HttpContext.User.Identities
+				//	.FirstOrDefault()
+				//	.Claims
+				//	//.Where(c => c.Type == "NameIdentifier")
+				//	.FirstOrDefault()
+				//	.Value;
+
+				//int Id = int.Parse(IdStr);
+				//return Id;
+    //        }
+    //        catch (Exception e)
+    //        {
+				//return - 1;
+    //        }
 		}
 	}
 }

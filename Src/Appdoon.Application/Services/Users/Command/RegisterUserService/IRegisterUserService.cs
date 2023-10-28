@@ -2,16 +2,16 @@
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
-using Appdoon.Common.UserRoles;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Appdoon.Application.Services.Users.Command.RegisterUserService
 {
-    public class RequestRegisterUserDto
+	public class RequestRegisterUserDto
     {
         public string Username { get; set; } = string.Empty;
         public string FirstName { get; set; }
