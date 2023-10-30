@@ -12,16 +12,7 @@ namespace Appdoon.Domain.Entities.Rates
 {
     public class RateRoadMap : BaseEntity
     {
-        [Range(1, 5)]
-        public float Question1 {get;set;}
-        [Range(1, 5)]
-        public float Question2 {get;set;}
-        [Range(1, 5)]
-        public float Question3 {get;set;}
-        [Range(1, 5)]
-        public float Question4 {get;set;}
-        [Range(1, 5)]
-        public float Question5 {get;set;}
+        public float Score{get;set;}
         public User User {get;set;}
         public int UserId {get;set;}
         public RoadMap RoadMap {get;set;}
