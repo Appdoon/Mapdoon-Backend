@@ -15,11 +15,7 @@ namespace Appdoon.Application.Services.Rate.Command.CreateRateService
 {
     public class CreateRateDto
     {
-        public float Question1 {get;set;} 
-        public float Question2 {get;set;}
-        public float Question3 {get;set;}
-        public float Question4 {get;set;}
-        public float Question5 {get;set;}
+        public float Score {get;set;}
     }
 
     public interface ICreateRateService : ITransientService
@@ -40,11 +36,7 @@ namespace Appdoon.Application.Services.Rate.Command.CreateRateService
             {
                 RateRoadMap rate = new RateRoadMap()
                 {
-                    Question1 = createRate.Question1,
-                    Question2 = createRate.Question2,
-                    Question3 = createRate.Question3,
-                    Question4 = createRate.Question4,
-                    Question5 = createRate.Question5,
+                    Score = createRate.Score,
                     UserId = userId,
                     RoadMapId = roadmapId,
                 };
@@ -53,10 +45,9 @@ namespace Appdoon.Application.Services.Rate.Command.CreateRateService
                 .Where(r => r.Id == roadmapId).First();
                 // RoadMap.AllStars.Add((rate.Question1 + rate.Question2 + rate.Question3 + rate.Question4 + rate.Question5) / 5);
                 // RoadMap.Stars = RoadMap.AllStars.Average();
-                RoadMap.RateCount += 1;
                 var sum = RoadMap.Stars * RoadMap.RateCount ;
-                var NewAvg = (rate.Question1 + rate.Question2 + rate.Question3 + rate.Question4 + rate.Question5) / 5;
-                RoadMap.Stars = (NewAvg + sum )/ (RoadMap.RateCount + 1);
+                RoadMap.RateCount += 1;
+                RoadMap.Stars = (rate.Score + sum )/ RoadMap.RateCount;
                 _context.SaveChanges();
                 return new ResultDto()
                 {
