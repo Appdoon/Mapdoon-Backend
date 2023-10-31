@@ -1,7 +1,9 @@
 ﻿using Appdoon.Application.Services.Users.Command.LoginUserService;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
+using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
 using Appdoon.Common.Dtos;
 using Mapdoon.Application.Services.JWTAuthentication.Command;
+using Mapdoon.Common.Interfaces;
 using Mapdoon.Common.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -69,6 +71,25 @@ namespace Mapdoon.WebApi.Controllers
 			}
 
 			return new JsonResult(registerResult);
+		}
+
+		[HttpGet("UserInfo")]
+		public JsonResult InfoFromCookie([FromServices] ICurrentContext currentContext, [FromServices] IGetUserFromCookieService getUserFromCookieService)
+		{
+			//TODO: Implement Global Error Handling
+			try
+			{
+				int Id = currentContext.User.Id;
+				var result = getUserFromCookieService.Execute(Id);
+				return new JsonResult(result);
+			}
+			catch{ }
+
+			return new JsonResult(new ResultDto()
+			{
+				IsSuccess = false,
+				Message = "کاربر لاگین نکرده است!!"
+			});
 		}
 	}
 }
