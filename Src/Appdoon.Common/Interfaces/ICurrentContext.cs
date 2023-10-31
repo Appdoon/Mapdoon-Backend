@@ -16,29 +16,27 @@ namespace Mapdoon.Common.Interfaces
 		public CurrentContext(IHttpContextAccessor httpContextAccessor)
 		{
 			_httpContextAccessor = httpContextAccessor;
-
-			var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            // Really??
-            //if (string.IsNullOrWhiteSpace(token) == true)
-            //    return null;
-
-            var jwtHandler = new JwtSecurityTokenHandler();
-            var jwtToken = jwtHandler.ReadJwtToken(token);
-            var payload = jwtToken.Payload;
-
-			var claims = jwtToken.Payload.Claims.ToList();
-
-			_user = MapdoonUser.GetUser(claims);
 		}
-
-		private readonly MapdoonUser _user;
 
 		public MapdoonUser User
 		{
 			get
 			{
-				return _user;
+				var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+				// Really??
+				//if (string.IsNullOrWhiteSpace(token) == true)
+				//    return null;
+
+				var jwtHandler = new JwtSecurityTokenHandler();
+				var jwtToken = jwtHandler.ReadJwtToken(token);
+				var payload = jwtToken.Payload;
+
+				var claims = jwtToken.Payload.Claims.ToList();
+
+				var user = MapdoonUser.GetUser(claims);
+
+				return user;
 			}
 		}
 	}
