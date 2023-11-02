@@ -138,7 +138,7 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
             }
         }
 
-        private string LinkGenerator(string token, int userId)
+		private string LinkGenerator(string token, int userId)
         {
 			// format : https://localhost:5001/ Authentication/ResetPassword?userId={0}&token={1}
 			//string appDomain = _configuration.GetSection("Application:AppDomain").Value;
@@ -157,7 +157,7 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
         }
     }
 
-    public class ForgetPasswordOptions
+	public class ForgetPasswordOptions
     {
         public string LoginPath { get; set; }
         public string AppDomain { get; set; }

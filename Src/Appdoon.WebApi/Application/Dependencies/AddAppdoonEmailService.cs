@@ -2,6 +2,8 @@
 using Mapdoon.Presistence.Features.Email;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
+using System.Net.Mail;
 
 namespace Mapdoon.WebApi.Application.Dependencies
 {
@@ -15,16 +17,15 @@ namespace Mapdoon.WebApi.Application.Dependencies
 			var userName = emailSettings.UserName;
 			var password = emailSettings.Password;
 
-			services.AddFluentEmail("mapdoooon@gmail.com")
-				 //   .AddMailKitSender(new SmtpClientOptions()
-					//{
-					//	User = userName,
-					//	Port = 25,
-					//	Password = "Mapdoon123!",
-					//	Server = "localhost",
-					//	UseSsl = false,
-					//})
-				    .AddSmtpSender("smtp.mailtrap.io", 587, userName, password);
+			services.AddFluentEmail(defaultFromEmail)
+					.AddSmtpSender(new SmtpClient()
+					{
+						Host = host,
+						Port = port,
+						Credentials = new NetworkCredential(userName, password),
+						EnableSsl = true,
+					});
+				    //.AddSmtpSender("smtp.gmail.com", 587, "mapdoooon@gmail.com", "wobhywvsgvzxlirr");
 		}
 	}
 }

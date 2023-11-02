@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Services.Users.Command.ForgetPasswordUserService;
 using FluentEmail.Core;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Mapdoon.Presistence.Features.Email

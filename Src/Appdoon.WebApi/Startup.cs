@@ -126,7 +126,7 @@ namespace OU_API
 			services.ConfigureOptions<JWTOptionsSetup>();
 			services.ConfigureOptions<JwtBearerOptionsSetup>();
 			services.ConfigureOptions<EmailOptionsSetup>();
-			//services.ConfigureOptions<ForgetPasswordOptions>();
+			services.ConfigureOptions<ForgetPasswordOptionsSetup>();
 
 			// Authorization policies with Cookie
 			//services.AddAuthorization(options =>
