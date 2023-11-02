@@ -25,7 +25,6 @@ namespace Appdoon.WebApi.Controllers
 	{
 		private readonly IRegisterUserService _registerUserService;
 		private readonly ILoginUserService _loginUserService;
-        private readonly IForgetPasswordUserService _forgetPasswordUserService;
         private readonly IResetPasswordService _resetPasswordService;
         private readonly ICheckUserResetPasswordLinkService _checkUserResetPasswordLinkService;
 		private readonly IGetUserFromCookieService _getUserFromCookieService;
@@ -33,7 +32,6 @@ namespace Appdoon.WebApi.Controllers
 
 		public AuthenticationController(IRegisterUserService registerUserService,
 			ILoginUserService loginUserService,
-			IForgetPasswordUserService forgetPasswordUserService,
 			IResetPasswordService resetPasswordService,
 			ICheckUserResetPasswordLinkService checkUserResetPasswordLinkService,
 			IGetUserFromCookieService getUserFromCookieService,
@@ -41,7 +39,6 @@ namespace Appdoon.WebApi.Controllers
 		{
 			_registerUserService = registerUserService;
 			_loginUserService = loginUserService;
-			_forgetPasswordUserService = forgetPasswordUserService;
 			_resetPasswordService = resetPasswordService;
 			_checkUserResetPasswordLinkService = checkUserResetPasswordLinkService;
 			_getUserFromCookieService = getUserFromCookieService;
@@ -122,59 +119,32 @@ namespace Appdoon.WebApi.Controllers
 
 
 		[HttpPost]
-		public async Task<JsonResult> ForgetPassword(UserEmailOptions userEmailOptions)
+		public async Task<JsonResult> ForgetPassword([FromServices] IForgetPasswordUserService forgetPasswordUserService, ForgetPasswordEmailDto forgetPasswordEmailDto)
         {
-			var result = await _forgetPasswordUserService.Execute(userEmailOptions);
+			var result = await forgetPasswordUserService.Execute(forgetPasswordEmailDto);
 			return new JsonResult(result);
         }
+
 		[HttpPost]
 		public async Task<JsonResult> ResetPassword(string password, string repeatPassword, int userId)
         {
 			var result = await _resetPasswordService.Execute(password, repeatPassword, userId);
 			return new JsonResult(result);
         }
+
 		[HttpGet]
-		public async Task<JsonResult> CheckLink(int userId, string token)
+		public async Task<JsonResult> CheckResetPasswordLink(int userId, string token)
         {
 			var result = await _checkUserResetPasswordLinkService.Execute(userId, token);
 			return new JsonResult(result);
 		}
 
-
 		[HttpGet]
 		public JsonResult InfoFromCookie()
 		{
-			int Id = GetIdFromCookie();
+			int Id = _currentContext.User.Id;
 			var result = _getUserFromCookieService.Execute(Id);
 			return new JsonResult(result);
-		}
-
-		private int GetIdFromCookie()
-		{
-			var user = _currentContext.User;
-
-			return user.Id;
-
-    //        try
-    //        {
-    //            if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null) { 
-				//	return -1; 
-				//}
-
-				//var IdStr = HttpContext.User.Identities
-				//	.FirstOrDefault()
-				//	.Claims
-				//	//.Where(c => c.Type == "NameIdentifier")
-				//	.FirstOrDefault()
-				//	.Value;
-
-				//int Id = int.Parse(IdStr);
-				//return Id;
-    //        }
-    //        catch (Exception e)
-    //        {
-				//return - 1;
-    //        }
 		}
 	}
 }

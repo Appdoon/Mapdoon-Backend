@@ -1,3 +1,4 @@
+using Appdoon.Application.Services.Users.Command.ForgetPasswordUserService;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Presistence.Contexts;
@@ -9,6 +10,8 @@ using Mapdoon.Common.Interfaces;
 using Mapdoon.Common.User;
 using Mapdoon.Domain;
 using Mapdoon.Presistence;
+using Mapdoon.Presistence.Features.Email;
+using Mapdoon.WebApi.Application.Dependencies;
 using Mapdoon.WebApi.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -122,6 +125,8 @@ namespace OU_API
 
 			services.ConfigureOptions<JWTOptionsSetup>();
 			services.ConfigureOptions<JwtBearerOptionsSetup>();
+			services.ConfigureOptions<EmailOptionsSetup>();
+			services.ConfigureOptions<ForgetPasswordOptionsSetup>();
 
 			// Authorization policies with Cookie
 			//services.AddAuthorization(options =>
@@ -181,6 +186,10 @@ namespace OU_API
 				.AddClasses(classes => classes.AssignableTo<IScopedService>())
 				.AsImplementedInterfaces()
 				.WithScopedLifetime());
+
+			var emailSettings = new EmailSettings();
+			Configuration.GetSection("EmailSettings").Bind(emailSettings);
+			services.AddFluentEmail(emailSettings);
 
 			// Dependency Injection for Database Context
 			//services.AddScoped<IDatabaseContext, DatabaseContext>();
