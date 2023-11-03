@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using Mapdoon.Application.Services.JWTAuthentication.Command;
+using Mapdoon.Common.Interfaces;
 
 namespace Apdoon.WebApi.Controllers
 {
@@ -20,10 +22,10 @@ namespace Apdoon.WebApi.Controllers
         {
             _createRateService = createRateService;
         }
-        [HttpPost("{RoadMapId}/{UserId}")]
-        public JsonResult Post(int RoadMapId , int UserId , CreateRateDto rateDto)
+        [HttpPost("{RoadMapId}")]
+        public JsonResult Post(int RoadMapId , CreateRateDto rateDto ,[FromServices] ICurrentContext currentContext)
         {
-            int userId= UserId;
+            int userId = currentContext.User.Id;
             var result = _createRateService.Execute(RoadMapId , userId , rateDto);
             return new JsonResult(result);
         }
