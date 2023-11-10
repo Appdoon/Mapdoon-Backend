@@ -37,7 +37,7 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<Question> Questions { get; set; }
 		public DbSet<RateRoadMap> Rates { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override async void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Admin.ToString(), Id = (int)UserRole.Admin });
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Teacher.ToString(), Id = (int)UserRole.Teacher });
@@ -89,6 +89,8 @@ namespace Appdoon.Presistence.Contexts
 			// .HasOne(r => r.RoadMap)
 			// .WithOne()
 			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
+
+			await Database.MigrateAsync();
 		}
 	}
 }
