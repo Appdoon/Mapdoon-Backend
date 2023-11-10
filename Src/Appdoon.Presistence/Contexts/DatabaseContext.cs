@@ -37,7 +37,7 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<Question> Questions { get; set; }
 		public DbSet<RateRoadMap> Rates { get; set; }
 
-		protected override async void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Admin.ToString(), Id = (int)UserRole.Admin });
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Teacher.ToString(), Id = (int)UserRole.Teacher });
@@ -78,7 +78,28 @@ namespace Appdoon.Presistence.Contexts
 				.WithMany(u => u.CreatedRoadMaps)
 				.HasForeignKey(r => r.CreatoreId)
 				.OnDelete(DeleteBehavior.NoAction);
-			
+
+			// User and Created Homeworks
+			//modelBuilder.Entity<User>()
+			//	.HasMany<Homework>(u => u.CreatedHomeworks)
+			//	.WithOne(h => h.Creator)
+			//	.HasForeignKey(h => h.CreatorId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
+			//// HomeworkProgress and User
+			//modelBuilder.Entity<HomeworkProgress>()
+			//	.HasOne(h => h.User)
+			//	.WithMany(u => u.HomeworkProgresses)
+			//	.HasForeignKey(h => h.UserId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
+			//// Homework Progress and Homework
+			//modelBuilder.Entity<HomeworkProgress>()
+			//	.HasOne(h => h.Homework)
+			//	.WithMany(h => h.HomeworkProgresses)
+			//	.HasForeignKey(h => h.HomeworkId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
 			// // fk user and rate
 			// modelBuilder.Entity<RateRoadMap>()
 			// .HasOne(r => r.User)
@@ -90,7 +111,7 @@ namespace Appdoon.Presistence.Contexts
 			// .WithOne()
 			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
 
-			await Database.MigrateAsync();
+			//Database.MigrateAsync();
 		}
 	}
 }

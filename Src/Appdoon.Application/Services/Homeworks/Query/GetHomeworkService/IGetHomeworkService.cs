@@ -34,48 +34,50 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
         }
         public ResultDto<HomeworkDto> Execute(int id)
         {
-            try
-            {
-                var homework = _context.Homeworks
-                    .Where(x => x.Id == id)
-                    .Include(h => h.Questions)
-                    .Include(h => h.HomeworkProgresses)
-                    .Select(h => new HomeworkDto()
-                    {
-                        Id = h.Id,
-                        Title = h.Title,
-                        Questions = h.Questions,
-                        MinScore = h.MinScore,
-                        HomeworkProgresses = h.HomeworkProgresses,
+            throw new NotImplementedException();
 
-                    }).FirstOrDefault();
+            //try
+            //{
+            //    var homework = _context.Homeworks
+            //        .Where(x => x.Id == id)
+            //        .Include(h => h.Questions)
+            //        .Include(h => h.HomeworkProgresses)
+            //        .Select(h => new HomeworkDto()
+            //        {
+            //            Id = h.Id,
+            //            Title = h.Title,
+            //            Questions = h.Questions,
+            //            MinScore = h.MinScore,
+            //            HomeworkProgresses = h.HomeworkProgresses,
 
-                if (homework == null)
-                {
-                    return new ResultDto<HomeworkDto>()
-                    {
-                        IsSuccess = false,
-                        Message = "تمرین یافت نشد!",
-                        Data = new HomeworkDto(),
-                    };
-                }
+            //        }).FirstOrDefault();
 
-                return new ResultDto<HomeworkDto>()
-                {
-                    IsSuccess = true,
-                    Message = "تمرین ارسال شد",
-                    Data = homework,
-                };
-            }
-            catch (Exception e)
-            {
-                return new ResultDto<HomeworkDto>()
-                {
-                    IsSuccess = false,
-                    Message = "ارسال ناموفق!",
-                    Data = new HomeworkDto(),
-                };
-            }
+            //    if (homework == null)
+            //    {
+            //        return new ResultDto<HomeworkDto>()
+            //        {
+            //            IsSuccess = false,
+            //            Message = "تمرین یافت نشد!",
+            //            Data = new HomeworkDto(),
+            //        };
+            //    }
+
+            //    return new ResultDto<HomeworkDto>()
+            //    {
+            //        IsSuccess = true,
+            //        Message = "تمرین ارسال شد",
+            //        Data = homework,
+            //    };
+            //}
+            //catch (Exception e)
+            //{
+            //    return new ResultDto<HomeworkDto>()
+            //    {
+            //        IsSuccess = false,
+            //        Message = "ارسال ناموفق!",
+            //        Data = new HomeworkDto(),
+            //    };
+            //}
         }
     }
 }
