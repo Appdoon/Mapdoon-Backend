@@ -32,33 +32,35 @@ namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
         }
         public ResultDto Execute(int id, UpdateHomeworkDto updateHomeworkDto)
         {
-            try
-            {
-                var homework = _context.Homeworks
-                    .Where(h => h.Id == id)
-                    .Include(h => h.Questions)
-                    .FirstOrDefault();
+            throw new NotImplementedException();
 
-                homework.UpdateTime = DateTime.Now;
-                homework.MinScore = updateHomeworkDto.MinScore;
-                homework.Title = updateHomeworkDto.Title;
+            //try
+            //{
+            //    var homework = _context.Homeworks
+            //        .Where(h => h.Id == id)
+            //        .Include(h => h.Questions)
+            //        .FirstOrDefault();
 
-                _context.SaveChanges();
+            //    homework.UpdateTime = DateTime.Now;
+            //    homework.MinScore = updateHomeworkDto.MinScore;
+            //    homework.Title = updateHomeworkDto.Title;
 
-                return new ResultDto()
-                {
-                    IsSuccess = true,
-                    Message = "تمرین بروزرسانی شد.",
-                };
-            }
-            catch (Exception e)
-            {
-                return new ResultDto()
-                {
-                    IsSuccess = false,
-                    Message = "خطا در بروزرسانی تمرین!",
-                };
-            }
+            //    _context.SaveChanges();
+
+            //    return new ResultDto()
+            //    {
+            //        IsSuccess = true,
+            //        Message = "تمرین بروزرسانی شد.",
+            //    };
+            //}
+            //catch (Exception e)
+            //{
+            //    return new ResultDto()
+            //    {
+            //        IsSuccess = false,
+            //        Message = "خطا در بروزرسانی تمرین!",
+            //    };
+            //}
         }
     }
 }

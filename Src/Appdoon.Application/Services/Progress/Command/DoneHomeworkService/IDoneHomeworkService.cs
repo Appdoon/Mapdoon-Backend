@@ -23,52 +23,54 @@ namespace Appdoon.Application.Services.Progress.Command.DoneHomeworkService
         }
         public ResultDto Execute(int homeworkId, int userId)
         {
-            try
-            {
-                var homeworkProgress = _context.HomeworkProgresses
-                                        .Where(h => h.HomeworkId == homeworkId && h.UserId == userId)
-                                        .FirstOrDefault();
+            throw new NotImplementedException();
 
-                var homework = _context.Homeworks
-                              .Where(h => h.Id == homeworkId)
-                              .FirstOrDefault();
+            //try
+            //{
+            //    var homeworkProgress = _context.HomeworkProgresses
+            //                            .Where(h => h.HomeworkId == homeworkId && h.UserId == userId)
+            //                            .FirstOrDefault();
 
-                var childstep = _context.ChildSteps
-                               .Where(h => h.HomeworkId == homeworkId)
-                               .FirstOrDefault();
+            //    var homework = _context.Homeworks
+            //                  .Where(h => h.Id == homeworkId)
+            //                  .FirstOrDefault();
+
+            //    var childstep = _context.ChildSteps
+            //                   .Where(h => h.HomeworkId == homeworkId)
+            //                   .FirstOrDefault();
 
            
-                DoneChildStepService doneChildStepService = new DoneChildStepService(_context);
+            //    DoneChildStepService doneChildStepService = new DoneChildStepService(_context);
 
-                if(homework.MinScore <= homeworkProgress.Score)
-                {
-                    homeworkProgress.IsDone = true;
-                    _context.SaveChanges();
+            //    if(homework.MinScore <= homeworkProgress.Score)
+            //    {
+            //        homeworkProgress.IsDone = true;
+            //        _context.SaveChanges();
 
-                    doneChildStepService.Execute(childstep.Id, userId);
-                }
-                else
-                {
-                    return new ResultDto()
-                    {
-                        IsSuccess = false,
-                        Message = "خطا در انجام تکمیل نمودن محتوا برای کاربر!",
-                    };
-                }
-                return new ResultDto()
-                {
-                    IsSuccess = true,
-                    Message = "محتوا با موفقیت تکمیل شد!",
-                };
-            }
-            catch (Exception e)
-            {
-                return new ResultDto()
-                {
-                    IsSuccess = false,
-                    Message = "خطا در انجام تکمیل نمودن محتوا برای کاربر!",
-                };
-            }
+            //        doneChildStepService.Execute(childstep.Id, userId);
+            //    }
+            //    else
+            //    {
+            //        return new ResultDto()
+            //        {
+            //            IsSuccess = false,
+            //            Message = "خطا در انجام تکمیل نمودن محتوا برای کاربر!",
+            //        };
+            //    }
+            //    return new ResultDto()
+            //    {
+            //        IsSuccess = true,
+            //        Message = "محتوا با موفقیت تکمیل شد!",
+            //    };
+            //}
+            //catch (Exception e)
+            //{
+            //    return new ResultDto()
+            //    {
+            //        IsSuccess = false,
+            //        Message = "خطا در انجام تکمیل نمودن محتوا برای کاربر!",
+            //    };
+            //}
         }
     }
 }

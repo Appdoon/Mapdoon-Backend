@@ -78,7 +78,28 @@ namespace Appdoon.Presistence.Contexts
 				.WithMany(u => u.CreatedRoadMaps)
 				.HasForeignKey(r => r.CreatoreId)
 				.OnDelete(DeleteBehavior.NoAction);
-			
+
+			// User and Created Homeworks
+			//modelBuilder.Entity<User>()
+			//	.HasMany<Homework>(u => u.CreatedHomeworks)
+			//	.WithOne(h => h.Creator)
+			//	.HasForeignKey(h => h.CreatorId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
+			//// HomeworkProgress and User
+			//modelBuilder.Entity<HomeworkProgress>()
+			//	.HasOne(h => h.User)
+			//	.WithMany(u => u.HomeworkProgresses)
+			//	.HasForeignKey(h => h.UserId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
+			//// Homework Progress and Homework
+			//modelBuilder.Entity<HomeworkProgress>()
+			//	.HasOne(h => h.Homework)
+			//	.WithMany(h => h.HomeworkProgresses)
+			//	.HasForeignKey(h => h.HomeworkId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
 			// // fk user and rate
 			// modelBuilder.Entity<RateRoadMap>()
 			// .HasOne(r => r.User)
@@ -89,6 +110,8 @@ namespace Appdoon.Presistence.Contexts
 			// .HasOne(r => r.RoadMap)
 			// .WithOne()
 			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
+
+			//Database.MigrateAsync();
 		}
 	}
 }
