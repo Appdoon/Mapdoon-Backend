@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Appdoon.Application.Interfaces
 {
@@ -35,6 +36,8 @@ namespace Appdoon.Application.Interfaces
         Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
-        EntityEntry Entry(object entity);
+		public DatabaseFacade Database { get; }
+
+		EntityEntry Entry(object entity);
     }
 }
