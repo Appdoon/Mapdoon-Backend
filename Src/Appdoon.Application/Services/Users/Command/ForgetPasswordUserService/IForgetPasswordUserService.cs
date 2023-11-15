@@ -85,13 +85,15 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
 
                 string token = GenerateTokens.GenerateToken(user.Username, user.Password);
 
-                // https:\\localhost:5001 Resetpassword ? userid={0} & token={1}
+				// http:\\localhost:3000 auth/reset-password ? userid={0} & token={1}
 
-                var userEmailOptions = new UserEmailOptions()
+				var userEmailOptions = new UserEmailOptions()
                 {
                     ToEmail = user.Email,
                     Subject = "Reset password for in Appdoon",
-                    Body = await GetEmailBody(user.Username, token, user.Id),
+                    Body = $"Use following link to reset your password :\n" +
+                           $"{LinkGenerator(token, user.Id)}",
+                    //Body = await GetEmailBody(user.Username, token, user.Id),
                 };
 
                 await _emailSender.Send(userEmailOptions);
