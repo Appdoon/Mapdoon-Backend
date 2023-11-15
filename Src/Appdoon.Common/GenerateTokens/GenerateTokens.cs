@@ -13,7 +13,10 @@ namespace Appdoon.Common.GenerateTokens
         {
             string temp = username + password;
             //return ArshiaHash.Hash(temp);
-            return temp.GetHashCode().ToString();
+            var hash = temp.GetHashCode();
+            hash = hash < 0 ? hash * -1 : hash;
+
+            return hash.ToString();
         }
     }
 }

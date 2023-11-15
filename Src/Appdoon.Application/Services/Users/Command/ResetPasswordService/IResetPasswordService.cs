@@ -1,4 +1,5 @@
 ﻿using Appdoon.Application.Interfaces;
+using Appdoon.Application.Services.Users.Command.CheckUserResetPasswordLinkService;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.Dtos;
@@ -15,20 +16,34 @@ namespace Appdoon.Application.Services.Users.Command.ResetPasswordService
 {
     public interface IResetPasswordService : ITransientService
     {
-        Task<ResultDto> Execute(string password, string repeatPassword, int userId);
+        Task<ResultDto> Execute(string password, string repeatPassword, int userId, string token);
     }
     public class ResetPasswordService : IResetPasswordService
     {
         private readonly IDatabaseContext _context;
+		private readonly ICheckUserResetPasswordLinkService _checkUserResetPasswordLinkService;
 
-        public ResetPasswordService(IDatabaseContext context)
+		public ResetPasswordService(IDatabaseContext context, ICheckUserResetPasswordLinkService checkUserResetPasswordLinkService)
         {
             _context = context;
-        }
-        public async Task<ResultDto> Execute(string password, string repeatPassword, int userId)
+            _checkUserResetPasswordLinkService = checkUserResetPasswordLinkService;
+
+		}
+        public async Task<ResultDto> Execute(string password, string repeatPassword, int userId, string token)
         {
             try
             {
+                var checkLinkResult = await _checkUserResetPasswordLinkService.Execute(userId, token);
+
+                if (checkLinkResult.IsSuccess == false)
+                {
+					return new ResultDto()
+                    {
+						Message = "لینک منقضی شده است!",
+						IsSuccess = false,
+					};
+				}
+
                 if (password != repeatPassword)
                 {
                     return new ResultDto()

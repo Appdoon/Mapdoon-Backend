@@ -126,18 +126,18 @@ namespace Appdoon.WebApi.Controllers
         }
 
 		[HttpPost]
-		public async Task<JsonResult> ResetPassword(string password, string repeatPassword, int userId)
+		public async Task<JsonResult> ResetPassword(string password, string repeatPassword, int userId, string token)
         {
-			var result = await _resetPasswordService.Execute(password, repeatPassword, userId);
+			var result = await _resetPasswordService.Execute(password, repeatPassword, userId, token);
 			return new JsonResult(result);
         }
 
-		[HttpGet]
-		public async Task<JsonResult> CheckResetPasswordLink(int userId, string token)
-        {
-			var result = await _checkUserResetPasswordLinkService.Execute(userId, token);
-			return new JsonResult(result);
-		}
+		//[HttpGet]
+		//public async Task<JsonResult> CheckResetPasswordLink(int userId, string token)
+		//{
+		//	var result = await _checkUserResetPasswordLinkService.Execute(userId, token);
+		//	return new JsonResult(result);
+		//}
 
 		[HttpGet]
 		public JsonResult InfoFromCookie()
