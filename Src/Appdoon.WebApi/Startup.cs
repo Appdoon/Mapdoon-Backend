@@ -1,4 +1,3 @@
-using Appdoon.Application.Services.Users.Command.ForgetPasswordUserService;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Presistence.Contexts;
@@ -12,6 +11,7 @@ using Mapdoon.Domain;
 using Mapdoon.Presistence;
 using Mapdoon.Presistence.Features.Email;
 using Mapdoon.WebApi.Application.Dependencies;
+using Mapdoon.WebApi.Application.HostedServices;
 using Mapdoon.WebApi.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +24,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using System;
 using System.IO;
 using System.Text;
 
@@ -49,6 +50,8 @@ namespace OU_API
 			config.GetSection("JWTOptions").Bind(jwtOptions);
 
 			services.AddHttpContextAccessor();
+
+			services.AddHostedService<AutoMigrateHosted>();
 
 			//Enable CORS
 			// i add allow credentials
@@ -109,17 +112,17 @@ namespace OU_API
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(options =>
 								  {
-										options.TokenValidationParameters = new()
-										{
-											ValidateIssuer = true,
-											ValidateAudience = true,
-											ValidateLifetime = true,
-											ValidateIssuerSigningKey = true,
-											ValidIssuer = jwtOptions.Issuer,
-											ValidAudience = jwtOptions.Audience,
-											IssuerSigningKey = new SymmetricSecurityKey(
-																	Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
-										};
+									  options.TokenValidationParameters = new()
+									  {
+										  ValidateIssuer = true,
+										  ValidateAudience = true,
+										  ValidateLifetime = true,
+										  ValidateIssuerSigningKey = true,
+										  ValidIssuer = jwtOptions.Issuer,
+										  ValidAudience = jwtOptions.Audience,
+										  IssuerSigningKey = new SymmetricSecurityKey(
+																  Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
+									  };
 								  }
 								);
 
@@ -215,26 +218,25 @@ namespace OU_API
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OU_API v1"));
+				app.UseHttpsRedirection();
+
+				app.UseRouting();
+
+				app.UseAuthentication();
+				app.UseAuthorization();
+
+				app.UseEndpoints(endpoints =>
+				{
+					endpoints.MapControllers();
+				});
+
+				app.UseStaticFiles(new StaticFileOptions
+				{
+					FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
+					"Photos")),
+					RequestPath = "/Photos"
+				});
 			}
-
-			app.UseHttpsRedirection();
-
-			app.UseRouting();
-
-			app.UseAuthentication();
-			app.UseAuthorization();
-
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-
-			app.UseStaticFiles(new StaticFileOptions
-			{
-				FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
-				"Photos")),
-				RequestPath = "/Photos"
-			});
 		}
 	}
 }
