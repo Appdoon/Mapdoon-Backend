@@ -3,7 +3,10 @@ using Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService;
 using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
 using Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService;
 using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
+using Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService;
 using Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorService;
+using Mapdoon.Common.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -66,6 +69,15 @@ namespace Appdoon.WebApi.Controllers
         public JsonResult GetByCreatorId(int creatorId)
         {
             var result = _getHomeworksByCreator.Execute(creatorId);
+
+            return new JsonResult(result);
+        }
+
+        [HttpPost]
+        [Authorize(policy: "User")]
+        public async Task<JsonResult> SubmitHomework([FromServices] ISubmitHomeworkService submitHomeworkService, SubmitHomeworkDto submitHomeworkDto)
+        {
+            var result = await submitHomeworkService.SubmitHomework(submitHomeworkDto);
 
             return new JsonResult(result);
         }
