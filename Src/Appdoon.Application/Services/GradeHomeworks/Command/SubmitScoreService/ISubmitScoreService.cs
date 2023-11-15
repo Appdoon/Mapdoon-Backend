@@ -39,7 +39,7 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
             try
             {
                 var homeworkProgress = _context.HomeworkProgresses
-                    .FirstOrDefault();
+                    .FirstOrDefault(hp => hp.HomeworkId == submission.HomeworkId && hp.UserId == submission.UserId);
                 homeworkProgress.Score = submission.Score;
                 if (submission.Score >= submission.MinScore)
                 {

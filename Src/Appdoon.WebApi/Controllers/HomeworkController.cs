@@ -3,6 +3,7 @@ using Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService;
 using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
 using Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService;
 using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
+using Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,7 +27,8 @@ namespace Appdoon.WebApi.Controllers
         private readonly IDeleteHomeworkService _deleteHomeworkService;
         //Get All
         private readonly IGetAllHomeworksService _getAllHomeworksService;
-
+        // Get by creatorId
+        private readonly IGetHomeworksByCreator _getHomeworksByCreator;
         private readonly IWebHostEnvironment _env;
 
         public HomeworkController(IGetHomeworkService getHomeworkService,
@@ -34,6 +36,7 @@ namespace Appdoon.WebApi.Controllers
                                   IUpdateHomeworkService updateHomeworkService,
                                   IDeleteHomeworkService deleteHomeworkService,
                                   IGetAllHomeworksService getAllHomeworksService,
+                                  IGetHomeworksByCreator getHomeworksByCreator,
                                   IWebHostEnvironment env)
         {
             _getHomeworkService = getHomeworkService;
@@ -41,6 +44,7 @@ namespace Appdoon.WebApi.Controllers
             _updateHomeworkService = updateHomeworkService;
             _deleteHomeworkService = deleteHomeworkService;
             _getAllHomeworksService = getAllHomeworksService;
+            _getHomeworksByCreator = getHomeworksByCreator;
             _env = env;
         }
 
@@ -55,6 +59,13 @@ namespace Appdoon.WebApi.Controllers
         public JsonResult Get(int id)
         {
             var result = _getHomeworkService.Execute(id);
+
+            return new JsonResult(result);
+        }
+        [HttpGet("{creatorId}")]
+        public JsonResult GetByCreatorId(int creatorId)
+        {
+            var result = _getHomeworksByCreator.Execute(creatorId);
 
             return new JsonResult(result);
         }
