@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231116150817_Add_Answer_And_Question_Json_Not_Null")]
+    partial class Add_Answer_And_Question_Json_Not_Null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +44,6 @@ namespace Mapdoon.Presistence.Migrations
 
                     b.Property<decimal>("MinScore")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -150,10 +149,6 @@ namespace Mapdoon.Presistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("HomeworkId")
                         .HasColumnType("int");
@@ -513,21 +508,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9281),
+                            InsertTime = new DateTime(2023, 11, 16, 18, 38, 17, 6, DateTimeKind.Local).AddTicks(3085),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9396),
+                            InsertTime = new DateTime(2023, 11, 16, 18, 38, 17, 6, DateTimeKind.Local).AddTicks(3152),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9409),
+                            InsertTime = new DateTime(2023, 11, 16, 18, 38, 17, 6, DateTimeKind.Local).AddTicks(3161),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -659,7 +654,49 @@ namespace Mapdoon.Presistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Appdoon.Domain.Entities.HomeWorks.JsonAnswer", "Answer", b1 =>
+                        {
+                            b1.Property<int>("HomeworkId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Data")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("HomeworkId");
+
+                            b1.ToTable("Homeworks");
+
+                            b1.ToJson("Answer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("HomeworkId");
+                        });
+
+                    b.OwnsOne("Appdoon.Domain.Entities.HomeWorks.JsonQuestion", "Question", b1 =>
+                        {
+                            b1.Property<int>("HomeworkId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Data")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("HomeworkId");
+
+                            b1.ToTable("Homeworks");
+
+                            b1.ToJson("Question");
+
+                            b1.WithOwner()
+                                .HasForeignKey("HomeworkId");
+                        });
+
+                    b.Navigation("Answer");
+
                     b.Navigation("Creator");
+
+                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("Appdoon.Domain.Entities.Progress.ChildStepProgress", b =>
