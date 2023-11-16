@@ -42,7 +42,7 @@ namespace Mapdoon.Application.Tests.GradeHomeworks.Command
             var submission = new HomeworkProgressUpdateDto
             {
                 HomeworkId = homeworkId,
-                UserId = userId2,
+                UserId = userId1,
                 Score = 50,
             };
 
