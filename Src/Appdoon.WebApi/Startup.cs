@@ -51,7 +51,7 @@ namespace OU_API
 
 			services.AddHttpContextAccessor();
 
-			//services.AddHostedService<AutoMigrateHosted>();
+			services.AddHostedService<AutoMigrateHosted>();
 
 			//Enable CORS
 			// i add allow credentials
