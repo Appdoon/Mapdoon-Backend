@@ -1,11 +1,10 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Appdoon.Domain.Entities.Homeworks;
 using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorService
 {
@@ -13,6 +12,7 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorServ
     {
         public int HomeworkId { get; set; }
         public string Title { get; set; }
+        public string Question { get; set; }
     }
     public class AllHomeworksDto
     {
@@ -40,6 +40,7 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorServ
                     {
                         HomeworkId = h.Id,
                         Title = h.Title,
+                        Question = h.Question,
                     })
                     .ToList();
                 AllHomeworksDto allHomeworksDto = new AllHomeworksDto();

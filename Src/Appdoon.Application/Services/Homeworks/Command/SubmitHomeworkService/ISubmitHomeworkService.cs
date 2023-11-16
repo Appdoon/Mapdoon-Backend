@@ -10,7 +10,7 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 	public class SubmitHomeworkDto
 	{
 		public int HomeworkId { get; set; }
-		// Answer
+		public string Answer { get; set; }
 	}
 	public interface ISubmitHomeworkService
 	{
@@ -26,7 +26,6 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 		{
 			_databaseContext = databaseContext;
 			_currentContext = currentContext;
-
 		}
 		public async Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto)
 		{
@@ -37,6 +36,7 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 				var homeworkPorgress = new HomeworkProgress()
 				{
 					HomeworkId = submitHomeworkDto.HomeworkId,
+					Answer = submitHomeworkDto.Answer,
 					UserId = userId,
 					IsDone = false,
 				};
@@ -47,7 +47,7 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 				return new ResultDto()
 				{
 					IsSuccess = true,
-					Message = "تمرین ارسال شد.",
+					Message = "پاسخ تمرین ارسال شد.",
 				};
 			}
 			catch(Exception ex)
@@ -55,7 +55,7 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در ارسال تمرین!",
+					Message = "خطا در ارسال پاسخ تمرین!",
 				};
 			}
 		}

@@ -7,12 +7,6 @@ using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.User;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Presistence.Contexts
 {
@@ -62,8 +56,8 @@ namespace Appdoon.Presistence.Contexts
 
 			modelBuilder.Entity<RateRoadMap>().HasQueryFilter(u => u.IsRemoved == false);
 
-			// Registerd RoadMaps for User
-			modelBuilder.Entity<User>()
+            // Registerd RoadMaps for User
+            modelBuilder.Entity<User>()
 				.HasMany<RoadMap>(u => u.SignedRoadMaps)
 				.WithMany(r => r.Students);
 
@@ -78,41 +72,40 @@ namespace Appdoon.Presistence.Contexts
 				.WithMany(u => u.CreatedRoadMaps)
 				.HasForeignKey(r => r.CreatoreId)
 				.OnDelete(DeleteBehavior.NoAction);
+            // User and Created Homeworks
+            //modelBuilder.Entity<User>()
+            //	.HasMany<Homework>(u => u.CreatedHomeworks)
+            //	.WithOne(h => h.Creator)
+            //	.HasForeignKey(h => h.CreatorId)
+            //	.OnDelete(DeleteBehavior.NoAction);
 
-			// User and Created Homeworks
-			//modelBuilder.Entity<User>()
-			//	.HasMany<Homework>(u => u.CreatedHomeworks)
-			//	.WithOne(h => h.Creator)
-			//	.HasForeignKey(h => h.CreatorId)
-			//	.OnDelete(DeleteBehavior.NoAction);
+            //// HomeworkProgress and User
+            //modelBuilder.Entity<HomeworkProgress>()
+            //	.HasOne(h => h.User)
+            //	.WithMany(u => u.HomeworkProgresses)
+            //	.HasForeignKey(h => h.UserId)
+            //	.OnDelete(DeleteBehavior.NoAction);
 
-			//// HomeworkProgress and User
-			//modelBuilder.Entity<HomeworkProgress>()
-			//	.HasOne(h => h.User)
-			//	.WithMany(u => u.HomeworkProgresses)
-			//	.HasForeignKey(h => h.UserId)
-			//	.OnDelete(DeleteBehavior.NoAction);
+            //// Homework Progress and Homework
+            //modelBuilder.Entity<HomeworkProgress>()
+            //	.HasOne(h => h.Homework)
+            //	.WithMany(h => h.HomeworkProgresses)
+            //	.HasForeignKey(h => h.HomeworkId)
+            //	.OnDelete(DeleteBehavior.NoAction);
 
-			//// Homework Progress and Homework
-			//modelBuilder.Entity<HomeworkProgress>()
-			//	.HasOne(h => h.Homework)
-			//	.WithMany(h => h.HomeworkProgresses)
-			//	.HasForeignKey(h => h.HomeworkId)
-			//	.OnDelete(DeleteBehavior.NoAction);
+            // // fk user and rate
+            // modelBuilder.Entity<RateRoadMap>()
+            // .HasOne(r => r.User)
+            // .WithOne()
+            // .HasForeignKey<RateRoadMap>(r => r.UserId);
+            // //fk roadmap and rate
+            // modelBuilder.Entity<RateRoadMap>()
+            // .HasOne(r => r.RoadMap)
+            // .WithOne()
+            // .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
 
-			// // fk user and rate
-			// modelBuilder.Entity<RateRoadMap>()
-			// .HasOne(r => r.User)
-			// .WithOne()
-			// .HasForeignKey<RateRoadMap>(r => r.UserId);
-			// //fk roadmap and rate
-			// modelBuilder.Entity<RateRoadMap>()
-			// .HasOne(r => r.RoadMap)
-			// .WithOne()
-			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
-
-			//var temp = Database.GetPendingMigrations();
-			//Database.MigrateAsync();
-		}
+            //var temp = Database.GetPendingMigrations();
+            //Database.MigrateAsync();
+        }
 	}
 }
