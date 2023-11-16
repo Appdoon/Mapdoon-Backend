@@ -38,7 +38,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService
                 }
 
                 road.IsRemoved = true;
-                road.RemoveTime = DateTime.Now;
+                road.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
 
                 return new ResultDto()

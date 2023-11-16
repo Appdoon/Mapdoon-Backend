@@ -39,7 +39,7 @@ namespace Appdoon.Application.Services.ChildSteps.Command.DeleteChildStepService
 				}
 
 				childstep.IsRemoved = true;
-				childstep.RemoveTime = DateTime.Now;
+				childstep.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

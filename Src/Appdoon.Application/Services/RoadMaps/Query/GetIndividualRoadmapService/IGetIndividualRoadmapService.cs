@@ -50,7 +50,6 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                             IsRemoved = s.IsRemoved,
                             InsertTime = s.InsertTime,
                             UpdateTime = s.UpdateTime,
-                            RemoveTime = s.RemoveTime,
                             RoadMapId = s.RoadMapId,
                             ChildSteps = s.ChildSteps,
                         }).ToList(),

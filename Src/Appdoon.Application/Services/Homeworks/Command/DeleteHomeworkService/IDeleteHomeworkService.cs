@@ -39,7 +39,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                 }
 
                 homework.IsRemoved = true;
-                homework.RemoveTime = DateTime.Now;
+                homework.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
 
                 return new ResultDto()

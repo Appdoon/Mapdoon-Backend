@@ -80,7 +80,6 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 							IsRemoved = s.IsRemoved,
 							InsertTime = s.InsertTime,
 							UpdateTime = s.UpdateTime,
-							RemoveTime = s.RemoveTime,
 							RoadMapId = s.RoadMapId,
 							ChildSteps = s.ChildSteps.Select(c => new ChildStep()
 							{
@@ -89,7 +88,6 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 								Description = c.Description,
 								InsertTime = c.InsertTime,
 								UpdateTime = c.UpdateTime,
-								RemoveTime = c.RemoveTime,
 								IsRemoved = c.IsRemoved,
 								Link = c.Link,
 								Linkers = c.Linkers,

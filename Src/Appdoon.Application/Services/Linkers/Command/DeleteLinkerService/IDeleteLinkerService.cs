@@ -36,7 +36,7 @@ namespace Appdoon.Application.Services.Linkers.Command.DeleteLinkerService
 					};
 				}
 				lin.IsRemoved = true;
-				lin.RemoveTime = DateTime.Now;
+				lin.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()
