@@ -39,7 +39,7 @@ namespace Appdoon.Application.Services.Lessons.Command.DeleteLessonService
 					};
 				}
 				les.IsRemoved = true;
-				les.RemoveTime = DateTime.Now;
+				les.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

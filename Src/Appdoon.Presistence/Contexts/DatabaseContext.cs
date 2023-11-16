@@ -111,6 +111,7 @@ namespace Appdoon.Presistence.Contexts
 			// .WithOne()
 			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
 
+			//var temp = Database.GetPendingMigrations();
 			//Database.MigrateAsync();
 		}
 	}

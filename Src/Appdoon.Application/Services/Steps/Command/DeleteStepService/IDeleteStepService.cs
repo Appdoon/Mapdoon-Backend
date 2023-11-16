@@ -39,7 +39,7 @@ namespace Appdoon.Application.Services.Steps.Command.DeleteStepService
 				}
 
 				step.IsRemoved = true;
-				step.RemoveTime = DateTime.Now;
+				step.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

@@ -38,7 +38,7 @@ namespace Appdoon.Application.Services.Categories.Command.DeleteCategoryService
 				}
 
 				cat.IsRemoved = true;
-				cat.RemoveTime = DateTime.Now;
+				cat.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

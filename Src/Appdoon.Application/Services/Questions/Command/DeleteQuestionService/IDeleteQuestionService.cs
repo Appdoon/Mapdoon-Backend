@@ -39,7 +39,7 @@ namespace Appdoon.Application.Services.Questions.Command.DeleteQuestionService
 				}
 
 				question.IsRemoved = true;
-				question.RemoveTime = DateTime.Now;
+				question.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()
