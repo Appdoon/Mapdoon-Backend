@@ -19,7 +19,6 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
         public int HomeworkId { get; set; }
         public int UserId { get; set; }
         public decimal Score { get; set; }
-        public decimal MinScore { get; set; }
     }
 
 
@@ -39,9 +38,10 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
             try
             {
                 var homeworkProgress = _context.HomeworkProgresses
+                    .Include(hp => hp.Homework)
                     .FirstOrDefault(hp => hp.HomeworkId == submission.HomeworkId && hp.UserId == submission.UserId);
                 homeworkProgress.Score = submission.Score;
-                if (submission.Score >= submission.MinScore)
+                if (submission.Score >= homeworkProgress.Homework.MinScore)
                 {
                     homeworkProgress.IsDone = true;
                 }

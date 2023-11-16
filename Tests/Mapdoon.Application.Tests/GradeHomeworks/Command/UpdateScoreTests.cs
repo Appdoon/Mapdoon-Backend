@@ -1,25 +1,23 @@
-﻿using Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService;
+﻿using Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 
 namespace Mapdoon.Application.Tests.GradeHomeworks.Command
 {
-
     using static Testing;
-    public class SubmitScoreTests : TestBase
+    public class UpdateScoreTests
     {
-
         [Test]
         public void ShouldRequireValidArguments()
         {
-            var submission = new HomeworkProgressSubmissionDto
+            var submission = new HomeworkProgressUpdateDto
             {
                 HomeworkId = 1000,
                 UserId = 200,
                 Score = 50
             };
-            var result = new SubmitScoreService(GetDatabaseContext()).Execute(submission);
+            var result = new UpdateScoreService(GetDatabaseContext()).Execute(submission);
             result.IsSuccess.Should().Be(false);
         }
         [Test]
@@ -41,14 +39,14 @@ namespace Mapdoon.Application.Tests.GradeHomeworks.Command
                 CreatorId = userId1,
                 MinScore = 100,
             });
-            var submission = new HomeworkProgressSubmissionDto
+            var submission = new HomeworkProgressUpdateDto
             {
                 HomeworkId = homeworkId,
                 UserId = userId1,
-                Score = 50
+                Score = 50,
             };
 
-            var result = new SubmitScoreService(GetDatabaseContext()).Execute(submission);
+            var result = new UpdateScoreService(GetDatabaseContext()).Execute(submission);
             result.IsSuccess.Should().Be(true);
 
         }
