@@ -10,15 +10,17 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
 {
-    public class HomeworkDto
+    public class HomeworkDtoAll
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int MinScore { get; set; }
+        public decimal MinScore { get; set; }
+        public string Question { get; set; }
+        public int CreatorId { get; set; }
     }
     public class AllHomeworksDto
     {
-        public List<HomeworkDto> Homeworks { get; set; }
+        public List<HomeworkDtoAll> Homeworks { get; set; }
         public int RowCount { get; set; }
     }
     public interface IGetAllHomeworksService : ITransientService
@@ -37,39 +39,39 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
 
         public ResultDto<AllHomeworksDto> Execute(int page_number, int page_size)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int rowCount = 0;
+                var homeworks = _context.Homeworks.Select(h => new HomeworkDtoAll
+                {
+                    Id = h.Id,
+                    Title = h.Title,
+                    MinScore = h.MinScore,
+                    Question = h.Question,
+                    CreatorId = h.CreatorId,
+                }).ToPaged(page_number, page_size, out rowCount)
+                .ToList();
+                AllHomeworksDto allHomeworksDto = new AllHomeworksDto();
+                allHomeworksDto.Homeworks = homeworks;
+                allHomeworksDto.RowCount = rowCount;
 
-            //try
-            //{
-            //    int rowCount = 0;
-            //    var homeworks = _context.Homeworks.Select(s => new HomeworkDto
-            //    {
-            //        Id = s.Id,
-            //        Title = s.Title,
-            //        MinScore = s.MinScore,
-            //    }).ToPaged(page_number, page_size, out rowCount)
-            //    .ToList();
-            //    AllHomeworksDto allHomeworksDto = new AllHomeworksDto();
-            //    allHomeworksDto.Homeworks = homeworks;
-            //    allHomeworksDto.RowCount = rowCount;
+                return new ResultDto<AllHomeworksDto>()
+                {
+                    IsSuccess = true,
+                    Message = "دسته‌بندی‌ها ارسال شدند.",
+                    Data = allHomeworksDto
+                };
 
-            //    return new ResultDto<AllHomeworksDto>()
-            //    {
-            //        IsSuccess = true,
-            //        Message = "دسته‌بندی‌ها ارسال شدند.",
-            //        Data = allHomeworksDto
-            //    };
-
-            //}
-            //catch (Exception e)
-            //{
-            //    return new ResultDto<AllHomeworksDto>()
-            //    {
-            //        IsSuccess = false,
-            //        Message = "ارسال ناموفق دسته‌بندی‌ها!",
-            //        Data = new AllHomeworksDto()
-            //    };
-            //}
+            }
+            catch (Exception e)
+            {
+                return new ResultDto<AllHomeworksDto>()
+                {
+                    IsSuccess = false,
+                    Message = "ارسال ناموفق دسته‌بندی‌ها!",
+                    Data = new AllHomeworksDto()
+                };
+            }
         }
     }
 }

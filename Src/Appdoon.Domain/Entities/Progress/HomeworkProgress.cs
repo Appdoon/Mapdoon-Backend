@@ -6,9 +6,8 @@ namespace Appdoon.Domain.Entities.Progress
 {
 	public class HomeworkProgress : BaseEntity
 	{
-		// Answer
-
-		public Homework? Homework { get; set; }
+        public string Answer { get; set; } = string.Empty;
+        public Homework? Homework { get; set; }
 		public int HomeworkId { get; set; }
 		public int UserId { get; set; }
 		public User? User { get; set; }

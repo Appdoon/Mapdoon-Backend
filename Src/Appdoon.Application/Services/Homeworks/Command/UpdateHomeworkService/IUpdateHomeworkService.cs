@@ -1,22 +1,16 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
-using Appdoon.Domain.Entities.Homeworks;
 using Mapdoon.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
 {
     public class UpdateHomeworkDto
     {
-        public int MinScore { get; set; }
         public string Title { get; set; }
+        public string Question { get; set; }
+        public int MinScore { get; set; }
     }
     public interface IUpdateHomeworkService : ITransientService
     {
@@ -32,35 +26,33 @@ namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
         }
         public ResultDto Execute(int id, UpdateHomeworkDto updateHomeworkDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var homework = _context.Homeworks
+                    .Where(h => h.Id == id)
+                    .FirstOrDefault();
 
-            //try
-            //{
-            //    var homework = _context.Homeworks
-            //        .Where(h => h.Id == id)
-            //        .Include(h => h.Questions)
-            //        .FirstOrDefault();
+                homework.UpdateTime = DateTime.Now;
+                homework.MinScore = updateHomeworkDto.MinScore;
+                homework.Question = updateHomeworkDto.Question;
+                homework.Title = updateHomeworkDto.Title;
 
-            //    homework.UpdateTime = DateTime.Now;
-            //    homework.MinScore = updateHomeworkDto.MinScore;
-            //    homework.Title = updateHomeworkDto.Title;
+                _context.SaveChanges();
 
-            //    _context.SaveChanges();
-
-            //    return new ResultDto()
-            //    {
-            //        IsSuccess = true,
-            //        Message = "تمرین بروزرسانی شد.",
-            //    };
-            //}
-            //catch (Exception e)
-            //{
-            //    return new ResultDto()
-            //    {
-            //        IsSuccess = false,
-            //        Message = "خطا در بروزرسانی تمرین!",
-            //    };
-            //}
+                return new ResultDto()
+                {
+                    IsSuccess = true,
+                    Message = "تمرین بروزرسانی شد.",
+                };
+            }
+            catch (Exception e)
+            {
+                return new ResultDto()
+                {
+                    IsSuccess = false,
+                    Message = "خطا در بروزرسانی تمرین!",
+                };
+            }
         }
     }
 }
