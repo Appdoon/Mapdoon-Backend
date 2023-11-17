@@ -1,5 +1,4 @@
 ﻿using Appdoon.Application.Interfaces;
-using Appdoon.Application.Validatores.LessonValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
 using Mapdoon.Common.Interfaces;
@@ -8,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Lessons.Command.CreateLessonService
 {

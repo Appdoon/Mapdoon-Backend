@@ -1,13 +1,8 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Mapdoon.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Linkers.Command.UpdateLinkerService
 {
