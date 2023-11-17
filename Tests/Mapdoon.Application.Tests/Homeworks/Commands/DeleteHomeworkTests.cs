@@ -1,6 +1,5 @@
 ﻿using Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService;
 using Appdoon.Domain.Entities.HomeWorks;
-using Appdoon.Domain.Entities.RoadMaps;
 using FluentAssertions;
 
 namespace Mapdoon.Application.Tests.Homeworks.Commands

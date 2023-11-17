@@ -1,12 +1,7 @@
 ﻿using Appdoon.Presistence.Contexts;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using OU_API;
 using Respawn;
-using Respawn.Graph;
 using Appdoon.Domain.Commons;
 using Appdoon.Domain.Entities.Users;
 

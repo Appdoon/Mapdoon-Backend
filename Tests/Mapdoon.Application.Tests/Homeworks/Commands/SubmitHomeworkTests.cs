@@ -1,5 +1,4 @@
 ﻿using Appdoon.Domain.Entities.HomeWorks;
-using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 using Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService;
 
