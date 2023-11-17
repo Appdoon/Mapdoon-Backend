@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,8 +20,8 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 		public string Text { get; set; } = string.Empty;
 		public int CreatorId { get; set; } = 0;
 	}
-	public interface IGetIndividualLessonService
-	{
+	public interface IGetIndividualLessonService : ITransientService
+    {
 		ResultDto<LessonDto> Execute(int id);
 	}
 

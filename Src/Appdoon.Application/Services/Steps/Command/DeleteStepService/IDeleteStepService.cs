@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Steps.Command.DeleteStepService
 {
-	public interface IDeleteStepService
-	{
+	public interface IDeleteStepService : ITransientService
+    {
 		ResultDto Execute(int id);
 	}
 
@@ -38,7 +39,7 @@ namespace Appdoon.Application.Services.Steps.Command.DeleteStepService
 				}
 
 				step.IsRemoved = true;
-				step.RemoveTime = DateTime.Now;
+				step.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

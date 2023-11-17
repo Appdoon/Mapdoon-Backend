@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService
 {
-    public interface IDeleteRoadmapService
+    public interface IDeleteRoadmapService : ITransientService
     {
         ResultDto Execute(int id);
     }
@@ -37,7 +38,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService
                 }
 
                 road.IsRemoved = true;
-                road.RemoveTime = DateTime.Now;
+                road.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
 
                 return new ResultDto()

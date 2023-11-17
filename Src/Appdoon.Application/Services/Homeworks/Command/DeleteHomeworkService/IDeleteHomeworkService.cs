@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
 {
-    public interface IDeleteHomeworkService
+    public interface IDeleteHomeworkService : ITransientService
     {
         ResultDto Execute(int id);
     }
@@ -38,7 +39,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                 }
 
                 homework.IsRemoved = true;
-                homework.RemoveTime = DateTime.Now;
+                homework.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
 
                 return new ResultDto()

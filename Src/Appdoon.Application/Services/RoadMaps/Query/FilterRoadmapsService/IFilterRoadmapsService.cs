@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
-        public int Stars { get; set; }
+        public float? Stars { get; set; }
         public List<Category> Categories { get; set; }
     }
     public class AllRoadmapsDto
@@ -31,7 +32,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService
         public List<RoadMapDto> Roadmaps { get; set; }
         public int RowCount { get; set; }
     }
-    public interface IFilterRoadmapsService
+    public interface IFilterRoadmapsService : ITransientService
     {
         ResultDto<AllRoadmapsDto> Execute(FilterDto filterDto);
     }

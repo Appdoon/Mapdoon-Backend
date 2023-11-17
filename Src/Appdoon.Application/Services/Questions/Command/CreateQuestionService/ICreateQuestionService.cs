@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.Homeworks;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Appdoon.Application.Services.Questions.Command.CreateQuestionService
     }
     
 
-    public interface ICreateQuestionService
+    public interface ICreateQuestionService : ITransientService
     {
         ResultDto Execute(CreateQuestionDto createQuestionDto);
     }
@@ -37,46 +38,48 @@ namespace Appdoon.Application.Services.Questions.Command.CreateQuestionService
 
         public ResultDto Execute(CreateQuestionDto questionDto)
         {
-            try
-            {
-                // validate homework
+            throw new NotImplementedException();
 
-                Question question = new Question()
-                {
-                    QuestionDescription = questionDto.QuestionDescription,
-                    Option1 = questionDto.Option1,
-                    Option2 = questionDto.Option2,
-                    Option3 = questionDto.Option3,
-                    Option4 = questionDto.Option4,
-                    Answer = questionDto.Answer,
-                    HomeworkId = questionDto.HomeworkId,
-                };
+            //try
+            //{
+            //    // validate homework
 
-
-                var homework = _context.Homeworks.First(homework => homework.Id == questionDto.HomeworkId);
-
-                // trash?????
-                homework.Questions ??= new List<Question>();
+            //    Question question = new Question()
+            //    {
+            //        QuestionDescription = questionDto.QuestionDescription,
+            //        Option1 = questionDto.Option1,
+            //        Option2 = questionDto.Option2,
+            //        Option3 = questionDto.Option3,
+            //        Option4 = questionDto.Option4,
+            //        Answer = questionDto.Answer,
+            //        HomeworkId = questionDto.HomeworkId,
+            //    };
 
 
+            //    var homework = _context.Homeworks.First(homework => homework.Id == questionDto.HomeworkId);
 
-                homework.Questions.Add(question);
-                _context.SaveChanges();
+            //    // trash?????
+            //    homework.Questions ??= new List<Question>();
 
-                return new ResultDto()
-                {
-                    IsSuccess = true,
-                    Message = "سوال اضافه شد !",
-                };
-            }
-            catch (Exception e)
-            {
-                return new ResultDto()
-                {
-                    IsSuccess = false,
-                    Message = e.Message,
-                };
-            }
+
+
+            //    homework.Questions.Add(question);
+            //    _context.SaveChanges();
+
+            //    return new ResultDto()
+            //    {
+            //        IsSuccess = true,
+            //        Message = "سوال اضافه شد !",
+            //    };
+            //}
+            //catch (Exception e)
+            //{
+            //    return new ResultDto()
+            //    {
+            //        IsSuccess = false,
+            //        Message = e.Message,
+            //    };
+            //}
         }
     }
 }

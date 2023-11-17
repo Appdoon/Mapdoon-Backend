@@ -15,8 +15,8 @@ namespace Appdoon.Domain.Entities.Homeworks
         public string Option2 { get; set; } = string.Empty;
         public string Option3 { get; set; } = string.Empty;
         public string Option4 { get; set; } = string.Empty;
-        public Homework? Homework { get; set; }
-        public int HomeworkId { get; set; }
+        //public Homework? Homework { get; set; }
+        //public int HomeworkId { get; set; }
         public int Answer { get; set; } = 0;
     }
 }

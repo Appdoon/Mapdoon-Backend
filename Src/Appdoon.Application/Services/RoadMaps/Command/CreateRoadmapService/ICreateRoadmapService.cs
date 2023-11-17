@@ -2,6 +2,7 @@
 using Appdoon.Application.Validatores.RoadMapValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
 {
-    public interface ICreateRoadmapService
+    public interface ICreateRoadmapService : ITransientService
     {
         ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId);
     }

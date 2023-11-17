@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
 {
-    public class HomeworkDto
+    public class HomeworkDtoAll
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int MinScore { get; set; }
+        public decimal MinScore { get; set; }
+        public int CreatorId { get; set; }
+        public int ChildStepId { get; set; }
     }
     public class AllHomeworksDto
     {
-        public List<HomeworkDto> Homeworks { get; set; }
+        public List<HomeworkDtoAll> Homeworks { get; set; }
         public int RowCount { get; set; }
     }
-    public interface IGetAllHomeworksService
+    public interface IGetAllHomeworksService : ITransientService
     {
         public ResultDto<AllHomeworksDto> Execute(int page_number, int page_size);
     }
@@ -34,16 +37,18 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
             _context = databaseContext;
         }
 
-        public ResultDto<AllHomeworksDto> Execute(int page_number, int page_size)
+        public ResultDto<AllHomeworksDto> Execute(int page_number = 1, int page_size = 15)
         {
             try
             {
                 int rowCount = 0;
-                var homeworks = _context.Homeworks.Select(s => new HomeworkDto
+                var homeworks = _context.Homeworks.Select(h => new HomeworkDtoAll
                 {
-                    Id = s.Id,
-                    Title = s.Title,
-                    MinScore = s.MinScore,
+                    Id = h.Id,
+                    Title = h.Title,
+                    MinScore = h.MinScore,
+                    CreatorId = h.CreatorId,
+                    ChildStepId = h.ChildStep.Id,
                 }).ToPaged(page_number, page_size, out rowCount)
                 .ToList();
                 AllHomeworksDto allHomeworksDto = new AllHomeworksDto();

@@ -1,7 +1,8 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
 using Appdoon.Common.Dtos;
-using Appdoon.Common.UserRoles;
+using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService
 {
-	public interface IGetCreatedRoadMapService
-	{
+	public interface IGetCreatedRoadMapService : ITransientService
+    {
 		ResultDto<List<RoadMapDto>> Execute(int userId);
 	}
 

@@ -1,15 +1,13 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Lessons.Command.DeleteLessonService
 {
-	public interface IDeleteLessonService
-	{
+	public interface IDeleteLessonService : ITransientService
+    {
 		ResultDto Execute(int id);
 	}
 
@@ -38,7 +36,7 @@ namespace Appdoon.Application.Services.Lessons.Command.DeleteLessonService
 					};
 				}
 				les.IsRemoved = true;
-				les.RemoveTime = DateTime.Now;
+				les.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

@@ -1,23 +1,18 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
-using Appdoon.Domain.Entities.Homeworks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Mapdoon.Common.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
 {
     public class UpdateHomeworkDto
     {
-        public int MinScore { get; set; }
         public string Title { get; set; }
+        public string Question { get; set; }
+        public int MinScore { get; set; }
     }
-    public interface IUpdateHomeworkService
+    public interface IUpdateHomeworkService : ITransientService
     {
         ResultDto Execute(int id, UpdateHomeworkDto updateHomeworkDto);
     }
@@ -35,11 +30,11 @@ namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
             {
                 var homework = _context.Homeworks
                     .Where(h => h.Id == id)
-                    .Include(h => h.Questions)
                     .FirstOrDefault();
 
                 homework.UpdateTime = DateTime.Now;
                 homework.MinScore = updateHomeworkDto.MinScore;
+                homework.Question = updateHomeworkDto.Question;
                 homework.Title = updateHomeworkDto.Title;
 
                 _context.SaveChanges();

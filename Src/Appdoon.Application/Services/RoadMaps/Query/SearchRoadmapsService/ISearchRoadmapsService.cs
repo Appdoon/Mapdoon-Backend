@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Appdoon.Common.Pagination;
+using Mapdoon.Common.Interfaces;
 
 namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
 {
@@ -17,7 +18,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
-        public int Stars { get; set; }
+        public float? Stars { get; set; }
         public List<Category> Categories { get; set; }
     }
     public class AllRoadmapsDto
@@ -25,7 +26,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
         public List<RoadMapDto> Roadmaps { get; set; }
         public int RowCount { get; set; }
     }
-    public interface ISearchRoadmapsService
+    public interface ISearchRoadmapsService : ITransientService
     {
         ResultDto<AllRoadmapsDto> Execute(string searched_text, int page_number, int page_size);
     }

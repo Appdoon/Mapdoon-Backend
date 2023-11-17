@@ -1,6 +1,8 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,10 +20,11 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetAllChildStepsService
         public string Link { get; set; }
         public int StepId { get; set; }
         public string StepTitle { get; set; }
+        public int? HomeworkId { get; set; }
         public List<Linker> Linkers { get; set; }
     }
 
-    public interface IGetAllChildStepsService
+    public interface IGetAllChildStepsService : ITransientService
     {
         public ResultDto<List<ChildStepDto>> Execute();
     }
@@ -47,7 +50,8 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetAllChildStepsService
                     Link = s.Link,
                     StepId = (int)s.StepId,
                     Linkers = s.Linkers,
-                    StepTitle = s.Step.Title
+                    StepTitle = s.Step.Title,
+                    HomeworkId = s.HomeworkId
                 }).ToList();
 
                 return new ResultDto<List<ChildStepDto>>()

@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService
 {
-	public interface IGetPreviewRoadmapService
-	{
+	public interface IGetPreviewRoadmapService : ITransientService
+    {
 		/// <summary>
 		/// Return preview of roadmap with only 3 steps
 		/// </summary>
@@ -83,7 +84,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService
 		public string Title { get; set; } = string.Empty;
 		public string Description { get; set; }
 		public string ImageSrc { get; set; } = string.Empty;
-		public int Stars { get; set; }
+		public float? Stars { get; set; }
 		public List<Category> Categories { get; set; }
 		public List<Step> Steps { get; set; }
 

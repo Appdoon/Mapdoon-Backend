@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace Appdoon.Application.Services.Categories.Query.GetIndividualCategorySer
 		public string Name { get; set; } = string.Empty;
 		public string Link { get; set; }
 	}
-	public interface IGetIndividualCategoryService
+
+	public interface IGetIndividualCategoryService : ITransientService
 	{
 		ResultDto<IndividualCategoryDto> Execute(int categoryId);
 	}

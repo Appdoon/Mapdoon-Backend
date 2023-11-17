@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 {
-	public interface IGetUserRoadmapService
-	{
+	public interface IGetUserRoadmapService : ITransientService
+    {
 		ResultDto<IndividualRoadMapDto> Execute(int RoadmapId, int UserId);
 	}
 	public class GetUserRoadmapService : IGetUserRoadmapService
@@ -79,7 +80,6 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 							IsRemoved = s.IsRemoved,
 							InsertTime = s.InsertTime,
 							UpdateTime = s.UpdateTime,
-							RemoveTime = s.RemoveTime,
 							RoadMapId = s.RoadMapId,
 							ChildSteps = s.ChildSteps.Select(c => new ChildStep()
 							{
@@ -88,8 +88,8 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 								Description = c.Description,
 								InsertTime = c.InsertTime,
 								UpdateTime = c.UpdateTime,
-								RemoveTime = c.RemoveTime,
 								IsRemoved = c.IsRemoved,
+								HomeworkId = c.HomeworkId,
 								Link = c.Link,
 								Linkers = c.Linkers,
 								ChildStepProgresses = c.ChildStepProgresses.Where(csp => csp.UserId == UserId).ToList(),
@@ -133,7 +133,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 		public string Title { get; set; } = string.Empty;
 		public string Description { get; set; }
 		public string ImageSrc { get; set; } = string.Empty;
-		public int Stars { get; set; }
+		public float? Stars { get; set; }
 		public List<Category> Categories { get; set; }
 		public List<Step> Steps { get; set; }
 	}

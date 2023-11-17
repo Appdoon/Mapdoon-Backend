@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService
 {
-    public interface IGetIndividualRoadmapService
+    public interface IGetIndividualRoadmapService : ITransientService
     {
         ResultDto<IndividualRoadMapDto> Execute(int id);
     }
@@ -49,7 +50,6 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                             IsRemoved = s.IsRemoved,
                             InsertTime = s.InsertTime,
                             UpdateTime = s.UpdateTime,
-                            RemoveTime = s.RemoveTime,
                             RoadMapId = s.RoadMapId,
                             ChildSteps = s.ChildSteps,
                         }).ToList(),
@@ -90,7 +90,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
-        public int Stars { get; set; }
+        public float? Stars { get; set; }
         public List<Category> Categories { get; set; }
         public List<Step> Steps { get; set; }
         public int CreatorId { get; set; }

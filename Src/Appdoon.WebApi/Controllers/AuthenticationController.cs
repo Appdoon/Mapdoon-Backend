@@ -5,7 +5,8 @@ using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Services.Users.Command.ResetPasswordService;
 using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
 using Appdoon.Common.Dtos;
-using Appdoon.Common.UserRoles;
+using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -24,30 +25,30 @@ namespace Appdoon.WebApi.Controllers
 	{
 		private readonly IRegisterUserService _registerUserService;
 		private readonly ILoginUserService _loginUserService;
-        private readonly IForgetPasswordUserService _forgetPasswordUserService;
         private readonly IResetPasswordService _resetPasswordService;
         private readonly ICheckUserResetPasswordLinkService _checkUserResetPasswordLinkService;
 		private readonly IGetUserFromCookieService _getUserFromCookieService;
+		private readonly ICurrentContext _currentContext;
 
 		public AuthenticationController(IRegisterUserService registerUserService,
 			ILoginUserService loginUserService,
-			IForgetPasswordUserService forgetPasswordUserService,
 			IResetPasswordService resetPasswordService,
 			ICheckUserResetPasswordLinkService checkUserResetPasswordLinkService,
-			IGetUserFromCookieService getUserFromCookieService)
+			IGetUserFromCookieService getUserFromCookieService,
+			ICurrentContext currentContext)
 		{
 			_registerUserService = registerUserService;
 			_loginUserService = loginUserService;
-			_forgetPasswordUserService = forgetPasswordUserService;
 			_resetPasswordService = resetPasswordService;
 			_checkUserResetPasswordLinkService = checkUserResetPasswordLinkService;
 			_getUserFromCookieService = getUserFromCookieService;
+			_currentContext = currentContext;
 		}
 
 		[HttpPost]
-		public JsonResult Login(LoginUserDto user)
+		public async Task<JsonResult> Login(LoginUserDto user)
 		{
-			var result = _loginUserService.Execute(user);
+			var result = await _loginUserService.Execute(user);
 
 			if(result.IsSuccess == true)
 			{
@@ -69,7 +70,7 @@ namespace Appdoon.WebApi.Controllers
 					IsPersistent = Remember,
 				};
 
-				HttpContext.SignInAsync(principal, properties);
+				await HttpContext.SignInAsync(principal, properties);
 			}
 			return new JsonResult(result);
 		}
@@ -118,56 +119,32 @@ namespace Appdoon.WebApi.Controllers
 
 
 		[HttpPost]
-		public async Task<JsonResult> ForgetPassword(UserEmailOptions userEmailOptions)
+		public async Task<JsonResult> ForgetPassword([FromServices] IForgetPasswordUserService forgetPasswordUserService, ForgetPasswordEmailDto forgetPasswordEmailDto)
         {
-			var result = await _forgetPasswordUserService.Execute(userEmailOptions);
+			var result = await forgetPasswordUserService.Execute(forgetPasswordEmailDto);
 			return new JsonResult(result);
         }
-		[HttpPost]
-		public async Task<JsonResult> ResetPassword(string password, string repeatPassword, int userId)
-        {
-			var result = await _resetPasswordService.Execute(password, repeatPassword, userId);
-			return new JsonResult(result);
-        }
-		[HttpGet]
-		public async Task<JsonResult> CheckLink(int userId, string token)
-        {
-			var result = await _checkUserResetPasswordLinkService.Execute(userId, token);
-			return new JsonResult(result);
-		}
 
+		[HttpPost]
+		public async Task<JsonResult> ResetPassword(string password, string repeatPassword, int userId, string token)
+        {
+			var result = await _resetPasswordService.Execute(password, repeatPassword, userId, token);
+			return new JsonResult(result);
+        }
+
+		//[HttpGet]
+		//public async Task<JsonResult> CheckResetPasswordLink(int userId, string token)
+		//{
+		//	var result = await _checkUserResetPasswordLinkService.Execute(userId, token);
+		//	return new JsonResult(result);
+		//}
 
 		[HttpGet]
 		public JsonResult InfoFromCookie()
 		{
-			int Id = GetIdFromCookie();
+			int Id = _currentContext.User.Id;
 			var result = _getUserFromCookieService.Execute(Id);
 			return new JsonResult(result);
-		}
-
-		private int GetIdFromCookie()
-		{
-            try
-            {
-                if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null) { 
-					return -1; 
-				}
-
-				var IdStr = HttpContext.User.Identities
-					.FirstOrDefault()
-					.Claims
-					//.Where(c => c.Type == "NameIdentifier")
-					.FirstOrDefault()
-					.Value;
-
-				int Id = int.Parse(IdStr);
-				return Id;
-            }
-            catch (Exception e)
-            {
-				return - 1;
-            }
-
 		}
 	}
 }

@@ -3,6 +3,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 {
-	public interface IRegisterRoadmapService
-	{
+	public interface IRegisterRoadmapService : ITransientService
+    {
 		ResultDto Execute(int RoadmapId, int UserId);
 	}
 
@@ -55,7 +56,6 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 				//  ImageSrc = r.ImageSrc,
 				//  InsertTime = r.InsertTime,
 				//  UpdateTime = r.UpdateTime,
-				//  RemoveTime = r.RemoveTime,
 				//  IsRemoved = r.IsRemoved,
 				//  Stars = r.Stars,
 				//  Steps = r.Steps.Select(s => new Step()
@@ -66,7 +66,6 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 				//    Link = s.Link,
 				//    InsertTime = s.InsertTime,
 				//    UpdateTime = s.UpdateTime,
-				//    RemoveTime = s.RemoveTime,
 				//    IsRemoved = s.IsRemoved,
 				//    IsRequired = s.IsRequired,
 				//    ChildSteps = s.ChildSteps.Select(cs => new ChildStep()
@@ -77,7 +76,6 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 				//      Link= cs.Link,
 				//      InsertTime = cs.InsertTime,
 				//      UpdateTime = cs.UpdateTime,
-				//      RemoveTime = cs.RemoveTime,
 				//      IsRemoved = cs.IsRemoved,
 				//      IsRequired = cs.IsRequired,
 				//    }).ToList(),
@@ -99,10 +97,6 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 							ChildSteps = s.ChildSteps.Select(cs => new ChildStep()
 							{
 								Id = cs.Id,
-								Homework = new Homework()
-								{
-									Id = cs.Homework.Id,
-								},
 								IsRequired = cs.IsRequired,
 							}).ToList(),
 						}).ToList(),

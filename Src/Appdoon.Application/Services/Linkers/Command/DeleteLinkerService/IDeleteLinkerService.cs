@@ -1,15 +1,13 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Linkers.Command.DeleteLinkerService
 {
-	public interface IDeleteLinkerService
-	{
+	public interface IDeleteLinkerService : ITransientService
+    {
 		ResultDto Execute(int id);
 	}
 
@@ -35,7 +33,7 @@ namespace Appdoon.Application.Services.Linkers.Command.DeleteLinkerService
 					};
 				}
 				lin.IsRemoved = true;
-				lin.RemoveTime = DateTime.Now;
+				lin.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()

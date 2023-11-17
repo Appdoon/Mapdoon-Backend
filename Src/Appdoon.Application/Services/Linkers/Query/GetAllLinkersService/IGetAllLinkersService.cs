@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace Appdoon.Application.Services.Linkers.Query.GetAllLinkersService
 		public int ChildStepId { get; set; }
 		public string ChildStepTitle { get; set; }
 	}
-	public interface IGetAllLinkersService
-	{
+	public interface IGetAllLinkersService : ITransientService
+    {
 		ResultDto<List<LinkDto>> Execute();
 	}
 

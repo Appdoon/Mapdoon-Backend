@@ -3,6 +3,7 @@ using Appdoon.Application.Validatores.StepValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Appdoon.Application.Services.Steps.Command.CreateStepService
         public int RoadMapId { get; set; }
     }
 
-    public interface ICreateStepService
+    public interface ICreateStepService : ITransientService
     {
         ResultDto Execute(CreateStepDto StepDto);
     }

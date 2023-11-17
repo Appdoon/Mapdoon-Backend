@@ -12,13 +12,9 @@ using Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService;
 using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
-using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,7 +40,7 @@ namespace Appdoon.WebApi.Controllers
 		//filter
 		private readonly IFilterRoadmapsService _filterRoadmapsService;
 
-		
+
 
 		private readonly IGetUserRoadmapService _getUserRoadmapService;
 		private readonly IRegisterRoadmapService _registerRoadmapService;
@@ -55,7 +51,7 @@ namespace Appdoon.WebApi.Controllers
 		private readonly IDoneChildStepService _doneChildStepService;
 
 		public readonly IIsUserBookMarkedRoadmapService _isUserBookMarkedRoadmapService;
-
+		private readonly ICurrentContext _currentContext;
 		private readonly IWebHostEnvironment _env;
 
 
@@ -73,6 +69,7 @@ namespace Appdoon.WebApi.Controllers
 								  IGetPreviewRoadmapService getPreviewRoadmapService,
 								  IDoneChildStepService doneChildStepService,
 								  IIsUserBookMarkedRoadmapService isUserBookMarkedRoadmapService,
+								  ICurrentContext currentContext,
 								  IWebHostEnvironment env)
 		{
 			_getAllRoadmapsService = getAllRoadmapsService;
@@ -89,6 +86,7 @@ namespace Appdoon.WebApi.Controllers
 			_getPreviewRoadmapService = getPreviewRoadmapService;
 			_doneChildStepService = doneChildStepService;
 			_isUserBookMarkedRoadmapService = isUserBookMarkedRoadmapService;
+			_currentContext = currentContext;
 			_env = env;
 		}
 
@@ -189,8 +187,8 @@ namespace Appdoon.WebApi.Controllers
 		[HttpPost("{RoadmapId}")]
 		public JsonResult BookmarkRoadmap(int RoadmapId)
 		{
-			int userId= GetIdFromCookie();
-			var result=_bookmarkRoadmapService.Execute(RoadmapId, userId);
+			int userId = GetIdFromCookie();
+			var result = _bookmarkRoadmapService.Execute(RoadmapId, userId);
 
 			return new JsonResult(result);
 		}
@@ -208,7 +206,7 @@ namespace Appdoon.WebApi.Controllers
 		public JsonResult GetPreviewRoadmap(int id)
 
 		{
-			var result=_getPreviewRoadmapService.Execute(id);
+			var result = _getPreviewRoadmapService.Execute(id);
 
 			return new JsonResult(result);
 		}
@@ -225,27 +223,31 @@ namespace Appdoon.WebApi.Controllers
 
 		private int GetIdFromCookie()
 		{
-			try
-			{
-				if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null)
-				{
-					return -1;
-				}
+			var user = _currentContext.User;
 
-				var IdStr = HttpContext.User.Identities
-					.FirstOrDefault()
-					.Claims
-					//.Where(c => c.Type == "NameIdentifier")
-					.FirstOrDefault()
-					.Value;
+			return user.Id;
 
-				int Id = int.Parse(IdStr);
-				return Id;
-			}
-			catch (Exception e)
-			{
-				return -1;
-			}
+			//try
+			//{
+			//	if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null)
+			//	{
+			//		return -1;
+			//	}
+
+			//	var IdStr = HttpContext.User.Identities
+			//		.FirstOrDefault()
+			//		.Claims
+			//		//.Where(c => c.Type == "NameIdentifier")
+			//		.FirstOrDefault()
+			//		.Value;
+
+			//	int Id = int.Parse(IdStr);
+			//	return Id;
+			//}
+			//catch (Exception e)
+			//{
+			//	return -1;
+			//}
 
 		}
 	}

@@ -13,20 +13,33 @@ using Appdoon.Common.GenerateTokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Mapdoon.Common.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
 {
-    public class SMTPConfig
+    //public class SMTPConfig
+    //{
+    //    public string SenderAddress { get; set; } = "Appdoon@gmail.com";
+    //    public string SenderDisplayName { get; set; } = "Appdoon";
+    //    public string Host { get; set; } = "smtp.mailtrap.io";
+    //    public int Port { get; set; } = 587;
+    //    public string UserName { get; set; } = "acca128f760e0d";
+    //    public string Password { get; set; } = "85f782a0a097c3";
+    //    public bool EnableSSL { get; set; } = true;
+    //    public bool UseDefaultCredentials { get; set; } = true;
+    //}
+
+    public interface IEmailSender : ITransientService
     {
-        public string SenderAddress { get; set; } = "Appdoon@gmail.com";
-        public string SenderDisplayName { get; set; } = "Appdoon";
-        public string Host { get; set; } = "smtp.mailtrap.io";
-        public int Port { get; set; } = 587;
-        public string UserName { get; set; } = "acca128f760e0d";
-        public string Password { get; set; } = "85f782a0a097c3";
-        public bool EnableSSL { get; set; } = true;
-        public bool UseDefaultCredentials { get; set; } = true;
+        Task Send(UserEmailOptions userEmailOptions);
     }
+
+    public class ForgetPasswordEmailDto
+    {
+        public string Email { get; set; }
+    }
+
     public class UserEmailOptions
     {
         public string ToEmail { get; set; }
@@ -34,27 +47,31 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
         public string Body { get; set; } = string.Empty;
         //public List<KeyValuePair<string, string>>? PlaceHolders { get; set; }
     }
-    public interface IForgetPasswordUserService
+    public interface IForgetPasswordUserService : ITransientService
     {
-        Task<ResultDto> Execute(UserEmailOptions userEmailOptions);
+        Task<ResultDto> Execute(ForgetPasswordEmailDto userEmailOptions);
     }
     public class ForgetPasswordUserService : IForgetPasswordUserService
     {
         private readonly IDatabaseContext _context;
-        private readonly IConfiguration _configuration;
+		private readonly IEmailSender _emailSender;
+		private readonly ForgetPasswordOptions _forgetPasswordOptions;
 
-        public ForgetPasswordUserService(IDatabaseContext context,
-            IConfiguration configuration)
+		public ForgetPasswordUserService(IDatabaseContext context,
+            IEmailSender emailSender,
+            IOptions<ForgetPasswordOptions> forgetPasswordOptions)
         {
             _context = context;
-            _configuration = configuration;
-        }
-        public async Task<ResultDto> Execute(UserEmailOptions userEmailOptions)
+            _emailSender = emailSender;
+            _forgetPasswordOptions = forgetPasswordOptions.Value;
+
+		}
+        public async Task<ResultDto> Execute(ForgetPasswordEmailDto forgetPasswordEmail)
         {
             try
             {
                 var user = await _context.Users
-                    .Where(x => x.Email == userEmailOptions.ToEmail)
+                    .Where(x => x.Email == forgetPasswordEmail.Email)
                     .FirstOrDefaultAsync();
 
                 if (user == null)
@@ -68,40 +85,44 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
 
                 string token = GenerateTokens.GenerateToken(user.Username, user.Password);
 
-                // https:\\localhost:5001 Resetpassword ? userid={0} & token={1}
+				// http:\\localhost:3000 auth/reset-password ? userid={0} & token={1}
 
-                userEmailOptions.Subject = "reset password for appdoon site";
-                userEmailOptions.Body = await GetEmailBody(user.Username, token, user.Id);
-
-                SMTPConfig sMTPConfig = new();
-
-                MailMessage mail = new MailMessage
+				var userEmailOptions = new UserEmailOptions()
                 {
-                    Subject = userEmailOptions.Subject,
-                    Body = userEmailOptions.Body,
-                    From = new MailAddress(sMTPConfig.SenderAddress, sMTPConfig.SenderDisplayName),
-                    IsBodyHtml = true,
+                    ToEmail = user.Email,
+                    Subject = "Reset password for in Appdoon",
+                    Body = $"Use following link to reset your password :\n" +
+                           $"{LinkGenerator(token, user.Id)}",
+                    //Body = await GetEmailBody(user.Username, token, user.Id),
                 };
 
-                mail.To.Add(userEmailOptions.ToEmail);
+                await _emailSender.Send(userEmailOptions);
 
-                NetworkCredential networkCredential = new NetworkCredential()
-                {
-                    UserName = sMTPConfig.UserName,
-                    Password = sMTPConfig.Password,
-                };
-
-                SmtpClient smtpClient = new SmtpClient
-                {
-                    Host = sMTPConfig.Host,
-                    Port = sMTPConfig.Port,
-                    EnableSsl = sMTPConfig.EnableSSL,
-                    Credentials = networkCredential
-                };
-
-                mail.BodyEncoding = Encoding.Default;
-
-                await smtpClient.SendMailAsync(mail);
+                #region OldFashionedWay
+                //SMTPConfig sMTPConfig = new();
+                //MailMessage mail = new MailMessage
+                //{
+                //    Subject = userEmailOptions.Subject,
+                //    Body = userEmailOptions.Body,
+                //    From = new MailAddress(sMTPConfig.SenderAddress, sMTPConfig.SenderDisplayName),
+                //    IsBodyHtml = true,
+                //};
+                //mail.To.Add(userEmailOptions.ToEmail);
+                //NetworkCredential networkCredential = new NetworkCredential()
+                //{
+                //    UserName = sMTPConfig.UserName,
+                //    Password = sMTPConfig.Password,
+                //};
+                //SmtpClient smtpClient = new SmtpClient
+                //{
+                //    Host = sMTPConfig.Host,
+                //    Port = sMTPConfig.Port,
+                //    EnableSsl = sMTPConfig.EnableSSL,
+                //    Credentials = networkCredential
+                //};
+                //mail.BodyEncoding = Encoding.Default;
+                //await smtpClient.SendMailAsync(mail);
+                #endregion
 
                 return new ResultDto()
                 {
@@ -119,11 +140,13 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
             }
         }
 
-        private string LinkGenerator(string token, int userId)
+		private string LinkGenerator(string token, int userId)
         {
-            string appDomain = _configuration.GetSection("Application:AppDomain").Value;
-            string forgetPassword = _configuration.GetSection("Application:ForgotPassword").Value;
-            string link = string.Format(appDomain + forgetPassword, userId, token);
+			// format : https://localhost:5001/ Authentication/ResetPassword?userId={0}&token={1}
+			//string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+            //string forgetPassword = _configuration.GetSection("Application:ForgotPassword").Value;
+
+            string link = string.Format(_forgetPasswordOptions.AppDomain + _forgetPasswordOptions.ForgetPasswordLink, userId, token);
 
             return link;
         }
@@ -134,5 +157,12 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
             body = body.Replace("{{Link}}", LinkGenerator(token, userId));
             return body;
         }
+    }
+
+	public class ForgetPasswordOptions
+    {
+        public string LoginPath { get; set; }
+        public string AppDomain { get; set; }
+        public string ForgetPasswordLink { get; set; }
     }
 }

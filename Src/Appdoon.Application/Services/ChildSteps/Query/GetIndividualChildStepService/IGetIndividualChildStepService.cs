@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,11 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepSe
 		public string Description { get; set; }
 		public string Link { get; set; }
 		public int StepId { get; set; }
+		public int? HomeworkId { get; set; }
 		public List<Linker> Linkers { get; set; }
 	}
-	public interface IGetIndividualChildStepService
-	{
+	public interface IGetIndividualChildStepService : ITransientService
+    {
 		ResultDto<IndividualChildStepDto> Execute(int id);
 	}
 	public class GetIndividualChildStepService : IGetIndividualChildStepService
@@ -42,7 +44,8 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepSe
 						Description = r.Description,
 						StepId = (int)r.StepId,
 						Link = r.Link,
-						Linkers = r.Linkers
+						Linkers = r.Linkers,
+						HomeworkId = r.HomeworkId,
 					}).FirstOrDefault();
 
 				if (childstep == null)

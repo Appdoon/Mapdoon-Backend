@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.RoadMaps.Query.CheckUserRegisterRoadmapService
 {
-	public interface ICheckUserRegisterRoadmapService
-	{
+	public interface ICheckUserRegisterRoadmapService : ITransientService
+    {
 		ResultDto<bool> Execute(int RoadmapId, int UserId);
 	}
 

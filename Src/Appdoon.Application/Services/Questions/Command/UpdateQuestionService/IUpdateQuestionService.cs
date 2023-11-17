@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace Appdoon.Application.Services.Questions.Command.UpdateQuestionService
 		public int Answer { get; set; } = 0;
 
 	}
-	public interface IUpdateQuestionService
-	{
+	public interface IUpdateQuestionService : ITransientService
+    {
 		ResultDto Execute(int id, UpdateQuestionDto updateQuestionDto);
 	}
 

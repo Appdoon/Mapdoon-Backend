@@ -11,7 +11,6 @@ namespace Appdoon.Domain.Commons
 		public T Id { get; set; }
 		public DateTime InsertTime { get; set; }= DateTime.Now;
 		public bool IsRemoved { get; set; } = false;
-		public DateTime? RemoveTime { get; set; }
 		public DateTime? UpdateTime { get; set; }
 	}
 

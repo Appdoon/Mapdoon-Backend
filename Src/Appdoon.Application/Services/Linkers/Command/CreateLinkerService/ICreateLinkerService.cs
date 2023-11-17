@@ -2,11 +2,9 @@
 using Appdoon.Application.Validatores.LinkerValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Linkers.Command.CreateLinkerService
 {
@@ -16,7 +14,7 @@ namespace Appdoon.Application.Services.Linkers.Command.CreateLinkerService
         public string Link { get; set; } = string.Empty;
         public int ChildStepId { get; set; }
     }
-    public interface ICreateLinkerService
+    public interface ICreateLinkerService : ITransientService
     {
         ResultDto Execute(CreateLinkerLinkerDto addLinkerDto);
     }

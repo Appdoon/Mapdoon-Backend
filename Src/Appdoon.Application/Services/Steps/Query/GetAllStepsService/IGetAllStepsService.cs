@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,11 @@ namespace Appdoon.Application.Services.Steps.Query.GetAllStepService
 
 		public string RoadmapTitle { get; set; }
 		public string RoadmapImageSrc { get; set; }
-		public int RoadmapStars { get; set; }
+		public float? RoadmapStars { get; set; }
 
 		public List<ChildStep> ChildSteps { get; set; }
 	}
-	public interface IGetAllStepsService
+	public interface IGetAllStepsService : ITransientService
     {
         ResultDto<List<StepDto>> Execute();
     }

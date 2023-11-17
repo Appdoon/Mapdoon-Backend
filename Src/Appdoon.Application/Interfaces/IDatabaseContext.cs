@@ -2,19 +2,18 @@
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
+using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.Users;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Appdoon.Application.Interfaces
 {
-	public interface IDatabaseContext
+	public interface IDatabaseContext : ITransientService
 	{
 		DbSet<User> Users { get; set; }
 		DbSet<Role> Roles { get; set; }
@@ -29,12 +28,15 @@ namespace Appdoon.Application.Interfaces
 		DbSet<Homework> Homeworks { get; set; }
 		DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		DbSet<Question> Questions { get; set; }
-		int SaveChanges(bool acceptAllChangesOnSuccess);
-		int SaveChanges();
+		DbSet<RateRoadMap> Rates { get; set; }
+        int SaveChanges(bool acceptAllChangesOnSuccess);
+        int SaveChanges();
 
-		Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
-		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+		public DatabaseFacade Database { get; }
 
 		EntityEntry Entry(object entity);
-	}
+    }
 }

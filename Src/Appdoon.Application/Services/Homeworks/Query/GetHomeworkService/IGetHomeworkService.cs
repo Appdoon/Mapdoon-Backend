@@ -1,28 +1,23 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
-using Appdoon.Domain.Entities.Homeworks;
-using Appdoon.Domain.Entities.Progress;
-using Appdoon.Domain.Entities.RoadMaps;
-using Microsoft.EntityFrameworkCore;
+using Mapdoon.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
 {
-    public class HomeworkDto
+    public class NewHomeworkDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public List<Question> Questions { get; set; } = new();
-        public int MinScore { get; set; }
-        public List<HomeworkProgress> HomeworkProgresses { get; set; } = new();
+        public string Question { get; set; }
+        public decimal MinScore { get; set; }
+        public int CreatorId { get; set; }
+        public int ChildStepId { get; set; }
     }
-    public interface IGetHomeworkService
+    public interface IGetHomeworkService : ITransientService
     {
-        ResultDto<HomeworkDto> Execute(int id);
+        ResultDto<NewHomeworkDto> Execute(int id);
     }
     public class GetHomeworkService : IGetHomeworkService
     {
@@ -31,48 +26,36 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
         {
             _context = context;
         }
-        public ResultDto<HomeworkDto> Execute(int id)
+        public ResultDto<NewHomeworkDto> Execute(int id)
         {
             try
             {
                 var homework = _context.Homeworks
-                    .Where(x => x.Id == id)
-                    .Include(h => h.Questions)
-                    .Include(h => h.HomeworkProgresses)
-                    .Select(h => new HomeworkDto()
+                    .Where(h => h.Id == id)
+                    .Select(h => new NewHomeworkDto
                     {
                         Id = h.Id,
                         Title = h.Title,
-                        Questions = h.Questions,
+                        Question = h.Question,
                         MinScore = h.MinScore,
-                        HomeworkProgresses = h.HomeworkProgresses,
-
-                    }).FirstOrDefault();
-
-                if (homework == null)
-                {
-                    return new ResultDto<HomeworkDto>()
-                    {
-                        IsSuccess = false,
-                        Message = "تمرین یافت نشد!",
-                        Data = new HomeworkDto(),
-                    };
-                }
-
-                return new ResultDto<HomeworkDto>()
+                        CreatorId = h.CreatorId,
+                        ChildStepId = h.ChildStep.Id
+                    })
+                    .FirstOrDefault();
+                return new ResultDto<NewHomeworkDto>()
                 {
                     IsSuccess = true,
-                    Message = "تمرین ارسال شد",
-                    Data = homework,
+                    Message = "تکالیف ارسال شدند.",
+                    Data = homework
                 };
             }
             catch (Exception e)
             {
-                return new ResultDto<HomeworkDto>()
+                return new ResultDto<NewHomeworkDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق!",
-                    Data = new HomeworkDto(),
+                    Message = "ارسال ناموفق ‌‌تکالیف!",
+                    Data = new NewHomeworkDto()
                 };
             }
         }

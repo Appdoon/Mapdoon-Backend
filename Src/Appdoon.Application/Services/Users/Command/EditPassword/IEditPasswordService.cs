@@ -3,6 +3,7 @@ using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Appdoon.Application.Services.Users.Command.EditPasswordService
 
 	}
 
-	public interface IEditPasswordService
+	public interface IEditPasswordService : ITransientService
 	{
 		ResultDto Execute(int id, EditPasswordDto editUserDto);
 	}

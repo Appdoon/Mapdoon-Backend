@@ -1,8 +1,8 @@
-﻿using Appdoon.Common.UserRoles;
-using Appdoon.Domain.Commons;
+﻿using Appdoon.Domain.Commons;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
+using Appdoon.Domain.Entities.Rates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +29,6 @@ namespace Appdoon.Domain.Entities.Users
 		public List<HomeworkProgress> HomeworkProgresses { get; set; } = new();
 		public List<Lesson> CreatedLessons { get; set; } = new();
 		public List<Homework> CreatedHomeworks { get; set; } = new();
+		public List<RateRoadMap> Rates { get; set; } = new();
 	}
 }
