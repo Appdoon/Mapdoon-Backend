@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService;
+using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
+using Appdoon.Domain.Entities.HomeWorks;
+using Appdoon.Domain.Entities.RoadMaps;
+using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +17,37 @@ namespace Mapdoon.Application.Tests.Homeworks.Commands
         [Test]
         public void ShouldRequireValidArguments()
         {
-
+            var result = new UpdateHomeworkService(GetDatabaseContext()).Execute(1000000, null);
+            result.IsSuccess.Should().BeFalse();
         }
 
         [Test]
         public void ShouldUpdateHomework()  
         {
+            int userId = AddUser();
 
+            int homeworkId = AddEntity(new Homework
+            {
+                Title = "Title",
+                Question = "Question",
+                MinScore = 1,
+                CreatorId = userId,
+            });
+
+            UpdateHomeworkDto homeworkDto = new UpdateHomeworkDto
+            {
+                Title = "NewTitle",
+                Question = "NewQuestion",
+                MinScore = 2,
+            };
+
+            var result = new UpdateHomeworkService(GetDatabaseContext()).Execute(homeworkId, homeworkDto);
+            result.IsSuccess.Should().BeTrue();
+
+            Homework? updatedHomework = GetDatabaseContext().Homeworks.Find(homeworkId);
+            updatedHomework.Title.Should().Be("NewTitle");
+            updatedHomework.Question.Should().Be("NewQuestion");
+            updatedHomework.MinScore.Should().Be(2);
         }
     }
 }

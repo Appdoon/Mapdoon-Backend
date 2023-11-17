@@ -8,6 +8,7 @@ using OU_API;
 using Respawn;
 using Respawn.Graph;
 using Appdoon.Domain.Commons;
+using Appdoon.Domain.Entities.Users;
 
 namespace Mapdoon.Application.Tests
 {
@@ -67,7 +68,18 @@ namespace Mapdoon.Application.Tests
             return entity.Id;
         }
 
-        public static DatabaseContext? GetDatabaseContext()
+        public static int AddUser()
+        {
+            var userId = AddEntity(new User
+            {
+                Email = "test@gmail.com",
+                Password = "password",
+            });
+
+            return userId;
+        }
+
+        public static DatabaseContext GetDatabaseContext()
         {
             if(_databaseContext != null)
             {
