@@ -2,6 +2,7 @@
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
+using Appdoon.Domain.Entities.Progress;
 
 namespace Mapdoon.Application.Tests.GradeHomeworks.Command
 {
@@ -39,10 +40,18 @@ namespace Mapdoon.Application.Tests.GradeHomeworks.Command
                 CreatorId = userId1,
                 MinScore = 100,
             });
+            var homeworkprogressId = AddEntity(new HomeworkProgress
+            {
+                HomeworkId = homeworkId,
+                UserId = userId2,
+                Score = 0,
+                IsDone = false,
+                Answer = "Answer"
+            });
             var submission = new HomeworkProgressUpdateDto
             {
                 HomeworkId = homeworkId,
-                UserId = userId1,
+                UserId = userId2,
                 Score = 50,
             };
 
