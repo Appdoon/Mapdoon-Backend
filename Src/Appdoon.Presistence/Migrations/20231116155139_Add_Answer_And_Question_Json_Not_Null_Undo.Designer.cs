@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231116155139_Add_Answer_And_Question_Json_Not_Null_Undo")]
+    partial class Add_Answer_And_Question_Json_Not_Null_Undo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,10 @@ namespace Mapdoon.Presistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
@@ -150,10 +157,6 @@ namespace Mapdoon.Presistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("HomeworkId")
                         .HasColumnType("int");
@@ -513,21 +516,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9281),
+                            InsertTime = new DateTime(2023, 11, 16, 19, 21, 39, 497, DateTimeKind.Local).AddTicks(5410),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9396),
+                            InsertTime = new DateTime(2023, 11, 16, 19, 21, 39, 497, DateTimeKind.Local).AddTicks(5476),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9409),
+                            InsertTime = new DateTime(2023, 11, 16, 19, 21, 39, 497, DateTimeKind.Local).AddTicks(5485),
                             IsRemoved = false,
                             Name = "User"
                         });

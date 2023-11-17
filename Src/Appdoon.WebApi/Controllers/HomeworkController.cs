@@ -5,13 +5,10 @@ using Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService;
 using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
 using Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService;
 using Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorService;
-using Mapdoon.Common.User;
+using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Appdoon.WebApi.Controllers
@@ -32,6 +29,9 @@ namespace Appdoon.WebApi.Controllers
         private readonly IGetAllHomeworksService _getAllHomeworksService;
         // Get by creatorId
         private readonly IGetHomeworksByCreator _getHomeworksByCreator;
+
+        private readonly ICurrentContext _currentContext;
+
         private readonly IWebHostEnvironment _env;
 
         public HomeworkController(IGetHomeworkService getHomeworkService,
@@ -40,6 +40,7 @@ namespace Appdoon.WebApi.Controllers
                                   IDeleteHomeworkService deleteHomeworkService,
                                   IGetAllHomeworksService getAllHomeworksService,
                                   IGetHomeworksByCreator getHomeworksByCreator,
+                                  ICurrentContext currentContext,
                                   IWebHostEnvironment env)
         {
             _getHomeworkService = getHomeworkService;
@@ -48,11 +49,12 @@ namespace Appdoon.WebApi.Controllers
             _deleteHomeworkService = deleteHomeworkService;
             _getAllHomeworksService = getAllHomeworksService;
             _getHomeworksByCreator = getHomeworksByCreator;
+            _currentContext = currentContext;
             _env = env;
         }
 
         [HttpGet]
-        public JsonResult Get(int PageNumber, int PageSize)
+        public JsonResult Get(int PageNumber = 1, int PageSize = 15)
         {
             var result = _getAllHomeworksService.Execute(PageNumber, PageSize);
             return new JsonResult(result);
@@ -85,7 +87,8 @@ namespace Appdoon.WebApi.Controllers
         [HttpPost]
         public JsonResult Post(CreateHomeworkDto homeworkDto)
         {
-            var result = _createHomeworkService.Execute(homeworkDto);
+            int userId = GetIdFromCookie();
+            var result = _createHomeworkService.Execute(homeworkDto, userId);
             return new JsonResult(result);
         }
 
@@ -102,5 +105,11 @@ namespace Appdoon.WebApi.Controllers
             var result = _deleteHomeworkService.Execute(id);
             return new JsonResult(result);
         }
+
+        private int GetIdFromCookie()
+		{
+			var user = _currentContext.User;
+			return user.Id;
+		}
     }
 }
