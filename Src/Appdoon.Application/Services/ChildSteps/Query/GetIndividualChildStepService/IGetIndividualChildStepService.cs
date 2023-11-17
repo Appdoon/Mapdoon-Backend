@@ -17,7 +17,7 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepSe
 		public string Description { get; set; }
 		public string Link { get; set; }
 		public int StepId { get; set; }
-		public int? ChildStepId { get; set; }
+		public int? HomeworkId { get; set; }
 		public List<Linker> Linkers { get; set; }
 	}
 	public interface IGetIndividualChildStepService : ITransientService
@@ -45,7 +45,7 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepSe
 						StepId = (int)r.StepId,
 						Link = r.Link,
 						Linkers = r.Linkers,
-						ChildStepId = r.HomeworkId
+						HomeworkId = r.HomeworkId,
 					}).FirstOrDefault();
 
 				if (childstep == null)

@@ -10,7 +10,6 @@ namespace Mapdoon.Application.Tests
     public class TestBase
     {
         [SetUp]
-
         public async Task SetUp()
         {
             await ResetStateAsync();

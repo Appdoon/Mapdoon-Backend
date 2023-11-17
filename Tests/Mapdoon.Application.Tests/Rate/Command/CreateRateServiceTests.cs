@@ -7,7 +7,7 @@ using FluentAssertions;
 namespace Mapdoon.Application.Tests.Rate.Command
 {
     using static Testing;
-    public class CreateRateServiceTests
+    public class CreateRateServiceTests : TestBase
     {
         [Test]
         public void ShouldRequireValidArguments()
