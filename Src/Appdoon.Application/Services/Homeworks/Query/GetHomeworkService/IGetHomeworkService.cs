@@ -13,6 +13,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
         public string Question { get; set; }
         public decimal MinScore { get; set; }
         public int CreatorId { get; set; }
+        public int ChildStepId { get; set; }
     }
     public interface IGetHomeworkService : ITransientService
     {
@@ -37,7 +38,8 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
                         Title = h.Title,
                         Question = h.Question,
                         MinScore = h.MinScore,
-                        CreatorId = h.CreatorId
+                        CreatorId = h.CreatorId,
+                        ChildStepId = h.ChildStep.Id
                     })
                     .FirstOrDefault();
                 return new ResultDto<NewHomeworkDto>()

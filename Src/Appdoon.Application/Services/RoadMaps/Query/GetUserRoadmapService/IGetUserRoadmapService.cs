@@ -89,6 +89,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 								InsertTime = c.InsertTime,
 								UpdateTime = c.UpdateTime,
 								IsRemoved = c.IsRemoved,
+								HomeworkId = c.HomeworkId,
 								Link = c.Link,
 								Linkers = c.Linkers,
 								ChildStepProgresses = c.ChildStepProgresses.Where(csp => csp.UserId == UserId).ToList(),

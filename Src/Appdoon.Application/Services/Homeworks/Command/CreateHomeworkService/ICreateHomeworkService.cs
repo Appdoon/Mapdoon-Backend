@@ -11,6 +11,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService
         public string Title { get; set; }
         public string Question { get; set; }
         public int MinScore { get; set; }
+        public int ChildStepId { get; set; }
     }
     public interface ICreateHomeworkService : ITransientService
     {
@@ -28,13 +29,20 @@ namespace Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService
         {
             try
             {
+                if(_context.ChildSteps.Find(createHomeworkDto.ChildStepId).HomeworkId != null)
+                {
+                    throw new Exception();
+                }
+
                 var homework = new Homework()
                 {
                     MinScore = createHomeworkDto.MinScore,
                     Question = createHomeworkDto.Question,
                     Title = createHomeworkDto.Title,
                     CreatorId = userId,
+                    ChildStep = _context.ChildSteps.Find(createHomeworkDto.ChildStepId)
                 };
+
 
                 _context.Homeworks.Add(homework);
                 _context.SaveChanges();
