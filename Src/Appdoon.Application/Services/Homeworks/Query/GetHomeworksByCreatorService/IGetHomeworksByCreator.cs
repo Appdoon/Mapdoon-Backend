@@ -12,7 +12,7 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorServ
     {
         public int HomeworkId { get; set; }
         public string Title { get; set; }
-        public string Question { get; set; }
+        public int ChildStepId { get; set; }
     }
     public class AllHomeworksDto
     {
@@ -40,7 +40,7 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorServ
                     {
                         HomeworkId = h.Id,
                         Title = h.Title,
-                        Question = h.Question,
+                        ChildStepId = h.ChildStep.Id
                     })
                     .ToList();
                 AllHomeworksDto allHomeworksDto = new AllHomeworksDto();
