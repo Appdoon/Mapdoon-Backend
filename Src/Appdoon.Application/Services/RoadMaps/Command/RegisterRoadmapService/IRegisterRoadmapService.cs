@@ -100,7 +100,10 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 								Homework = new Homework()
 								{
 									Id = cs.Homework.Id,
-								},
+									MinScore = cs.Homework.MinScore,
+									CreatorId = cs.Homework.CreatorId,
+                                    Title = cs.Homework.Title,
+                                },
 								IsRequired = cs.IsRequired,
 							}).ToList(),
 						}).ToList(),
