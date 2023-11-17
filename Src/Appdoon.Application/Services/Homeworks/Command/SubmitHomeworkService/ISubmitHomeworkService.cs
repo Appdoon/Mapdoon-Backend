@@ -14,25 +14,21 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 	}
 	public interface ISubmitHomeworkService
 	{
-		Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto);
+		Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto, int userId);
 	}
 
 	public class SubmitHomeworkService : ISubmitHomeworkService
 	{
 		private readonly IDatabaseContext _databaseContext;
-		private readonly ICurrentContext _currentContext;
 
-		public SubmitHomeworkService(IDatabaseContext databaseContext, ICurrentContext currentContext)
+		public SubmitHomeworkService(IDatabaseContext databaseContext)
 		{
 			_databaseContext = databaseContext;
-			_currentContext = currentContext;
 		}
-		public async Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto)
+		public async Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto, int userId)
 		{
 			try
 			{
-				var userId = _currentContext.User.Id;
-
 				var homeworkPorgress = new HomeworkProgress()
 				{
 					HomeworkId = submitHomeworkDto.HomeworkId,

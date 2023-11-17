@@ -79,7 +79,7 @@ namespace Appdoon.WebApi.Controllers
         [Authorize(policy: "User")]
         public async Task<JsonResult> SubmitHomework([FromServices] ISubmitHomeworkService submitHomeworkService, SubmitHomeworkDto submitHomeworkDto)
         {
-            var result = await submitHomeworkService.SubmitHomework(submitHomeworkDto);
+            var result = await submitHomeworkService.SubmitHomework(submitHomeworkDto, _currentContext.User.Id);
 
             return new JsonResult(result);
         }
