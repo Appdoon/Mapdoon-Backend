@@ -87,8 +87,8 @@ namespace Appdoon.WebApi.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(policy: "User")]
-		public async Task<JsonResult> GetSubmissionForSpecficUser([FromServices] IGetHomeworkSubmissionsService getHomeworkSubmissionsService, int homeworkId, int UserId)
+		[Authorize(policy: "Teacher")]
+		public async Task<JsonResult> GetSubmissionForSpecificUser([FromServices] IGetHomeworkSubmissionsService getHomeworkSubmissionsService, int homeworkId, int UserId)
 		{
 			var result = await getHomeworkSubmissionsService.GetUserSubmission(new GetUserSubmissionDto() { HoemworkId = homeworkId }, UserId);
 
