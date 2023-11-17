@@ -37,7 +37,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
             _context = databaseContext;
         }
 
-        public ResultDto<AllHomeworksDto> Execute(int page_number, int page_size)
+        public ResultDto<AllHomeworksDto> Execute(int page_number = 1, int page_size = 15)
         {
             try
             {
