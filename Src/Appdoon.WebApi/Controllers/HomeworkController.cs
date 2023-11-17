@@ -6,6 +6,7 @@ using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
 using Mapdoon.Application.Services.Homeworks.Command.EditHomeworkSubmission;
 using Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService;
 using Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorService;
+using Mapdoon.Application.Services.Homeworks.Query.GetHomeworkSubmissions;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -76,6 +77,15 @@ namespace Appdoon.WebApi.Controllers
             return new JsonResult(result);
         }
 
+        [HttpGet]
+        [Authorize(policy: "User")]
+        public async Task<JsonResult> GetSubmission([FromServices] IGetHomeworkSubmissionsService getHomeworkSubmissionsService, GetUserSubmissionDto getUserSubmissionDto)
+        {
+			var result = await getHomeworkSubmissionsService.GetUserSubmission(getUserSubmissionDto, _currentContext.User.Id);
+
+			return new JsonResult(result);
+		}
+
         [HttpPost]
         [Authorize(policy: "User")]
         public async Task<JsonResult> SubmitHomework([FromServices] ISubmitHomeworkService submitHomeworkService, SubmitHomeworkDto submitHomeworkDto)
@@ -87,7 +97,7 @@ namespace Appdoon.WebApi.Controllers
 
         [HttpPut]
         [Authorize(policy: "User")]
-        public async Task<JsonResult> EditSubmission([FromServices] EditHomeworkSubmissionService editHomeworkSubmissionService, EditHomeworkSubmissionDto editHomeworkSubmissionDto)
+        public async Task<JsonResult> EditSubmission([FromServices] IEditHomeworkSubmissionService editHomeworkSubmissionService, EditHomeworkSubmissionDto editHomeworkSubmissionDto)
         {
 			var result = await editHomeworkSubmissionService.EditSubmission(editHomeworkSubmissionDto, _currentContext.User.Id);
 
