@@ -12,11 +12,7 @@ namespace Mapdoon.Application.Tests.Homeworks.Commands
 		public async Task ShouldSubmitHomework()
 		{
 			// Arrange
-			var userId = AddEntity(new User
-			{
-				Email = "test@gmail.com",
-				Password = "password",
-			});
+			var userId = AddUser();
 
 			var homeworkId = AddEntity(new Homework
 			{

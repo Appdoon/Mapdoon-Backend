@@ -27,11 +27,7 @@ namespace Mapdoon.Application.Tests.Rate.Command
             {
                 Score = 2
             };
-            var userId = AddEntity(new User
-            {
-                Email = "aysa@gmail.com",
-                Password = "password",
-            });
+            var userId = AddUser();
 
             var roadmapId = AddEntity(new RoadMap
             {
