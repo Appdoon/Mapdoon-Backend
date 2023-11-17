@@ -13,9 +13,11 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Query.GetAllHomeworkAnswer
 {
     public class HomeworkAnswerDto
     {
-        public string Answer { get; set; }
+        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public decimal? Score { get; set; }
+        public bool IsDone { get; set; }
     }
     public class AllHomeworkAnswerDto
     {
@@ -41,9 +43,11 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Query.GetAllHomeworkAnswer
                 .Where(hp => hp.HomeworkId == homeworkId)
                 .Select(hp => new HomeworkAnswerDto
                 {
-                    Answer = hp.Answer,
+                    UserId = hp.UserId,
                     FirstName = hp.User.FirstName,
-                    LastName = hp.User.LastName
+                    LastName = hp.User.LastName,
+                    Score = hp.Score,
+                    IsDone = hp.IsDone
                 })
                 .ToList();
                 AllHomeworkAnswerDto allHomeworkAnswer = new AllHomeworkAnswerDto();
