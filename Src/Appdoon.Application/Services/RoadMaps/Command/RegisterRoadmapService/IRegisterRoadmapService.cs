@@ -97,13 +97,16 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 							ChildSteps = s.ChildSteps.Select(cs => new ChildStep()
 							{
 								Id = cs.Id,
-								Homework = new Homework()
+                                Title = cs.Title,
+                                Description= cs.Description,
+								Link= cs.Link,
+                                Homework = cs.Homework != null ? new Homework()
 								{
 									Id = cs.Homework.Id,
 									MinScore = cs.Homework.MinScore,
 									CreatorId = cs.Homework.CreatorId,
-                                    Title = cs.Homework.Title,
-                                },
+									Title = cs.Homework.Title,
+								} : null,
 								IsRequired = cs.IsRequired,
 							}).ToList(),
 						}).ToList(),
