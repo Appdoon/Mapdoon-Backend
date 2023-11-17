@@ -1,6 +1,4 @@
 ﻿using Appdoon.Application.Interfaces;
-using Appdoon.Application.Services.Lessons.Command.CreateLessonService;
-using Appdoon.Application.Validatores.LessonValidatore;
 using Appdoon.Common.Dtos;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 {

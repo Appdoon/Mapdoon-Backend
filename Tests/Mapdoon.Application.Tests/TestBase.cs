@@ -13,8 +13,6 @@ namespace Mapdoon.Application.Tests
         public async Task SetUp()
         {
             Assert.Pass();
-            await ResetStateAsync();
-            ResetDatabaseContext();
         }
     }
 }

@@ -3,11 +3,6 @@ using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 using Mapdoon.Application.Services.Homeworks.Command.EditHomeworkSubmission;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mapdoon.Application.Tests.Homeworks.Commands
 {

@@ -1,13 +1,6 @@
-﻿using Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService;
-using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
+﻿using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
 using Appdoon.Domain.Entities.HomeWorks;
-using Appdoon.Domain.Entities.RoadMaps;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mapdoon.Application.Tests.Homeworks.Commands
 {

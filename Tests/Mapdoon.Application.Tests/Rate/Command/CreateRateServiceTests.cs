@@ -1,7 +1,5 @@
 ﻿using Appdoon.Application.Services.Rate.Command.CreateRateService;
-using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.RoadMaps;
-using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 
 namespace Mapdoon.Application.Tests.Rate.Command

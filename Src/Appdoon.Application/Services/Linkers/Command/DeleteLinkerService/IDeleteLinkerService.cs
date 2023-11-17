@@ -2,10 +2,7 @@
 using Appdoon.Common.Dtos;
 using Mapdoon.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Linkers.Command.DeleteLinkerService
 {
