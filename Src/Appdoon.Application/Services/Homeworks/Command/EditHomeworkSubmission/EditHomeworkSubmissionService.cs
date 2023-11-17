@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.Progress;
+using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace Mapdoon.Application.Services.Homeworks.Command.EditHomeworkSubmission
 	{
 		public int HomeworkId { get; set; }
 		public string Answer { get; set; }
+	}
+	public interface IEditHomeworkSubmissionService : ITransientService
+	{
+		Task<ResultDto<bool>> EditSubmission(EditHomeworkSubmissionDto input, int userId);
 	}
 
 	public class EditHomeworkSubmissionService
