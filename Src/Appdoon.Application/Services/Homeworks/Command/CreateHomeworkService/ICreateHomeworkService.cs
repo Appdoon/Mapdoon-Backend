@@ -31,7 +31,11 @@ namespace Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService
             {
                 if(_context.ChildSteps.Find(createHomeworkDto.ChildStepId).HomeworkId != null)
                 {
-                    throw new Exception();
+                    return new ResultDto()
+                    {
+                        IsSuccess = false,
+                        Message = "این محتوا از قبل تمرین دارد!",
+                    };
                 }
 
                 var homework = new Homework()

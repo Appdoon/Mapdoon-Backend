@@ -18,7 +18,7 @@ namespace Mapdoon.Application.Tests
         public static IServiceScopeFactory? _scopeFactory;
         private static string _connectionString;
         private static Respawner _respawner;
-        private static DatabaseContext _databaseContext;
+        private static DatabaseContext? _databaseContext;
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTestsAsync()
@@ -67,7 +67,7 @@ namespace Mapdoon.Application.Tests
             return entity.Id;
         }
 
-        public static DatabaseContext GetDatabaseContext()
+        public static DatabaseContext? GetDatabaseContext()
         {
             if(_databaseContext != null)
             {
@@ -77,6 +77,11 @@ namespace Mapdoon.Application.Tests
             var scope = _scopeFactory.CreateScope();
             _databaseContext = scope.ServiceProvider.GetService<DatabaseContext>();
             return _databaseContext;
+        }
+
+        public static void ResetDatabaseContext()
+        {
+            _databaseContext = null;
         }
     }
 }

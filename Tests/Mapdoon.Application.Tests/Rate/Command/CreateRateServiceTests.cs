@@ -16,7 +16,7 @@ namespace Mapdoon.Application.Tests.Rate.Command
             {
                 Score = 2
             };
-            var result = new CreateRateService(GetDatabaseContext()).Execute(100000, 30000000 , rate );
+            var result = new CreateRateService(GetDatabaseContext()).Execute(100000, 30000000 , rate);
             result.IsSuccess.Should().Be(false);
         }
 

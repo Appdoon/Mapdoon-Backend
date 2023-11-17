@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mapdoon.Application.Tests.Homeworks.Commands
+namespace Mapdoon.Application.Tests.Homeworks.Queries
 {
     using static Testing;
-    internal class CreateHomeworkTests : TestBase
+    internal class GetAllHomeworksTests : TestBase
     {
         [Test]
         public void ShouldRequireValidArguments()
@@ -16,7 +16,7 @@ namespace Mapdoon.Application.Tests.Homeworks.Commands
         }
 
         [Test]
-        public void ShouldCreateHomework()
+        public void ShouldGetAllHomeworks()
         {
 
         }

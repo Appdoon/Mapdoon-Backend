@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Mapdoon.Application.Tests.Homeworks.Commands
 {
     using static Testing;
-    internal class CreateHomeworkTests : TestBase
+    internal class UpdateHomeworkTests: TestBase
     {
         [Test]
         public void ShouldRequireValidArguments()
@@ -16,7 +16,7 @@ namespace Mapdoon.Application.Tests.Homeworks.Commands
         }
 
         [Test]
-        public void ShouldCreateHomework()
+        public void ShouldUpdateHomework()  
         {
 
         }
