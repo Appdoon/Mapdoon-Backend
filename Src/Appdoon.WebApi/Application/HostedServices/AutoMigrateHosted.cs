@@ -7,6 +7,22 @@ using System.Threading.Tasks;
 
 namespace Mapdoon.WebApi.Application.HostedServices
 {
+	public class BackgroundMigration : BackgroundService
+	{
+		private readonly IDatabaseContext _databaseContext;
+
+		public BackgroundMigration(IDatabaseContext databaseContext)
+		{
+			_databaseContext = databaseContext;
+
+		}
+		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+		{
+			var pendings = _databaseContext.Database.GetPendingMigrations();
+			//await _databaseContext.Database.MigrateAsync();
+		}
+	}
+
 	public class AutoMigrateHosted : IHostedService
 	{
 		private readonly IDatabaseContext _databaseContext;
