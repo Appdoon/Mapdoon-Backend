@@ -1,3 +1,4 @@
+using Appdoon.Application.Interfaces;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Presistence.Contexts;
@@ -52,6 +53,7 @@ namespace OU_API
 			services.AddHttpContextAccessor();
 
 			//services.AddHostedService<AutoMigrateHosted>();
+			//services.AddHostedService<BackgroundMigration>();
 
 			//Enable CORS
 			// i add allow credentials
@@ -205,6 +207,8 @@ namespace OU_API
 			services.AddEntityFrameworkSqlServer()
 				.AddDbContext<DatabaseContext>(option => option.UseSqlServer(Configuration["ConnectionStrings:OUAppCon"]));
 
+			var dbContext = services.BuildServiceProvider().GetService<IDatabaseContext>();
+			dbContext.Database.MigrateAsync();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
