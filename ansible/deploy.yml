@@ -10,13 +10,13 @@
       args:
         chdir: ~/mapdoon/backend
 
-    - name: Git checkout main
-      command: git checkout add-containerization
+    - name: Git checkout develop
+      command: git checkout develop
       args:
         chdir: ~/mapdoon/backend
 
-    - name: Git pull origin main
-      command: git pull origin add-containerization
+    - name: Git pull origin develop
+      command: git pull origin develop
       args:
         chdir: ~/mapdoon/backend
 
