@@ -41,13 +41,17 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
                     .Include(hp => hp.Homework)
                     .FirstOrDefault(hp => hp.HomeworkId == submission.HomeworkId && hp.UserId == submission.UserId);
                 homeworkProgress.Score = submission.Score;
+                var childstepprogress = _context.ChildStepProgresses
+                .FirstOrDefault(hp => hp.ChildStep.HomeworkId == homeworkProgress.Homework.Id);
                 if (submission.Score >= homeworkProgress.Homework.MinScore)
                 {
                     homeworkProgress.IsDone = true;
+                    childstepprogress.IsDone = true;
                 }
                 else
                 {
                     homeworkProgress.IsDone = false;
+                    childstepprogress.IsDone = false;
                 }
                 _context.SaveChanges();
                 return new ResultDto()
