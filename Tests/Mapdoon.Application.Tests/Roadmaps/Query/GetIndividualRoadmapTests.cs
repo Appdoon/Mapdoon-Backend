@@ -12,11 +12,7 @@ namespace Mapdoon.Application.Tests.Roadmaps.Query
         public void ShouldReturnIndividualRoadmapAsync()
         {
             // Arrange
-            var userId = AddEntity(new User
-            {
-                Email = "arman@gmail.com",
-                Password = "password",
-            });
+            var userId = AddUser();
 
             var roadmapId = AddEntity(new RoadMap
             {

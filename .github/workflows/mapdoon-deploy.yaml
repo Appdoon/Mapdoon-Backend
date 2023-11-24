@@ -1,0 +1,66 @@
+name: Mapdoon Test Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0.113'
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+        working-directory: Src/
+
+  test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server
+        env:
+          SA_PASSWORD: appdoon@test0
+          ACCEPT_EULA: Y
+        ports:
+          - "1433:1433"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0.113'
+
+      - name: Test with dotnet test
+        run: dotnet test --configuration Release Tests/Mapdoon.Application.Tests
+
+  deploy:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run deploy.yml playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: deploy.yml
+          directory: ./ansible
+          key: ${{secrets.DEPLOY_SSH_KEY}}
+          inventory: |
+            [target_vm]
+            mapdoon ansible_host=188.121.116.198 ansible_user=ubuntu

@@ -1,13 +1,11 @@
 ﻿using Appdoon.Application.Services.Rate.Command.CreateRateService;
-using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.RoadMaps;
-using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 
 namespace Mapdoon.Application.Tests.Rate.Command
 {
     using static Testing;
-    public class CreateRateServiceTests
+    public class CreateRateServiceTests : TestBase
     {
         [Test]
         public void ShouldRequireValidArguments()
@@ -16,7 +14,7 @@ namespace Mapdoon.Application.Tests.Rate.Command
             {
                 Score = 2
             };
-            var result = new CreateRateService(GetDatabaseContext()).Execute(100000, 30000000 , rate );
+            var result = new CreateRateService(GetDatabaseContext()).Execute(100000, 30000000 , rate);
             result.IsSuccess.Should().Be(false);
         }
 
@@ -27,11 +25,7 @@ namespace Mapdoon.Application.Tests.Rate.Command
             {
                 Score = 2
             };
-            var userId = AddEntity(new User
-            {
-                Email = "aysa@gmail.com",
-                Password = "password",
-            });
+            var userId = AddUser();
 
             var roadmapId = AddEntity(new RoadMap
             {

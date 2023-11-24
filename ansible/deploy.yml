@@ -1,0 +1,36 @@
+---
+- name: Deploy Mapdoon Backend
+  hosts: mapdoon
+  become: yes
+  become_user: ubuntu
+
+  tasks:
+    - name: Git fetch
+      command: git fetch --all
+      args:
+        chdir: ~/mapdoon/backend
+
+    - name: Git checkout develop
+      command: git checkout develop
+      args:
+        chdir: ~/mapdoon/backend
+
+    - name: Git pull origin develop
+      command: git pull origin develop
+      args:
+        chdir: ~/mapdoon/backend
+
+    - name: Build and Deploy the project using Docker Compose
+      command: sudo docker compose up --build -d
+      args:
+        chdir: ~/mapdoon/backend/Src
+
+    - name: Show the status of the containers
+      command: sudo docker compose ps
+      args:
+        chdir: ~/mapdoon/backend/Src
+      register: docker_ps_output
+
+    - name: Print Docker PS Output
+      debug:
+        var: docker_ps_output.stdout_lines

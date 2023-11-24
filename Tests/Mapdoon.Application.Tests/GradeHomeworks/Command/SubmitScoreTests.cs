@@ -3,6 +3,7 @@ using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 using Appdoon.Domain.Entities.Progress;
+using Appdoon.Domain.Entities.RoadMaps;
 
 namespace Mapdoon.Application.Tests.GradeHomeworks.Command
 {
@@ -40,7 +41,7 @@ namespace Mapdoon.Application.Tests.GradeHomeworks.Command
             {
                 Title = "Title",
                 CreatorId = userId1,
-                MinScore = 100,
+                MinScore = 80,
             });
             var homeworkprogressId = AddEntity(new HomeworkProgress
             {
@@ -54,12 +55,36 @@ namespace Mapdoon.Application.Tests.GradeHomeworks.Command
             {
                 HomeworkId = homeworkId,
                 UserId = userId2,
-                Score = 50
+                Score = 100
             };
 
+            var roadmapId = AddEntity(new RoadMap
+            {
+                Title = "Title",
+                Description = "Description",
+                CreatoreId = userId1,
+            });
+            var step = AddEntity(new Step
+            {
+                Title = "title",
+                Description = "Description",
+                RoadMapId = roadmapId
+            });
+            var childstep = AddEntity(new ChildStep
+            {
+                Title = "title",
+                Description = "Description",
+                HomeworkId = homeworkId,
+                StepId = step
+            });
+            var childstepprogress = AddEntity(new ChildStepProgress
+            {
+                ChildStepId = childstep,
+                UserId = userId1
+            });
 
             var result = new SubmitScoreService(GetDatabaseContext()).Execute(submission);
-            result.IsSuccess.Should().Be(true);
+            result.IsSuccess.Should().BeTrue();
 
         }
     }

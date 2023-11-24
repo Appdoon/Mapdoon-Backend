@@ -1,3 +1,4 @@
+using Appdoon.Application.Interfaces;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Presistence.Contexts;
@@ -11,7 +12,6 @@ using Mapdoon.Domain;
 using Mapdoon.Presistence;
 using Mapdoon.Presistence.Features.Email;
 using Mapdoon.WebApi.Application.Dependencies;
-using Mapdoon.WebApi.Application.HostedServices;
 using Mapdoon.WebApi.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -42,8 +42,13 @@ namespace OU_API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			//var config = new ConfigurationBuilder()
+			//	.AddJsonFile("appsettings.json", optional: false)
+			//	.Build();
+
+			var appSettingPath = Environment.GetEnvironmentVariable("ENVIRONMENT_PATH");
 			var config = new ConfigurationBuilder()
-				.AddJsonFile("appsettings.json", optional: false)
+				.AddJsonFile(appSettingPath, optional: false)
 				.Build();
 
 			var jwtOptions = new JWTOptions();
@@ -52,6 +57,7 @@ namespace OU_API
 			services.AddHttpContextAccessor();
 
 			//services.AddHostedService<AutoMigrateHosted>();
+			//services.AddHostedService<BackgroundMigration>();
 
 			//Enable CORS
 			// i add allow credentials
@@ -203,8 +209,10 @@ namespace OU_API
 
 			// Add EF Core
 			services.AddEntityFrameworkSqlServer()
-				.AddDbContext<DatabaseContext>(option => option.UseSqlServer(Configuration["ConnectionStrings:OUAppCon"]));
+				.AddDbContext<DatabaseContext>(option => option.UseSqlServer(config["ConnectionStrings:OUAppCon"]));
 
+			var dbContext = services.BuildServiceProvider().GetService<IDatabaseContext>();
+			dbContext.Database.MigrateAsync();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

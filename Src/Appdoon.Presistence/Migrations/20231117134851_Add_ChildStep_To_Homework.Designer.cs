@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231117134851_Add_ChildStep_To_Homework")]
+    partial class Add_ChildStep_To_Homework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,48 +24,6 @@ namespace Mapdoon.Presistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Appdoon.Domain.Entities.Comments.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("InsertTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("RoadmapId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoadmapId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
 
             modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
                 {
@@ -298,48 +259,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Rates");
-                });
-
-            modelBuilder.Entity("Appdoon.Domain.Entities.Replies.Reply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("InsertTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("commentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("commentId");
-
-                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.Category", b =>
@@ -599,21 +518,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9281),
+                            InsertTime = new DateTime(2023, 11, 17, 17, 18, 50, 896, DateTimeKind.Local).AddTicks(3185),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 11, 24, 14, 58, 6, 627, DateTimeKind.Local).AddTicks(9661),
+                            InsertTime = new DateTime(2023, 11, 17, 17, 18, 50, 896, DateTimeKind.Local).AddTicks(3259),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 11, 24, 14, 58, 6, 627, DateTimeKind.Local).AddTicks(9671),
+                            InsertTime = new DateTime(2023, 11, 17, 17, 18, 50, 896, DateTimeKind.Local).AddTicks(3267),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -737,23 +656,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.ToTable("RoleUser");
                 });
 
-            modelBuilder.Entity("Appdoon.Domain.Entities.Comments.Comment", b =>
-                {
-                    b.HasOne("Appdoon.Domain.Entities.RoadMaps.RoadMap", "Roadmap")
-                        .WithMany("Comments")
-                        .HasForeignKey("RoadmapId");
-
-                    b.HasOne("Appdoon.Domain.Entities.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Roadmap");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.Users.User", "Creator")
@@ -839,23 +741,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.Navigation("RoadMap");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Appdoon.Domain.Entities.Replies.Reply", b =>
-                {
-                    b.HasOne("Appdoon.Domain.Entities.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Appdoon.Domain.Entities.Comments.Comment", "comment")
-                        .WithMany("replies")
-                        .HasForeignKey("commentId");
-
-                    b.Navigation("User");
-
-                    b.Navigation("comment");
                 });
 
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.ChildStep", b =>
@@ -983,11 +868,6 @@ namespace Mapdoon.Presistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Appdoon.Domain.Entities.Comments.Comment", b =>
-                {
-                    b.Navigation("replies");
-                });
-
             modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
                 {
                     b.Navigation("ChildStep");
@@ -1002,8 +882,6 @@ namespace Mapdoon.Presistence.Migrations
 
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.RoadMap", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Rates");
 
                     b.Navigation("Steps");

@@ -15,8 +15,8 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
         public int Id { get; set; }
         public string Title { get; set; }
         public decimal MinScore { get; set; }
-        public string Question { get; set; }
         public int CreatorId { get; set; }
+        public int ChildStepId { get; set; }
     }
     public class AllHomeworksDto
     {
@@ -37,7 +37,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
             _context = databaseContext;
         }
 
-        public ResultDto<AllHomeworksDto> Execute(int page_number, int page_size)
+        public ResultDto<AllHomeworksDto> Execute(int page_number = 1, int page_size = 15)
         {
             try
             {
@@ -47,8 +47,8 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
                     Id = h.Id,
                     Title = h.Title,
                     MinScore = h.MinScore,
-                    Question = h.Question,
                     CreatorId = h.CreatorId,
+                    ChildStepId = h.ChildStep.Id,
                 }).ToPaged(page_number, page_size, out rowCount)
                 .ToList();
                 AllHomeworksDto allHomeworksDto = new AllHomeworksDto();

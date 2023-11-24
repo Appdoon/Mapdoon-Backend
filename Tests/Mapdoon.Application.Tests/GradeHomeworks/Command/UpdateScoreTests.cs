@@ -8,7 +8,7 @@ using Appdoon.Domain.Entities.RoadMaps;
 namespace Mapdoon.Application.Tests.GradeHomeworks.Command
 {
     using static Testing;
-    public class UpdateScoreTests
+    public class UpdateScoreTests : TestBase
     {
         [Test]
         public void ShouldRequireValidArguments()
