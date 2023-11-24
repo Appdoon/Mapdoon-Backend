@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231124112806_add comment")]
+    partial class addcomment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -409,9 +412,7 @@ namespace Mapdoon.Presistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeworkId")
-                        .IsUnique()
-                        .HasFilter("[HomeworkId] IS NOT NULL");
+                    b.HasIndex("HomeworkId");
 
                     b.HasIndex("StepId");
 
@@ -599,7 +600,7 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9281),
+                            InsertTime = new DateTime(2023, 11, 24, 14, 58, 6, 627, DateTimeKind.Local).AddTicks(9592),
                             IsRemoved = false,
                             Name = "Admin"
                         },
@@ -861,8 +862,8 @@ namespace Mapdoon.Presistence.Migrations
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.ChildStep", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.HomeWorks.Homework", "Homework")
-                        .WithOne("ChildStep")
-                        .HasForeignKey("Appdoon.Domain.Entities.RoadMaps.ChildStep", "HomeworkId");
+                        .WithMany()
+                        .HasForeignKey("HomeworkId");
 
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.Step", "Step")
                         .WithMany("ChildSteps")
@@ -990,8 +991,6 @@ namespace Mapdoon.Presistence.Migrations
 
             modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
                 {
-                    b.Navigation("ChildStep");
-
                     b.Navigation("HomeworkProgresses");
                 });
 
