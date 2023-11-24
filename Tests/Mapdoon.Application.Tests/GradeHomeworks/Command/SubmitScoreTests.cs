@@ -4,7 +4,6 @@ using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
-using Newtonsoft.Json;
 
 namespace Mapdoon.Application.Tests.GradeHomeworks.Command
 {
@@ -85,7 +84,7 @@ namespace Mapdoon.Application.Tests.GradeHomeworks.Command
             });
 
             var result = new SubmitScoreService(GetDatabaseContext()).Execute(submission);
-            result.IsSuccess.Should().Be(true);
+            result.IsSuccess.Should().BeTrue();
 
         }
     }
