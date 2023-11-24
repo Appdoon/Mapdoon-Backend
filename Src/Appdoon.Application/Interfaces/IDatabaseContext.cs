@@ -4,6 +4,8 @@ using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.Users;
+using Appdoon.Domain.Entities.Comments;
+using Appdoon.Domain.Entities.Replies;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -29,6 +31,8 @@ namespace Appdoon.Application.Interfaces
 		DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		DbSet<Question> Questions { get; set; }
 		DbSet<RateRoadMap> Rates { get; set; }
+		DbSet<Comment> Comments { get; set; }
+		DbSet<Reply> Replies { get; set; }	
         int SaveChanges(bool acceptAllChangesOnSuccess);
         int SaveChanges();
 

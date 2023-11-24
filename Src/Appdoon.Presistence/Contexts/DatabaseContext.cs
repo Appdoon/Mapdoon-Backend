@@ -5,6 +5,8 @@ using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
+using Appdoon.Domain.Entities.Comments;
+using Appdoon.Domain.Entities.Replies;
 using Mapdoon.Common.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +32,8 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<Homework> Homeworks { get; set; }
 		public DbSet<Question> Questions { get; set; }
 		public DbSet<RateRoadMap> Rates { get; set; }
+		public DbSet<Comment> Comments { get; set; }
+		public DbSet<Reply> Replies { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -55,6 +59,9 @@ namespace Appdoon.Presistence.Contexts
 			modelBuilder.Entity<Question>().HasQueryFilter(u => u.IsRemoved == false);
 
 			modelBuilder.Entity<RateRoadMap>().HasQueryFilter(u => u.IsRemoved == false);
+
+			modelBuilder.Entity<Comment>().HasQueryFilter(u => u.IsRemoved == false);
+			modelBuilder.Entity<Reply>().HasQueryFilter(u => u.IsRemoved == false);
 
             // Registerd RoadMaps for User
             modelBuilder.Entity<User>()

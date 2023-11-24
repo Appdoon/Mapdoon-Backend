@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Appdoon.Domain.Entities.Comments;
 
 namespace Appdoon.Domain.Entities.RoadMaps
 {
@@ -23,5 +24,6 @@ namespace Appdoon.Domain.Entities.RoadMaps
 		public List<User> UsersBookmarked { get; set; } = new();
 		public int RateCount { get; set; } = 0;
 		public List<RateRoadMap> Rates {get;set;} = new();
+		public List<Comment> Comments { get; set; } = new();
 	}
 }
