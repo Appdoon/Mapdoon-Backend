@@ -68,12 +68,12 @@ namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
                     Data = allRoadmapsDto,
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return new ResultDto<AllRoadmapsDto>()
                 {
                     IsSuccess = false,
-                    Message = "جستجو ناموفق!",
+                    Message = e.Message,
                     Data = new AllRoadmapsDto(),
                 };
             }

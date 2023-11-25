@@ -53,7 +53,7 @@ namespace Mapdoon.Application.Services.Replies.Command.DeleteReplyService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در حذف پاسخ نظر!",
+                    Message = e.Message,
                 };
             }
         }

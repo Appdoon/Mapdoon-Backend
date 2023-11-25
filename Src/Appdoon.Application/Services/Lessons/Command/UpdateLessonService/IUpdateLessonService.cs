@@ -86,7 +86,7 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی مقاله!",
+					Message = e.Message,
 				};
 			}
 		}

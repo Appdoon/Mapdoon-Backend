@@ -69,7 +69,7 @@ namespace Appdoon.Application.Services.Linkers.Command.CreateLinkerService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در اضافه کردن لینک به زیرقدم!",
+                    Message = e.Message,
                 };
             }
         }

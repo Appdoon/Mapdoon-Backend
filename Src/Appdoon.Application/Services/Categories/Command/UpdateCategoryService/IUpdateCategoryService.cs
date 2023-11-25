@@ -79,7 +79,7 @@ namespace Appdoon.Application.Services.Categories.Command.UpdateCategoryService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی دسته!",
+					Message = e.Message,
 				};
 			}
 		}

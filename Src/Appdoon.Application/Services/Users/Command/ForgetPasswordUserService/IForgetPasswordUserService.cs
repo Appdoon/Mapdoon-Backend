@@ -134,7 +134,7 @@ namespace Appdoon.Application.Services.Users.Command.ForgetPasswordUserService
             {
                 return new ResultDto()
                 {
-                    Message = "خطا در ارسال ایمیل",
+                    Message = e.Message,
                     IsSuccess = false,
                 };
             }

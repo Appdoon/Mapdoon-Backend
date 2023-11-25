@@ -91,7 +91,7 @@ namespace Appdoon.Application.Services.Users.Command.EditPasswordService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در تغییر اطلاعات!",
+					Message = e.Message,
 				};
 			}
 		}

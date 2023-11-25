@@ -88,7 +88,7 @@ namespace Appdoon.Application.Services.Users.Query.GetCreatedLessonsService
 				return new ResultDto<List<GetLessonsDto>>()
 				{
 					IsSuccess = false,
-					Message = "خطا در ارسال مقاله های ساخته شده!",
+					Message = e.Message,
 					Data = new(),
 				};
 			}

@@ -78,12 +78,12 @@ namespace Mapdoon.Application.Services.Comments.Query.GetCommentsOfRoadmapServic
                     Data = allCommentsReplies
                 };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 return new ResultDto<AllCommentsRepliesDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق ‌‌نظرات!",
+                    Message = e.Message,
                     Data = new AllCommentsRepliesDto()
                 };
             }

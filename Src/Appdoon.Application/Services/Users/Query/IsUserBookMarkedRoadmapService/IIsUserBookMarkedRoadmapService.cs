@@ -63,13 +63,13 @@ namespace Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapServic
                     Message = "کاربر این رودمپ را بوک مارک کرده است.",
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return new ResultDto<bool>
                 {
                     Data = false,
                     IsSuccess = false,
-                    Message = "کاربر این رودمپ را بوک مارک نکرده است!",
+                    Message = e.Message,
                 };
             }
         }

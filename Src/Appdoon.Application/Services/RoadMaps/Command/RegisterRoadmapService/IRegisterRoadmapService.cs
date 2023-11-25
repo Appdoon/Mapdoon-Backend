@@ -185,7 +185,7 @@ namespace Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در ثبت نام رودمپ!",
+					Message = e.Message,
 				};
 			}
 		}

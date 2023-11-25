@@ -57,7 +57,7 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworksByCreatorServ
                 return new ResultDto<AllHomeworksDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق ‌‌تکالیف!",
+                    Message = e.Message,
                     Data = new AllHomeworksDto()
                 };
             }

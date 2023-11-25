@@ -184,7 +184,7 @@ namespace Appdoon.Application.Services.Users.Command.RegisterUserService
 				return new ResultDto<RegisterUserResult>()
 				{
 					IsSuccess = false,
-					Message = "خطا در ثبت نام!",
+					Message = e.Message,
 					Data = new(),
 				};
 			}

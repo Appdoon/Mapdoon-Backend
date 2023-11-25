@@ -70,7 +70,7 @@ namespace Appdoon.Application.Services.Users.Query.GetBookMarkRoadMapService
 				return new ResultDto<List<BookMarkRoadMapDto>>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new(),
 				};
 			}

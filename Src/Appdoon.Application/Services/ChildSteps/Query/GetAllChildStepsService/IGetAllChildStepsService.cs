@@ -67,7 +67,7 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetAllChildStepsService
                 return new ResultDto<List<ChildStepDto>>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق محتوا ها!",
+                    Message = e.Message,
                     Data = new List<ChildStepDto>()
                 };
             }

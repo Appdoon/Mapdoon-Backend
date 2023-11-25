@@ -55,7 +55,7 @@ namespace Appdoon.Application.Services.Users.Command.CheckUserResetPasswordLinkS
             {
                 return new ResultDto<bool>()
                 {
-                    Message = "خطا در انجام عملیات!",
+                    Message = e.Message,
                     IsSuccess = false,
                 };
             }

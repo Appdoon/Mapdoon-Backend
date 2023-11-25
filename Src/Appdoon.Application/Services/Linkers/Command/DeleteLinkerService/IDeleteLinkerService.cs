@@ -47,7 +47,7 @@ namespace Appdoon.Application.Services.Linkers.Command.DeleteLinkerService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در حذف لینک!",
+					Message = e.Message,
 				};
 			}
 		}

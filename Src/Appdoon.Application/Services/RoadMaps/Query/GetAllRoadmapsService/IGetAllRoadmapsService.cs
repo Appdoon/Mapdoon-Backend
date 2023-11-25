@@ -78,7 +78,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
                 return new ResultDto<AllRoadmapsDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق!",
+                    Message = e.Message,
                     Data = new AllRoadmapsDto(),
                 };
             }

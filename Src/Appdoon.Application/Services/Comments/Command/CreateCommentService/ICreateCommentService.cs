@@ -47,12 +47,12 @@ namespace Mapdoon.Application.Services.Comments.Command.CreateCommentService
                     Message = "نظر با موفقیت ثبت شد.",
                 };
             }
-            catch(Exception ex) 
+            catch(Exception e) 
             {
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ثبت نظر!",
+                    Message = e.Message,
                 };
             }
         }

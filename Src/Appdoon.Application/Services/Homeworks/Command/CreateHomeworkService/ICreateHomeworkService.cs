@@ -62,7 +62,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در اضافه شدن تمرین!",
+                    Message = e.Message,
                 };
             }
         }

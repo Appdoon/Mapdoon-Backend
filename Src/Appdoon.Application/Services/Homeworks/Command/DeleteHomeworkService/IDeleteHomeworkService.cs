@@ -1,11 +1,9 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Appdoon.Domain.Entities.RoadMaps;
 using Mapdoon.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
 {
@@ -38,6 +36,11 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                     };
                 }
 
+                if (homework.ChildStep != null)
+                {
+                    homework.ChildStep.HomeworkId = null;
+                }
+
                 homework.IsRemoved = true;
                 homework.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
@@ -53,7 +56,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در حذف تمرین!",
+                    Message = e.Message,
                 };
             }
         }

@@ -70,7 +70,7 @@ namespace Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepSe
 				return new ResultDto<IndividualChildStepDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new IndividualChildStepDto(),
 				};
 			}

@@ -73,7 +73,7 @@ namespace Appdoon.Application.Services.Users.Query.GetUserService
 				return new ResultDto<GetUserDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new(),
 				};
 			}

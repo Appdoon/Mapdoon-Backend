@@ -70,7 +70,7 @@ namespace Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService
 				return new ResultDto<List<RegisteredRoadMapDto>>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new(),
 				};
 			}

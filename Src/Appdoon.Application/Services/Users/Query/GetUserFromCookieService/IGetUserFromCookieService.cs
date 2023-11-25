@@ -64,7 +64,7 @@ namespace Appdoon.Application.Services.Users.Query.GetUserFromCookieService
 				{
 					Data = new(),
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message
 				};
 			}
 		}

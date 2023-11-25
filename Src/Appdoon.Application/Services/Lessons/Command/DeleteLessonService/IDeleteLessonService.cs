@@ -50,7 +50,7 @@ namespace Appdoon.Application.Services.Lessons.Command.DeleteLessonService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در حذف مقاله!",
+					Message = e.Message,
 				};
 			}
 		}
