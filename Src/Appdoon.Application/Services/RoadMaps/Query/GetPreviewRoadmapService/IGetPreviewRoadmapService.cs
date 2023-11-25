@@ -72,7 +72,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService
 				return new ResultDto<PreviewRoadmapDto>()
 				{
 					IsSuccess = false,
-					Message = "خطا در ارسال پیش نمایش رودمپ!",
+					Message = e.Message,
 				};
 			}
 		}

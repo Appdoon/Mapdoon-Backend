@@ -50,7 +50,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در بروزرسانی تمرین!",
+                    Message = e.Message,
                 };
             }
         }

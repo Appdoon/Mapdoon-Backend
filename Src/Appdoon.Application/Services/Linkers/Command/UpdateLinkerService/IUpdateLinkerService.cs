@@ -71,7 +71,7 @@ namespace Appdoon.Application.Services.Linkers.Command.UpdateLinkerService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی لینک!",
+					Message = e.Message
 				};
 			}
 		}

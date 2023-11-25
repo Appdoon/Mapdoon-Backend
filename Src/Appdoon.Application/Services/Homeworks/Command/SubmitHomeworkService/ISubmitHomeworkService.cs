@@ -46,12 +46,12 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 					Message = "پاسخ تمرین ارسال شد.",
 				};
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در ارسال پاسخ تمرین!",
+					Message = e.Message,
 				};
 			}
 		}

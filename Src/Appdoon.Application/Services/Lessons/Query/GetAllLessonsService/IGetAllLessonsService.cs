@@ -69,7 +69,7 @@ namespace Appdoon.Application.Services.Lessons.Query.GetAllLessonsService
 				return new ResultDto<AllLessonsDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new AllLessonsDto(),
 				};
 			}

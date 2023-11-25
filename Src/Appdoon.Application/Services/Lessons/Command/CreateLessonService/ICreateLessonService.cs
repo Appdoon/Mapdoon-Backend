@@ -107,7 +107,7 @@ namespace Appdoon.Application.Services.Lessons.Command.CreateLessonService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در ساخت مقاله!",
+					Message = e.Message,
 				};
 			}
 		}

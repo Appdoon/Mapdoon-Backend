@@ -68,7 +68,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService
                 return new ResultDto<AllHomeworksDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق دسته‌بندی‌ها!",
+                    Message = e.Message,
                     Data = new AllHomeworksDto()
                 };
             }

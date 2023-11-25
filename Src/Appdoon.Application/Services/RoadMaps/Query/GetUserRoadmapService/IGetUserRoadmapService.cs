@@ -120,7 +120,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 				return new ResultDto<IndividualRoadMapDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new IndividualRoadMapDto(),
 				};
 			}

@@ -65,7 +65,7 @@ namespace Appdoon.Application.Services.Categories.Query.GetAllCategoriesService
                 return new ResultDto<AllCategoriesDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق دسته‌بندی‌ها!",
+                    Message = e.Message,
                     Data = new AllCategoriesDto()
                 };
             }

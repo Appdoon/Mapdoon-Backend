@@ -103,7 +103,7 @@ namespace Appdoon.Application.Services.ChildSteps.Command.UpdateChildStepService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی محتوا!",
+					Message = e.Message,
 				};
 			}
 		}

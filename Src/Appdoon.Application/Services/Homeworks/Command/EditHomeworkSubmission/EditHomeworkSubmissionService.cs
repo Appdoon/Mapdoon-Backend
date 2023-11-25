@@ -82,12 +82,12 @@ namespace Mapdoon.Application.Services.Homeworks.Command.EditHomeworkSubmission
 					};
 				}
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
 				return new ResultDto<bool>
 				{
 					IsSuccess = false,
-					Message = "خطا در ویرایش تمرین",
+					Message = e.Message,
 				};
 			}
 		}

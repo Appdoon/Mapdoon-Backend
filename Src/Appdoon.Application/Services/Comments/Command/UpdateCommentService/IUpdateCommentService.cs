@@ -44,12 +44,12 @@ namespace Mapdoon.Application.Services.Comments.Command.UpdateCommentService
                     Message = "نظر با موفقیت ویرایش شد.",
                 };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ویرایش نظر!",
+                    Message = e.Message,
                 };
             }
         }

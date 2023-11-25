@@ -65,7 +65,7 @@ namespace Appdoon.Application.Services.Steps.Query.GetIndividualStepService
 				return new ResultDto<IndividualStepDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new IndividualStepDto(),
 				};
 			}

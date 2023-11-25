@@ -158,7 +158,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ساخت رودمپ!",
+                    Message = e.Message,
                 };
             }
         }

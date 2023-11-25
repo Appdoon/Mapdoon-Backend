@@ -58,7 +58,7 @@ namespace Appdoon.Application.Services.Linkers.Query.GetAllLinkersService
 				return new ResultDto<List<LinkDto>>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new List<LinkDto>(),
 				};
 			}

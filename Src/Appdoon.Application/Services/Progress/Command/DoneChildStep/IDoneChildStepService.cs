@@ -107,7 +107,7 @@ namespace Appdoon.Application.Services.Progress.Command.DoneChildStep
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در انجام تکمیل نمودن محتوا برای کاربر!",
+					Message = e.Message,
 				};
 			}
 		}

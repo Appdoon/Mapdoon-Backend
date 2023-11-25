@@ -71,7 +71,7 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 				return new ResultDto<LessonDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new LessonDto(),
 				};
 			}

@@ -82,7 +82,7 @@ namespace Appdoon.Application.Services.Questions.Command.UpdateQuestionService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی سوال!",
+					Message = e.Message,
 				};
 			}
 		}

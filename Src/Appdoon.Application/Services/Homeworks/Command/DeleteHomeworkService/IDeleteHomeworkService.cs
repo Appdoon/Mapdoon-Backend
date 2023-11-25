@@ -56,7 +56,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در حذف تمرین!",
+                    Message = e.Message,
                 };
             }
         }

@@ -50,12 +50,12 @@ namespace Mapdoon.Application.Services.Replies.Command.CreateReplyService
                     Message = "پاسخ نظر با موفقیت ثبت شد.",
                 };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ثبت پاسخ نظر!",
+                    Message = e.Message,
                 };
             }
         }

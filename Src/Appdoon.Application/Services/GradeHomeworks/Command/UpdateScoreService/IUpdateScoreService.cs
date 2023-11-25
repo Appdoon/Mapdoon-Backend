@@ -64,7 +64,7 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ویرایش نمره!",
+                    Message = e.Message,
                 };
             }
         }

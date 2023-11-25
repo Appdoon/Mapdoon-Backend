@@ -76,7 +76,7 @@ namespace Appdoon.Application.Services.Steps.Command.UpdateStepService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی قدم!",
+					Message = e.Message,
 				};
 			}
 		}

@@ -49,12 +49,12 @@ namespace Mapdoon.Application.Services.Replies.Command.UpadteReplyService
                     Message = "پاسخ نظر با موفقیت ویرایش شد.",
                 };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ویرایش پاسخ نظر!",
+                    Message = e.Message,
                 };
             }
         }

@@ -53,7 +53,7 @@ namespace Appdoon.Application.Services.Questions.Command.DeleteQuestionService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در حذف سوال!",
+					Message = e.Message,
 				};
 			}
 		}

@@ -78,7 +78,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                 return new ResultDto<IndividualRoadMapDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق!",
+                    Message = e.Message,
                     Data = new IndividualRoadMapDto(),
                 };
             }

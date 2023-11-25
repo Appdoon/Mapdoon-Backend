@@ -82,7 +82,7 @@ namespace Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService
 				return new ResultDto<List<RoadMapDto>>()
 				{
 					IsSuccess = false,
-					Message = "خطا در ارسال رودمپ های ساخته شده!",
+					Message = e.Message,
 					Data = new(),
 				};
 			}

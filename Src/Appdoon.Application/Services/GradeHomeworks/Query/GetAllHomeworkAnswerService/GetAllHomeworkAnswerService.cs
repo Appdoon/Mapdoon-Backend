@@ -59,12 +59,12 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Query.GetAllHomeworkAnswer
                     Data = allHomeworkAnswer
                 };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 return new ResultDto<AllHomeworkAnswerDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق ‌‌تکالیف!",
+                    Message = e.Message,
                     Data = new AllHomeworkAnswerDto()
                 };
             }
