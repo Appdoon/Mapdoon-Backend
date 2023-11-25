@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService;
 using Appdoon.Domain.Entities.HomeWorks;
+using Appdoon.Domain.Entities.RoadMaps;
 using FluentAssertions;
 
 namespace Mapdoon.Application.Tests.Homeworks.Commands
@@ -19,6 +20,16 @@ namespace Mapdoon.Application.Tests.Homeworks.Commands
         {
             int userId = AddUser();
 
+            int roadmapId = AddEntity(new RoadMap
+            {
+                CreatoreId = userId,
+            });
+
+            int stepId = AddEntity(new Step()
+            {
+                RoadMapId = roadmapId
+            });
+
             int homeworkId = AddEntity(new Homework
             {
                 Title = "Title",
@@ -27,11 +38,18 @@ namespace Mapdoon.Application.Tests.Homeworks.Commands
                 CreatorId = userId,
             });
 
+            int childStepId = AddEntity(new ChildStep
+            {
+                StepId = stepId,
+                HomeworkId = homeworkId,
+            });
+
             var result = new DeleteHomeworkService(GetDatabaseContext()).Execute(homeworkId);
             result.IsSuccess.Should().BeTrue();
 
             Homework? deletedHomework = GetDatabaseContext().Homeworks.Find(homeworkId);
             deletedHomework.IsRemoved.Should().BeTrue();
+            deletedHomework.ChildStep.Should().BeNull();
         }
     }
 }
