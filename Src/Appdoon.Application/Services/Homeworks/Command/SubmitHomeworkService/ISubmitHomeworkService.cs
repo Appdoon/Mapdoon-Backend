@@ -12,7 +12,7 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 		public int HomeworkId { get; set; }
 		public string Answer { get; set; }
 	}
-	public interface ISubmitHomeworkService
+	public interface ISubmitHomeworkService : ITransientService
 	{
 		Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto, int userId);
 	}
