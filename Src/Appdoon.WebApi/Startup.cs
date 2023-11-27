@@ -48,7 +48,7 @@ namespace OU_API
 
 			var appSettingPath = Environment.GetEnvironmentVariable("ENVIRONMENT_PATH");
 			var config = new ConfigurationBuilder()
-				.AddJsonFile(appSettingPath, optional: false)
+				.AddJsonFile(appSettingPath ?? "appsettings.json", optional: false)
 				.Build();
 
 			var jwtOptions = new JWTOptions();

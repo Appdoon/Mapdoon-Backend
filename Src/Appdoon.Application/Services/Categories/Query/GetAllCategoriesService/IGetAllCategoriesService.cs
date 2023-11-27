@@ -27,11 +27,11 @@ namespace Appdoon.Application.Services.Categories.Query.GetAllCategoriesService
         public ResultDto<AllCategoriesDto> Execute(int page_number, int page_size);
     }
 
-    public class GetCategoriesService : IGetAllCategoriesService
+    public class GetAllCategoriesService : IGetAllCategoriesService
     {
         private readonly IDatabaseContext _context;
 
-        public GetCategoriesService(IDatabaseContext databaseContext)
+        public GetAllCategoriesService(IDatabaseContext databaseContext)
         {
             _context = databaseContext;
         }
