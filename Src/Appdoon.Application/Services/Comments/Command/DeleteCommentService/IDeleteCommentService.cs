@@ -25,11 +25,11 @@ namespace Mapdoon.Application.Services.Comments.Command.DeleteCommentService
         {
             try
             {
-                var reply = _context.Replies
+                var comment = _context.Comments
                     .Where(x => x.Id == id)
                     .FirstOrDefault();
 
-                if (reply == null)
+                if (comment == null)
                 {
                     return new ResultDto()
                     {
@@ -38,8 +38,8 @@ namespace Mapdoon.Application.Services.Comments.Command.DeleteCommentService
                     };
                 }
 
-                reply.IsRemoved = true;
-                reply.UpdateTime = DateTime.Now;
+                comment.IsRemoved = true;
+                comment.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
 
                 return new ResultDto()
