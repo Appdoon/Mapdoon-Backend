@@ -37,7 +37,12 @@ namespace Mapdoon.Application.Services.Comments.Command.DeleteCommentService
                         Message = "این آیدی وجود ندارد!",
                     };
                 }
-
+                var replies = comment.replies;
+                foreach(var reply in replies) 
+                {
+                    reply.IsRemoved = true;
+                    reply.UpdateTime = DateTime.Now;
+                }
                 comment.IsRemoved = true;
                 comment.UpdateTime = DateTime.Now;
                 _context.SaveChanges();
