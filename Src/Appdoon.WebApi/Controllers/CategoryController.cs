@@ -1,14 +1,7 @@
 ﻿using Appdoon.Application.Services.Categories.Command.CreateCategoryService;
-using Appdoon.Application.Services.Categories.Command.DeleteCategoryService;
 using Appdoon.Application.Services.Categories.Command.UpdateCategoryService;
-using Appdoon.Application.Services.Categories.Query.GetAllCategoriesService;
-using Appdoon.Application.Services.Categories.Query.GetIndividualCategoryService;
-using Appdoon.Application.Services.Categories.Query.SearchCategoriesService;
+using Mapdoon.Application.Services.Categories;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,40 +11,19 @@ namespace Appdoon.WebApi.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        //Get All
-        private readonly IGetAllCategoriesService _getCategoriesService;
-        //Get Individual
-        private readonly IGetIndividualCategoryService _getIndividualCategoryService;
-        //Create
-        private readonly ICreateCategoryService _createCategoryService;
-        //Delete
-        private readonly IDeleteCategoryService _deleteCategoryService;
-        //Update
-        private readonly IUpdateCategoryService _updateCategoryService;
-        //Search
-        private readonly ISearchCategoriesService _searchCategoriesService;
+        private readonly ICategoryServices _categoryServices;
+        public ICategoryServices CategoryServices => _categoryServices;
 
-
-        public CategoryController(IGetAllCategoriesService getCategoriesService,
-                                  IGetIndividualCategoryService getIndividualCategoryService,
-                                  ICreateCategoryService createCategoryService,
-                                  IDeleteCategoryService deleteCategoryService,
-                                  IUpdateCategoryService updateCategoryService,
-                                  ISearchCategoriesService searchCategoriesService)
+        public CategoryController(ICategoryServices categoryServices)
         {
-            _getCategoriesService = getCategoriesService;
-            _getIndividualCategoryService = getIndividualCategoryService;
-            _createCategoryService = createCategoryService;
-            _deleteCategoryService = deleteCategoryService;
-            _updateCategoryService = updateCategoryService;
-            _searchCategoriesService = searchCategoriesService;
+            _categoryServices = categoryServices;
         }
 
         // GET: api/<CategoryController>
         [HttpGet]
         public JsonResult Get(int PageNumber, int PageSize)
         {
-            var result = _getCategoriesService.Execute(PageNumber, PageSize);
+            var result = CategoryServices.GetAllCategoriesService.Execute(PageNumber, PageSize);
             return new JsonResult(result);
         }
 
@@ -59,7 +31,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            var result = _getIndividualCategoryService.Execute(id);
+            var result = CategoryServices.GetIndividualCategoryService.Execute(id);
             return new JsonResult(result);
         }
 
@@ -67,15 +39,15 @@ namespace Appdoon.WebApi.Controllers
         [HttpPost]
         public JsonResult Post(CreateCategoryDto Category)
         {
-            var result = _createCategoryService.Execute(Category);
+            var result = CategoryServices.CreateCategoryService.Execute(Category);
             return new JsonResult(result);
         }
 
         // PUT api/<CategoryController>/5
         [HttpPut("{id}")]
-        public JsonResult Put(int id,[FromBody] UpdateCategoryDto Category)
+        public JsonResult Put(int id, [FromBody] UpdateCategoryDto Category)
         {
-            var result = _updateCategoryService.Execute(id,Category);
+            var result = CategoryServices.UpdateCategoryService.Execute(id, Category);
             return new JsonResult(result);
         }
 
@@ -83,14 +55,14 @@ namespace Appdoon.WebApi.Controllers
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            var result = _deleteCategoryService.Execute(id);
-            return new JsonResult(result); 
+            var result = CategoryServices.DeleteCategoryService.Execute(id);
+            return new JsonResult(result);
         }
 
         [HttpGet]
         public JsonResult Search(string SearchedText, int PageNumber, int PageSize)
         {
-            var result = _searchCategoriesService.Execute(SearchedText, PageNumber, PageSize);
+            var result = CategoryServices.SearchCategoriesService.Execute(SearchedText, PageNumber, PageSize);
             return new JsonResult(result);
         }
     }

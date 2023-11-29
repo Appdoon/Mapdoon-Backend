@@ -29,12 +29,14 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                 var roadmap = _context.RoadMaps
                     .Where(x => x.Id == id)
                     .Include(r => r.Categories)
+                    .Include(r => r.Creatore)
                     .Include(r => r.Steps)
                     .ThenInclude(s => s.ChildSteps)
                     .ThenInclude(l => l.Linkers)
                     .Select(r => new IndividualRoadMapDto()
                     {
                         Id = r.Id,
+                        CreateDate = r.InsertTime,
                         Description = r.Description,
                         ImageSrc = r.ImageSrc,
                         Stars = r.Stars,
@@ -54,8 +56,14 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                             RoadMapId = s.RoadMapId,
                             ChildSteps = s.ChildSteps,
                         }).ToList(),
-                        CreatorId = (int)r.CreatoreId
+                        CreatorId = r.CreatoreId,
+                        CreatorUserName = r.Creatore.Username,
                     }).FirstOrDefault();
+
+                // get number of homeworks with this roadmap id
+                roadmap.HomeworksNumber = _context.ChildSteps
+                                                  .Where(cs => cs.HomeworkId == id && cs.HomeworkId != null)
+                                                  .Count();
 
                 if (roadmap == null)
                 {
@@ -89,12 +97,15 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
+        public DateTime CreateDate { get; set; }
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
         public float? Stars { get; set; }
         public List<Category> Categories { get; set; }
         public List<Step> Steps { get; set; }
         public int CreatorId { get; set; }
+        public string CreatorUserName { get; set; }
+        public int HomeworksNumber { get; set; }
         public int RateCount;
     }
 }

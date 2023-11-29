@@ -6,6 +6,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Common.HashFunctions;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,8 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 		public int Id { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
-	}
+        public UserRole UserRole { get; set; }
+    }
 
 	public class LoginUserService : ILoginUserService
 	{
@@ -83,6 +85,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 				}
 
 				var userWithUsername = await _context.Users
+					.Include(u => u.Roles)
 					.Where(u => u.Username == loginUserDto.Email)
 					.FirstOrDefaultAsync();
 
@@ -107,6 +110,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 							Id = userWithUsername.Id,
 							Username = userWithUsername.Username,
 							Email = userWithUsername.Email,
+							UserRole = Enum.Parse<UserRole>(userWithUsername.Roles.FirstOrDefault().Name),
 						},
 					};
 				}
@@ -219,6 +223,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 			#endregion
 
 			var user = await _context.Users
+				.Include(u => u.Roles)
 				.Where(u => u.Email == loginUserDto.Email)
 				.FirstOrDefaultAsync();
 
@@ -243,6 +248,7 @@ namespace Appdoon.Application.Services.Users.Command.LoginUserService
 						Id = user.Id,
 						Username = user.Username,
 						Email = user.Email,
+						UserRole = Enum.Parse<UserRole>(user.Roles.FirstOrDefault().Name),
 					},
 				};
 			}
