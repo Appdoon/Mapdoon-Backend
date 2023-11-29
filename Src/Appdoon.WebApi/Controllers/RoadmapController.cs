@@ -102,13 +102,6 @@ namespace Appdoon.WebApi.Controllers
 		[HttpGet("{id}")]
 		public JsonResult Get(int id)
 		{
-			// GetUserRoadmapService
-			//var userId = int.Parse(User.Identities.First()
-			//    .Claims.First()
-			//    .Value);
-
-			//var result = _getUserRoadmapService.Execute(id,userId);
-
 			var result = _getIndividualRoadmapService.Execute(id);
 
 			return new JsonResult(result);
@@ -117,7 +110,7 @@ namespace Appdoon.WebApi.Controllers
 		[HttpGet("{RoadmapId}")]
 		public JsonResult UserRoadmap(int RoadmapId)
 		{
-			int UserId = GetIdFromCookie();
+			int UserId = _currentContext.User.Id;
 			var result = _getUserRoadmapService.Execute(RoadmapId, UserId);
 
 			return new JsonResult(result);
@@ -127,7 +120,7 @@ namespace Appdoon.WebApi.Controllers
 		[HttpPost]
 		public JsonResult Post()
 		{
-			int CreatorId = GetIdFromCookie();
+			int CreatorId = _currentContext.User.Id;
 			var result = _createRoadmapService.Execute(Request, _env.ContentRootPath, CreatorId);
 			return new JsonResult(result);
 		}
@@ -168,7 +161,7 @@ namespace Appdoon.WebApi.Controllers
 		public JsonResult HasUserRoadmap(int RoadmapId)
 		{
 
-			int UserId = GetIdFromCookie();
+			int UserId = _currentContext.User.Id;
 			var result = _checkUserRegisterRoadmapService.Execute(RoadmapId, UserId);
 
 			return new JsonResult(result);
@@ -178,7 +171,7 @@ namespace Appdoon.WebApi.Controllers
 		public JsonResult RegisterRoadmap(int RoadmapId)
 		{
 			// should use cookies for geting userId not api call
-			int UserId = GetIdFromCookie();
+			int UserId = _currentContext.User.Id;
 			var result = _registerRoadmapService.Execute(RoadmapId, UserId);
 
 			return new JsonResult(result);
@@ -187,7 +180,7 @@ namespace Appdoon.WebApi.Controllers
 		[HttpPost("{RoadmapId}")]
 		public JsonResult BookmarkRoadmap(int RoadmapId)
 		{
-			int userId = GetIdFromCookie();
+			int userId = _currentContext.User.Id;
 			var result = _bookmarkRoadmapService.Execute(RoadmapId, userId);
 
 			return new JsonResult(result);
@@ -196,7 +189,7 @@ namespace Appdoon.WebApi.Controllers
 		[HttpGet("{RoadmapId}")]
 		public JsonResult IsUserBookMarkedRoadmap(int RoadmapId)
 		{
-			int userId = GetIdFromCookie();
+			int userId = _currentContext.User.Id;
 			var result = _isUserBookMarkedRoadmapService.Execute(RoadmapId, userId);
 			return new JsonResult(result);
 		}
@@ -214,41 +207,10 @@ namespace Appdoon.WebApi.Controllers
 		[HttpPost]
 		public JsonResult DoneChildStep(int ChildStepId)
 		{
-			int UserId = GetIdFromCookie();
+			int UserId = _currentContext.User.Id;
 			var result = _doneChildStepService.Execute(ChildStepId, UserId);
 
 			return new JsonResult(result);
-		}
-
-
-		private int GetIdFromCookie()
-		{
-			var user = _currentContext.User;
-
-			return user.Id;
-
-			//try
-			//{
-			//	if (HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null)
-			//	{
-			//		return -1;
-			//	}
-
-			//	var IdStr = HttpContext.User.Identities
-			//		.FirstOrDefault()
-			//		.Claims
-			//		//.Where(c => c.Type == "NameIdentifier")
-			//		.FirstOrDefault()
-			//		.Value;
-
-			//	int Id = int.Parse(IdStr);
-			//	return Id;
-			//}
-			//catch (Exception e)
-			//{
-			//	return -1;
-			//}
-
 		}
 	}
 }
