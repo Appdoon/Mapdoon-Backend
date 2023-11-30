@@ -37,6 +37,14 @@ namespace Mapdoon.Application.Services.Comments.Command.UpdateCommentService
                     updatecomment.Text = comment.Text;
                     updatecomment.IsEdited = true;
                 }
+                if (updatecomment == null)
+                {
+                    return new ResultDto()
+                    {
+                        IsSuccess = false,
+                        Message = "نظر پیدا نشد",
+                    };
+                }
                 _context.SaveChanges();
                 return new ResultDto()
                 {
