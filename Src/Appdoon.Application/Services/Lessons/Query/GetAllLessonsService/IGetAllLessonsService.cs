@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Appdoon.Application.Services.Lessons.Query.GetAllLessonsService
 		public string Title { get; set; } = string.Empty;
 		public string Text { get; set; }
 		public string TopBannerSrc { get; set; } = string.Empty;
+		public bool HasNewSrc { get; set; } = false;
 	}
 
 	public class AllLessonsDto
@@ -26,18 +28,22 @@ namespace Appdoon.Application.Services.Lessons.Query.GetAllLessonsService
 	}
 	public interface IGetAllLessonsService : ITransientService
     {
-		ResultDto<AllLessonsDto> Execute(int page_number, int page_size);
+		Task<ResultDto<AllLessonsDto>> Execute(int page_number, int page_size);
 	}
 
 	public class GetAllLessonsService : IGetAllLessonsService
 	{
 		private readonly IDatabaseContext _context;
+        private readonly IFileHandler _fileHandler;
 
-		public GetAllLessonsService(IDatabaseContext context)
+        public GetAllLessonsService(
+			IDatabaseContext context,
+			IFileHandler fileHandler)
 		{
 			_context = context;
+            _fileHandler = fileHandler;
 		}
-		public ResultDto<AllLessonsDto> Execute(int page_number, int page_size)
+		public async Task<ResultDto<AllLessonsDto>> Execute(int page_number, int page_size)
 		{
 			try
 			{
@@ -51,6 +57,15 @@ namespace Appdoon.Application.Services.Lessons.Query.GetAllLessonsService
 						Text = r.Text,
 					}).ToPaged(page_number, page_size,out rowCount)
 					.ToList();
+
+				foreach(var lesson in lessons)
+				{
+                    if(lesson.TopBannerSrc != "" && await _fileHandler.IsObjectExist("lessons", lesson.TopBannerSrc))
+					{
+						lesson.HasNewSrc = true;
+						lesson.TopBannerSrc = await _fileHandler.GetObjectUrl("lessons", lesson.TopBannerSrc);
+                    }
+                }
 
 				AllLessonsDto allLessonsDto = new AllLessonsDto();
 				allLessonsDto.Lessons = lessons;

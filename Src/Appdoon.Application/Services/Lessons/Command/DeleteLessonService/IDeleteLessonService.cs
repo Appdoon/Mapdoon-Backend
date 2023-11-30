@@ -23,9 +23,6 @@ namespace Appdoon.Application.Services.Lessons.Command.DeleteLessonService
 		{
 			try
 			{
-
-				//Existence(id)
-
 				var les = _context.Lessons.Where(s => s.Id == id).FirstOrDefault();
 				if (les == null)
 				{
