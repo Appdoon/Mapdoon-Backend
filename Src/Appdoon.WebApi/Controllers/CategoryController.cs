@@ -21,49 +21,49 @@ namespace Appdoon.WebApi.Controllers
 
         // GET: api/<CategoryController>
         [HttpGet]
-        public JsonResult Get(int PageNumber, int PageSize)
+        public IActionResult Get(int PageNumber, int PageSize)
         {
             var result = CategoryServices.GetAllCategoriesService.Execute(PageNumber, PageSize);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
             var result = CategoryServices.GetIndividualCategoryService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // POST api/<CategoryController>
         [HttpPost]
-        public JsonResult Post(CreateCategoryDto Category)
+        public IActionResult Post(CreateCategoryDto Category)
         {
             var result = CategoryServices.CreateCategoryService.Execute(Category);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // PUT api/<CategoryController>/5
         [HttpPut("{id}")]
-        public JsonResult Put(int id, [FromBody] UpdateCategoryDto Category)
+        public IActionResult Put(int id, [FromBody] UpdateCategoryDto Category)
         {
             var result = CategoryServices.UpdateCategoryService.Execute(id, Category);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // DELETE api/<CategoryController>/5
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var result = CategoryServices.DeleteCategoryService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         [HttpGet]
-        public JsonResult Search(string SearchedText, int PageNumber, int PageSize)
+        public IActionResult Search(string SearchedText, int PageNumber, int PageSize)
         {
             var result = CategoryServices.SearchCategoriesService.Execute(SearchedText, PageNumber, PageSize);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

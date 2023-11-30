@@ -45,66 +45,66 @@ namespace Appdoon.WebApi.Controllers
 			_currentContext = currentContext;
 		}
 		[HttpGet]
-		public JsonResult Info()
+		public IActionResult Info()
 		{
 			int Id = GetIdFromCookie();
 			var result = _getUserService.Execute(Id);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpPut]
-		public JsonResult Edit(EditUserDto UserDto)
+		public IActionResult Edit(EditUserDto UserDto)
 		{
 			int Id = GetIdFromCookie();
 			var result = _editUserService.Execute(Id, UserDto);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpPut]
-		public JsonResult EditPassword(EditPasswordDto PasswordDto)
+		public IActionResult EditPassword(EditPasswordDto PasswordDto)
 		{
 			int Id = GetIdFromCookie();
 			var result = _editPasswordService.Execute(Id, PasswordDto);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet]
-		public JsonResult RegisteredRoadMaps()
+		public IActionResult RegisteredRoadMaps()
 		{
 			int Id = GetIdFromCookie();
 
 			var result = _getRegisteredRoadMapService.Execute(Id);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet]
-		public JsonResult BookMarkedRoadMaps()
+		public IActionResult BookMarkedRoadMaps()
 		{
 			int Id = GetIdFromCookie();
 
 			var result = _getBookMarkRoadMapService.Execute(Id);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet]
-		public JsonResult GetCreatedRoadmaps()
+		public IActionResult GetCreatedRoadmaps()
 		{
 			var userId = GetIdFromCookie();
 
 			var result = _getCreatedRoadMapService.Execute(userId);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet]
-		public JsonResult GetCreatedLessons()
+		public IActionResult GetCreatedLessons()
 		{
 			var userId = GetIdFromCookie();
 
 			var result = _getCreatedLessonsService.Execute(userId);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 

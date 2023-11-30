@@ -26,7 +26,7 @@ namespace Mapdoon.WebApi.Controllers
 		}
 
 		[HttpPost("Login")]
-		public async Task<JsonResult> Login([FromServices] IJWTProvider jwtProvider, LoginUserDto loginUserDto)
+		public async Task<IActionResult> Login([FromServices] IJWTProvider jwtProvider, LoginUserDto loginUserDto)
 		{
 			var userResult = await _loginUserService.Execute(loginUserDto);
 
@@ -40,14 +40,14 @@ namespace Mapdoon.WebApi.Controllers
 					IsSuccess = true
 				};
 
-				return new JsonResult(result);
+				return Ok(result);
 			}
 
-			return new JsonResult(userResult);
+			return BadRequest(userResult);
 		}
 
 		[HttpPost("Register")]
-		public JsonResult Register([FromServices] IRegisterUserService registerUserService, [FromServices] IJWTProvider jwtProvider, RequestRegisterUserDto user)
+		public IActionResult Register([FromServices] IRegisterUserService registerUserService, [FromServices] IJWTProvider jwtProvider, RequestRegisterUserDto user)
 		{
 			// use new regiser user service
 			var registerResult = registerUserService.Execute(user);
@@ -67,10 +67,10 @@ namespace Mapdoon.WebApi.Controllers
 					IsSuccess = true
 				};
 
-				return new JsonResult(result);
+				return Ok(result);
 			}
 
-			return new JsonResult(registerResult);
+			return BadRequest(registerResult);
 		}
 
 		[HttpGet("UserInfo")]
