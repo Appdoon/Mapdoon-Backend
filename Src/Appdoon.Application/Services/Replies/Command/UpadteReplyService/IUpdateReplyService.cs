@@ -37,6 +37,14 @@ namespace Mapdoon.Application.Services.Replies.Command.UpadteReplyService
             {
                 var updatereply = _context.Replies
                  .FirstOrDefault(c => c.commentId == commentId && c.UserId == userId);
+                if (updatereply == null)
+                {
+                    return new ResultDto()
+                    {
+                        IsSuccess = false,
+                        Message = "پاسخ نظر یافت نشد",
+                    };
+                }
                 if (updatereply != null)
                 {
                     updatereply.Text = reply.Text;
