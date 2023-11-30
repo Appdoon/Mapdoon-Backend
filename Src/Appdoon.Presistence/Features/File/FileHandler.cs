@@ -18,9 +18,9 @@ namespace Mapdoon.Presistence.Features.File
 
         public FileHandler()
         {
-            var endponit = "localhost:9001";
-            var accessKey = "admin";
-            var secretKey = "password";
+            var endponit = "188.121.116.198:9000";
+            var accessKey = "minioadmin";
+            var secretKey = "minioadmin";
 
             try
             {
