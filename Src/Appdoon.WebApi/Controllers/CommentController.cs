@@ -33,30 +33,30 @@ namespace Mapdoon.WebApi.Controllers
             _deleteCommentService = deleteCommentService;
         }
         [HttpPost("{RoadMapId}")]
-        public JsonResult Post(int RoadMapId, CreateCommentDto comment, [FromServices] ICurrentContext currentContext)
+        public IActionResult Post(int RoadMapId, CreateCommentDto comment, [FromServices] ICurrentContext currentContext)
         {
             int userId = currentContext.User.Id;
             var result = _createCommentService.Execute(RoadMapId, userId, comment);
-            return new JsonResult(result);
+            return Ok(result);
         }
         [HttpPut("{RoadMapId}")]
-        public JsonResult Put(int RoadMapId, UpdateCommentDto comment, [FromServices] ICurrentContext currentContext)
+        public IActionResult Put(int RoadMapId, UpdateCommentDto comment, [FromServices] ICurrentContext currentContext)
         {
             int userId = currentContext.User.Id;
             var result = _updateCommentService.Execute(RoadMapId, userId, comment);
-            return new JsonResult(result);
+            return Ok(result);
         }
         [HttpGet("{RoadMapId}")]
-        public JsonResult Get(int RoadMapId)
+        public IActionResult Get(int RoadMapId)
         {
             var result = _getCommentsOfRoadmapService.Execute(RoadMapId);
-            return new JsonResult(result);
+            return  Ok(result);
         }
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var result = _deleteCommentService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

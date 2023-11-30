@@ -54,52 +54,52 @@ namespace Appdoon.WebApi.Controllers
 
         // GET: api/<LessonController>
         [HttpGet]
-        public async Task<JsonResult> Get(int PageNumber, int PageSize)
+        public async Task<IActionResult> Get(int PageNumber, int PageSize)
         {
             var result = await _getAllLessonsService.Execute(PageNumber, PageSize);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // GET api/<LessonController>/5
         [HttpGet("{id}")]
-        public async Task<JsonResult> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             var result = await _getLessonService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // POST api/<LessonController>
         [HttpPost]
-        public async Task<JsonResult> Post([FromForm] CreateLessonDto createLessonDto)
+        public async Task<IActionResult> Post([FromForm] CreateLessonDto createLessonDto)
         {
             var userId = GetIdFromCookie();
 
             var result = await _createLessonService.Execute(createLessonDto, userId);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // PUT api/<LessonController>/5
         [HttpPut("{id}")]
-        public async Task<JsonResult> Put([FromForm] UpdateLessonDto updateLessonDto, int id)
+        public async Task<IActionResult> Put([FromForm] UpdateLessonDto updateLessonDto, int id)
         {
             var result = await _updateLessonService.Execute(updateLessonDto, id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // DELETE api/<LessonController>/5
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var result = _deleteLessonService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // GET api/<LessonController>
         [HttpGet]
-        public async Task<JsonResult> Search(string SearchedText, int PageNumber, int PageSize)
+        public async Task<IActionResult> Search(string SearchedText, int PageNumber, int PageSize)
         {
             var result = await _searchLessonsService.Execute(SearchedText, PageNumber, PageSize);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         private int GetIdFromCookie()
