@@ -52,6 +52,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 				var roadmap = _context.RoadMaps
 					.Where(x => x.Id == RoadmapId)
 					.Include(r => r.Categories)
+					.Include(r => r.Creatore)
 
 					//1 .Include("Steps.ChildSteps.Linkers")
 					//2 .Include(r => r.Steps)
@@ -66,6 +67,8 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 					.Select(r => new IndividualRoadMapDto()
 					{
 						Id = r.Id,
+						CreateDate = r.InsertTime,
+						CreatorUserName = r.Creatore.Username,
 						Description = r.Description,
 						ImageSrc = r.ImageSrc,
 						Stars = r.Stars,
@@ -108,6 +111,10 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 					};
 				}
 
+				roadmap.HomeworksNumber = _context.ChildSteps
+												  .Where(cs => cs.HomeworkId == RoadmapId && cs.HomeworkId != null)
+												  .Count();
+
 				return new ResultDto<IndividualRoadMapDto>()
 				{
 					IsSuccess = true,
@@ -130,6 +137,9 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 	public class IndividualRoadMapDto
 	{
 		public int Id { get; set; }
+		public string CreatorUserName { get; set; }
+		public DateTime CreateDate { get; set; }
+		public int HomeworksNumber { get; set; }
 		public string Title { get; set; } = string.Empty;
 		public string Description { get; set; }
 		public string ImageSrc { get; set; } = string.Empty;

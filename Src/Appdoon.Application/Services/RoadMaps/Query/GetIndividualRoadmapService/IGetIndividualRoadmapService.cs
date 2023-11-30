@@ -42,6 +42,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                         Stars = r.Stars,
                         Title = r.Title,
                         Categories = r.Categories,
+                        RateCount = r.RateCount,
                         Steps = r.Steps.Select(s => new Step()
                         {
                             Id = s.Id,
@@ -105,5 +106,6 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
         public int CreatorId { get; set; }
         public string CreatorUserName { get; set; }
         public int HomeworksNumber { get; set; }
+        public int RateCount;
     }
 }

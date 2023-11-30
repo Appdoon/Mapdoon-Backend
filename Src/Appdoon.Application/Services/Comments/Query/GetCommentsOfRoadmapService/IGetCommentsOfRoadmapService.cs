@@ -16,6 +16,7 @@ namespace Mapdoon.Application.Services.Comments.Query.GetCommentsOfRoadmapServic
 {
     public class ReplyDto
     {
+        public int Id { get; set; }
         public string Username { get; set; }
         public string Text { get; set; }
         public string CreatedAt { get; set; }
@@ -23,6 +24,7 @@ namespace Mapdoon.Application.Services.Comments.Query.GetCommentsOfRoadmapServic
     }
     public class CommentDto
     {
+        public int Id { get; set; }
         public string Username { get; set; }
         public string Text { get; set; }
         public string CreatedAt { get; set; }
@@ -53,6 +55,7 @@ namespace Mapdoon.Application.Services.Comments.Query.GetCommentsOfRoadmapServic
                     .Where(c => c.RoadmapId == roadmapId)
                     .Select(c => new CommentDto
                     {
+                        Id = c.Id,
                         Username = c.User.Username,
                         Text = c.Text,
                         CreatedAt = c.CreatedAt.Date.ToString("dd/MM/yyyy"),
@@ -60,6 +63,7 @@ namespace Mapdoon.Application.Services.Comments.Query.GetCommentsOfRoadmapServic
                         Replies = c.replies
                         .Select(cr => new ReplyDto
                         {
+                            Id = cr.Id,
                             Username = cr.User.Username,
                             Text = cr.Text,
                             CreatedAt = c.CreatedAt.Date.ToString("dd/MM/yyyy"),
