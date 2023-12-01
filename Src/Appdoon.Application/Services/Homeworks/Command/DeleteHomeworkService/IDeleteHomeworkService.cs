@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
 using Mapdoon.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -24,6 +25,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
             try
             {
                 var homework = _context.Homeworks
+                    .Include(h => h.ChildStep)
                     .Where(x => x.Id == id)
                     .FirstOrDefault();
 
