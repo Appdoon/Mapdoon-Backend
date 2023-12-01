@@ -97,11 +97,11 @@ namespace Appdoon.Application.Services.Users.Command.ResetPasswordService
                 };
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return new ResultDto()
                 {
-                    Message = "خطا در تغییر رمز!",
+                    Message = e.Message,
                     IsSuccess = false,
                 };
             }

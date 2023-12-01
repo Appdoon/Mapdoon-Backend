@@ -53,7 +53,7 @@ namespace Appdoon.Application.Services.ChildSteps.Command.DeleteChildStepService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در حذف محتوا!",
+					Message = e.Message,
 				};
 			}
 		}

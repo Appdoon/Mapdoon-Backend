@@ -27,23 +27,23 @@ namespace Appdoon.WebApi.Controllers
         }
 
         [HttpGet("{homeworkId}")]
-        public JsonResult Get(int homeworkId)
+        public IActionResult Get(int homeworkId)
         {
             var result = _getAllHomeworkAnswerService.Execute(homeworkId);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         [HttpPost("submit-scores")]
-        public JsonResult Post([FromBody] HomeworkProgressSubmissionDto submission)
+        public IActionResult Post([FromBody] HomeworkProgressSubmissionDto submission)
         {
             var result = _submitscoreservice.Execute(submission);
-            return new JsonResult(result);
+            return Ok(result);
         }
         [HttpPut("update-scores")]
-        public JsonResult Put([FromBody] HomeworkProgressUpdateDto updateDto)
+        public IActionResult Put([FromBody] HomeworkProgressUpdateDto updateDto)
         {
             var result = _updatescoreservice.Execute(updateDto);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

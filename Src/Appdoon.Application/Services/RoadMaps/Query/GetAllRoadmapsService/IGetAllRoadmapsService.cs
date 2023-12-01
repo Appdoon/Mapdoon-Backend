@@ -19,6 +19,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
         public float? Stars { get; set; }
+        public int RateCount;
         public List<Category> Categories { get; set; }
     }
     public class AllRoadmapsDto
@@ -55,6 +56,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
                         Stars = r.Stars,
                         Title = r.Title,
                         Categories = r.Categories,
+                        RateCount = r.RateCount,
 
                     })
                     .ToPaged(PageNumber, PageSize, out rowCount)
@@ -78,7 +80,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
                 return new ResultDto<AllRoadmapsDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق!",
+                    Message = e.Message,
                     Data = new AllRoadmapsDto(),
                 };
             }

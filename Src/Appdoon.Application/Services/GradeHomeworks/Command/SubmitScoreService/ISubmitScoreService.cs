@@ -41,13 +41,29 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
                     .Include(hp => hp.Homework)
                     .FirstOrDefault(hp => hp.HomeworkId == submission.HomeworkId && hp.UserId == submission.UserId);
                 homeworkProgress.Score = submission.Score;
+                var childstepprogress = _context.ChildStepProgresses
+                .FirstOrDefault(hp => hp.ChildStep.HomeworkId == homeworkProgress.Homework.Id);
+                if(childstepprogress == null)
+                {
+                    var childStepId = _context.ChildSteps
+                        .FirstOrDefault(hp => hp.HomeworkId == submission.HomeworkId).Id;
+                    childstepprogress = new ChildStepProgress()
+                    {
+                        ChildStepId = childStepId,
+                        UserId = submission.UserId,
+                        IsRequired = true
+                    };
+                    _context.ChildStepProgresses.Add(childstepprogress);
+                }
                 if (submission.Score >= homeworkProgress.Homework.MinScore)
                 {
                     homeworkProgress.IsDone = true;
+                    childstepprogress.IsDone = true;
                 }
                 else
                 {
                     homeworkProgress.IsDone = false;
+                    childstepprogress.IsDone = false;
                 }
                 _context.SaveChanges();
                 return new ResultDto()
@@ -61,7 +77,7 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ثبت نمره!",
+                    Message = e.Message,
                 };
             }
         }

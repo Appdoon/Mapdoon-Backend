@@ -88,7 +88,7 @@ namespace Appdoon.Application.Services.Users.Command.EditUserService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در تغییر اطلاعات!",
+					Message = e.Message,
 				};
 			}
 		}

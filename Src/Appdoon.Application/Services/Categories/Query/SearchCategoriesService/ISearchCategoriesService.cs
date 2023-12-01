@@ -59,12 +59,12 @@ namespace Appdoon.Application.Services.Categories.Query.SearchCategoriesService
                     Data = allCategoriesDto,
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return new ResultDto<AllCategoriesDto>()
                 {
                     IsSuccess = false,
-                    Message = "جستجو ناموفق!",
+                    Message = e.Message,
                     Data = new AllCategoriesDto(),
                 };
             }

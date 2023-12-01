@@ -1,5 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,20 +20,24 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 		public string TopBannerSrc { get; set; }
 		public string Text { get; set; } = string.Empty;
 		public int CreatorId { get; set; } = 0;
+		public bool HasNewSrc { get; set; } = false;
 	}
 	public interface IGetIndividualLessonService : ITransientService
     {
-		ResultDto<LessonDto> Execute(int id);
+		Task<ResultDto<LessonDto>> Execute(int id);
 	}
 
 	public class GetLessonService : IGetIndividualLessonService
 	{
 		private readonly IDatabaseContext _context;
-		public GetLessonService(IDatabaseContext context)
+        private readonly IFileHandler _fileHandler;
+
+        public GetLessonService(IDatabaseContext context, IFileHandler fileHandler)
 		{
 			_context = context;
+			_fileHandler = fileHandler;
 		}
-		public ResultDto<LessonDto> Execute(int id)
+		public async Task<ResultDto<LessonDto>> Execute(int id)
 		{
 			try
 			{
@@ -47,9 +52,15 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 						TopBannerSrc = r.TopBannerSrc,
 						Text = r.Text,
 						CreatorId = r.CreatorId,
-					}).FirstOrDefault();
+                    }).FirstOrDefault();
 
-				if(lesson == null)
+                if (lesson != null && lesson.TopBannerSrc != "" && await _fileHandler.IsObjectExist("lessons", lesson.TopBannerSrc))
+                {
+                    lesson.HasNewSrc = true;
+                    lesson.TopBannerSrc = await _fileHandler.GetObjectUrl("lessons", lesson.TopBannerSrc);
+                }
+
+                if (lesson == null)
 				{
 					return new ResultDto<LessonDto>()
 					{
@@ -71,7 +82,7 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 				return new ResultDto<LessonDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new LessonDto(),
 				};
 			}

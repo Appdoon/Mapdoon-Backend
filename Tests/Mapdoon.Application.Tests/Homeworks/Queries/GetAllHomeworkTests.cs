@@ -25,11 +25,6 @@ namespace Mapdoon.Application.Tests.Homeworks.Queries
 
             for (int i = 0; i < 10; i++)
             {
-                int childStepId = AddEntity(new ChildStep
-                {
-                    StepId = stepId
-                }); ;
-
                 int homeworkId = AddEntity(new Homework
                 {
                     Title = "Title",
@@ -38,7 +33,12 @@ namespace Mapdoon.Application.Tests.Homeworks.Queries
                     CreatorId = userId,
                 });
 
-                GetDatabaseContext().ChildSteps.Find(childStepId).HomeworkId = homeworkId;
+                int childStepId = AddEntity(new ChildStep
+                {
+                    StepId = stepId,
+                    HomeworkId = homeworkId,
+                });
+
                 GetDatabaseContext().SaveChanges();
             }
 

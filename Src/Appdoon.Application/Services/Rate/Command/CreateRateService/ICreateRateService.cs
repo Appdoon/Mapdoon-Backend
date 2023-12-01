@@ -58,7 +58,7 @@ namespace Appdoon.Application.Services.Rate.Command.CreateRateService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ثبت امتیاز!",
+                    Message = e.Message,
                 };
             }
         }

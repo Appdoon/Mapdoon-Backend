@@ -78,7 +78,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.CheckUserRegisterRoadmapSe
 				return new ResultDto<bool>()
 				{
 					IsSuccess = false,
-					Message = "خطا در چک کردن رودمپ و کاربر",
+					Message = e.Message,
 					Data = false,
 				};
 			}

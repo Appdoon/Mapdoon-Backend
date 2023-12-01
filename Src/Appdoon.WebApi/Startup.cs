@@ -1,3 +1,4 @@
+using Appdoon.Application.Interfaces;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Presistence.Contexts;
@@ -11,7 +12,6 @@ using Mapdoon.Domain;
 using Mapdoon.Presistence;
 using Mapdoon.Presistence.Features.Email;
 using Mapdoon.WebApi.Application.Dependencies;
-using Mapdoon.WebApi.Application.HostedServices;
 using Mapdoon.WebApi.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +24,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.IO;
 using System.Text;
@@ -42,16 +43,24 @@ namespace OU_API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			//var config = new ConfigurationBuilder()
+			//	.AddJsonFile("appsettings.json", optional: false)
+			//	.Build();
+
+			var appSettingPath = Environment.GetEnvironmentVariable("ENVIRONMENT_PATH");
 			var config = new ConfigurationBuilder()
-				.AddJsonFile("appsettings.json", optional: false)
+				.AddJsonFile(appSettingPath ?? "appsettings.json", optional: false)
 				.Build();
 
 			var jwtOptions = new JWTOptions();
 			config.GetSection("JWTOptions").Bind(jwtOptions);
 
+			var frontDomain = config.GetSection("FrontDomain").Value;
+
 			services.AddHttpContextAccessor();
 
 			//services.AddHostedService<AutoMigrateHosted>();
+			//services.AddHostedService<BackgroundMigration>();
 
 			//Enable CORS
 			// i add allow credentials
@@ -77,6 +86,7 @@ namespace OU_API
 						// Only add this to allow testing with localhost, remove this line in production!  
 						if(origin.ToLower().StartsWith("http://localhost")) return true;
 						// Insert your production domain here.  
+						if(origin.ToLower().StartsWith(frontDomain)) return true;
 						if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
 						return false;
 					});
@@ -203,13 +213,21 @@ namespace OU_API
 
 			// Add EF Core
 			services.AddEntityFrameworkSqlServer()
-				.AddDbContext<DatabaseContext>(option => option.UseSqlServer(Configuration["ConnectionStrings:OUAppCon"]));
+				.AddDbContext<DatabaseContext>(option => option.UseSqlServer(config["ConnectionStrings:OUAppCon"]));
 
+			var dbContext = services.BuildServiceProvider().GetService<IDatabaseContext>();
+			dbContext.Database.MigrateAsync();
+			Log.Information("Database is connected");
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			app.UseSerilogRequestLogging(configure =>
+			{
+				configure.MessageTemplate = "HTTP {RequestMethod} {RequestPath} ({UserId}) responded {StatusCode} in {Elapsed:0.0000}ms";
+			}); // We want to log all HTTP requests
+
 			//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 			app.UseCors("Dev");
 

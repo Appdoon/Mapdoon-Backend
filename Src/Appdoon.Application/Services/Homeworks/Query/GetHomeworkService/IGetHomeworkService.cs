@@ -54,7 +54,7 @@ namespace Appdoon.Application.Services.Homeworks.Query.GetHomeworkService
                 return new ResultDto<NewHomeworkDto>()
                 {
                     IsSuccess = false,
-                    Message = "ارسال ناموفق ‌‌تکالیف!",
+                    Message = e.Message,
                     Data = new NewHomeworkDto()
                 };
             }

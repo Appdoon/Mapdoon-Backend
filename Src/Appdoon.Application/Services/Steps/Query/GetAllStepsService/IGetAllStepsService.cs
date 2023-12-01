@@ -73,7 +73,7 @@ namespace Appdoon.Application.Services.Steps.Query.GetAllStepService
 				return new ResultDto<List<StepDto>>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new List<StepDto>(),
 				};
 			}

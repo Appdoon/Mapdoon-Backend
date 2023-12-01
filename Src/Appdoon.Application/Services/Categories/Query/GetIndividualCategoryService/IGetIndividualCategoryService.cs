@@ -62,7 +62,7 @@ namespace Appdoon.Application.Services.Categories.Query.GetIndividualCategorySer
 				return new ResultDto<IndividualCategoryDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new IndividualCategoryDto(),
 				};
 			}

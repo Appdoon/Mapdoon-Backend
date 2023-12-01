@@ -79,7 +79,7 @@ namespace Appdoon.Application.Services.RoadMaps.Command.BookmarkRoadmapService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در اضافه کردن به لیست علاقه مندی ها!",
+					Message = e.Message,
 				};
 			}
 		}

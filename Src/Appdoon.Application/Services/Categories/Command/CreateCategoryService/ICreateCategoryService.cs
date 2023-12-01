@@ -74,7 +74,7 @@ namespace Appdoon.Application.Services.Categories.Command.CreateCategoryService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ساخت دسته!",
+                    Message = e.Message,
                 };
             }
         }

@@ -52,7 +52,7 @@ namespace Appdoon.Application.Services.Categories.Command.DeleteCategoryService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در حذف دسته!",
+					Message = e.Message,
 				};
 			}
 		}

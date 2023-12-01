@@ -23,11 +23,11 @@ namespace Apdoon.WebApi.Controllers
             _createRateService = createRateService;
         }
         [HttpPost("{RoadMapId}")]
-        public JsonResult Post(int RoadMapId , CreateRateDto rateDto ,[FromServices] ICurrentContext currentContext)
+        public IActionResult Post(int RoadMapId , CreateRateDto rateDto ,[FromServices] ICurrentContext currentContext)
         {
             int userId = currentContext.User.Id;
             var result = _createRateService.Execute(RoadMapId , userId , rateDto);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

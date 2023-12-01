@@ -45,42 +45,42 @@ namespace Appdoon.WebApi.Controllers
         }
         // GET: api/<LinkerController>
         [HttpGet]
-        public JsonResult Get()
+        public IActionResult Get()
         {
             var result = _getAllLinkersService.Execute();
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // GET api/<LinkerController>/5
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
             var result = _getIndividualLinkerService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // POST api/<LinkerController>
         [HttpPost]
-        public JsonResult Post(CreateLinkerLinkerDto createLinkerDto)
+        public  IActionResult Post(CreateLinkerLinkerDto createLinkerDto)
         {
             var result = _createLinkerService.Execute(createLinkerDto);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // PUT api/<LinkerController>/5
         [HttpPut("{id}")]
-        public JsonResult Put(int id, UpdateLinkerLinkerDto updateLinkerDto)
+        public IActionResult Put(int id, UpdateLinkerLinkerDto updateLinkerDto)
         {
             var result = _updateLinkerService.Execute(id, updateLinkerDto);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // DELETE api/<LinkerController>/5
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var result = _deleteLinkerService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

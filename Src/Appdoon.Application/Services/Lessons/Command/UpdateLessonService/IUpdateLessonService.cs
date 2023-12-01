@@ -1,77 +1,62 @@
 ﻿using Appdoon.Application.Interfaces;
+using Appdoon.Application.Services.Lessons.Command.CreateLessonService;
 using Appdoon.Common.Dtos;
+using Mapdoon.Application.Interfaces;
+using Mapdoon.Common.HashFunctions;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 {
 	public class UpdateLessonDto
 	{
 		public string Title { get; set; }
-		public string TopBannerSrc { get; set; }
-		public string Text { get; set; }
-	}
+        public IFormFile TopBannerPhoto { get; set; }
+        public string Text { get; set; }
+		public string PhotoFileName { get; set; }
+    }
 	public interface IUpdateLessonService : ITransientService
     {
-		ResultDto Execute(int id, HttpRequest httpRequest, string currentpath);
-	}
+		Task<ResultDto> Execute(UpdateLessonDto updateLessonDto, int lessonId);
+    }
 
 	public class UpdateLessonService : IUpdateLessonService
 	{
 		private readonly IDatabaseContext _context;
+		private readonly IFileHandler _fileHandler;
 
-		public UpdateLessonService(IDatabaseContext context)
+        public UpdateLessonService(IDatabaseContext context, IFileHandler fileHandler)
 		{
 			_context = context;
-		}
-		public ResultDto Execute(int id, HttpRequest httpRequest, string currentpath)
-		{
+			_fileHandler = fileHandler;
+        }
+		public async Task<ResultDto> Execute(UpdateLessonDto updateLessonDto, int lessonId)
+        {
 			try
 			{
-				List<string> data = new List<string>();
+                var lesson = _context.Lessons.Where(l => l.Id == lessonId).FirstOrDefault();
 
-				foreach (var key in httpRequest.Form.Keys)
-				{
-					var val = httpRequest.Form[key];
-					data.Add(val);
-				}
+                if (updateLessonDto.TopBannerPhoto != null)
+                {
+                    var imageSrc = GetImageSrc(updateLessonDto.Title, updateLessonDto.PhotoFileName);
+                    await SaveLessonImage(imageSrc, updateLessonDto.TopBannerPhoto);
 
-				var Title = data[0];
-				var Text = data[1];
-				var PhotoFileName = data[2];
+                    if (lesson.TopBannerSrc != "" && await _fileHandler.IsObjectExist("lessons", lesson.TopBannerSrc))
+                    {
+                        await _fileHandler.RemoveObject("lessons", lesson.TopBannerSrc);
+                    }
 
-				var imageSrc = "";
-				var TimeNow = DateTime.Now;
-				var ImageName = Title + "_" + TimeNow.Ticks.ToString();
-				if (httpRequest.Form.Files.Count() != 0)
-				{
-					var postedFile = httpRequest.Form.Files[0];
-					string filename = postedFile.FileName;
-					var physicalPath = currentpath + "/Photos/Lesson/" + $"({ImageName})" + filename;
-					using (var stream = new FileStream(physicalPath, FileMode.Create))
-					{
-						postedFile.CopyTo(stream);
-					}
-					imageSrc = $"({ImageName})" + PhotoFileName.ToString();
-				}
-				else
-				{
-					PhotoFileName = "1.jpg";
-					imageSrc = PhotoFileName;
-				}
-				var les = _context.Lessons.Where(l => l.Id == id).FirstOrDefault();
-				les.UpdateTime = TimeNow;
-				if (imageSrc != "1.jpg")
-				{
-        
-					les.TopBannerSrc = imageSrc;
-				}
-				les.Title = Title;
-				les.Text = Text;			
+                    lesson.TopBannerSrc = imageSrc;
+                }
+
+                lesson.UpdateTime = DateTime.Now;
+                lesson.Title = updateLessonDto.Title;
+                lesson.Text = updateLessonDto.Text;			
 
 				_context.SaveChanges();
 
@@ -86,9 +71,24 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی مقاله!",
+					Message = e.Message,
 				};
 			}
 		}
-	}
+
+        private async Task SaveLessonImage(string imageSrc, IFormFile formFile)
+        {
+            await _fileHandler.CreateBucket("lessons");
+            Stream stream = formFile.OpenReadStream();
+            await _fileHandler.SaveStreamObject("lessons", imageSrc, stream, "image/jpg");
+        }
+
+        private string GetImageSrc(string lessonTitle, string photoFileName)
+        {
+            var ImageName = lessonTitle + "_" + DateTime.Now.Ticks.ToString();
+            var imgaeSrc = $"({ImageName})" + photoFileName.ToString();
+
+            return MD5Hash.ComputeMD5(imgaeSrc);
+        }
+    }
 }

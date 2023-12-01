@@ -1,11 +1,10 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
+using Appdoon.Domain.Entities.RoadMaps;
 using Mapdoon.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
 {
@@ -26,6 +25,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
             try
             {
                 var homework = _context.Homeworks
+                    .Include(h => h.ChildStep)
                     .Where(x => x.Id == id)
                     .FirstOrDefault();
 
@@ -36,6 +36,11 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                         IsSuccess = false,
                         Message = "این آیدی وجود ندارد!",
                     };
+                }
+
+                if (homework.ChildStep != null)
+                {
+                    homework.ChildStep.HomeworkId = null;
                 }
 
                 homework.IsRemoved = true;
@@ -53,7 +58,7 @@ namespace Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در حذف تمرین!",
+                    Message = e.Message,
                 };
             }
         }

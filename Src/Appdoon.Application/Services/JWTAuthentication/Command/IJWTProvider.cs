@@ -31,7 +31,7 @@ namespace Mapdoon.Application.Services.JWTAuthentication.Command
 				new Claim(JwtRegisteredClaimNames.Name, userLoginInfoDto.Username),
 				new Claim(JwtRegisteredClaimNames.Sub, userLoginInfoDto.Id.ToString()),
 				new Claim(JwtRegisteredClaimNames.Email, userLoginInfoDto.Email),
-				new Claim(nameof(UserRole), UserRole.User.ToString()),
+				new Claim(nameof(UserRole), userLoginInfoDto.UserRole.ToString()),
 			};
 
 			var signingCredentials = new SigningCredentials(

@@ -107,7 +107,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در بروزرسانی رودمپ!",
+                    Message = e.Message,
                 };
             }
         }

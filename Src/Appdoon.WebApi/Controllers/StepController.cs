@@ -44,42 +44,42 @@ namespace Appdoon.WebApi.Controllers
         }
         // GET: api/<StepController>
         [HttpGet]
-        public JsonResult Get()
+        public IActionResult Get()
         {
             var result = _getAllStepsService.Execute();
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // GET api/<StepController>/5
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
             var result = _getIndividualStepService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // POST api/<StepController>
         [HttpPost]
-        public JsonResult Post(CreateStepDto createStepDto)
+        public IActionResult Post(CreateStepDto createStepDto)
         {
             var result = _createStepService.Execute(createStepDto);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // PUT api/<StepController>/5
         [HttpPut("{id}")]
-        public JsonResult Put(int id, UpdateStepDto updateStepDto)
+        public IActionResult Put(int id, UpdateStepDto updateStepDto)
         {
             var result = _updateStepService.Execute(id, updateStepDto);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         // DELETE api/<StepController>/5
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var result = _deleteStepService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

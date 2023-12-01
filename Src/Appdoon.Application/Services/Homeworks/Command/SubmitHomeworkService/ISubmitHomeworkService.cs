@@ -12,7 +12,7 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 		public int HomeworkId { get; set; }
 		public string Answer { get; set; }
 	}
-	public interface ISubmitHomeworkService
+	public interface ISubmitHomeworkService : ITransientService
 	{
 		Task<ResultDto> SubmitHomework(SubmitHomeworkDto submitHomeworkDto, int userId);
 	}
@@ -46,12 +46,12 @@ namespace Mapdoon.Application.Services.Homeworks.Command.SubmitHomeworkService
 					Message = "پاسخ تمرین ارسال شد.",
 				};
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در ارسال پاسخ تمرین!",
+					Message = e.Message,
 				};
 			}
 		}

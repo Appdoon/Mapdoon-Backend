@@ -27,7 +27,22 @@ services:
     hostname: appdoon_database
     networks:
     - appdoon_network
+
+  minio:
+    image: "minio/minio:RELEASE.2022-11-11T03-44-20Z"
+    volumes:
+      - minio_storage:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file:
+      - .env.local
+    command: server --console-address ":9001" /data
+    container_name: mapdoon_minio
+    networks:
+      - appdoon_network
 volumes:
   appdoon_db_data:
+  minio_storage:
 networks:
     appdoon_network:

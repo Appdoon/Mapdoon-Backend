@@ -20,8 +20,8 @@ namespace Mapdoon.Application.Services.Homeworks.Command.EditHomeworkSubmission
 		Task<ResultDto<bool>> EditSubmission(EditHomeworkSubmissionDto input, int userId);
 	}
 
-	public class EditHomeworkSubmissionService
-	{
+	public class EditHomeworkSubmissionService: IEditHomeworkSubmissionService
+    {
 		private readonly IDatabaseContext _databaseContext;
 
 		public EditHomeworkSubmissionService(IDatabaseContext databaseContext)
@@ -82,12 +82,12 @@ namespace Mapdoon.Application.Services.Homeworks.Command.EditHomeworkSubmission
 					};
 				}
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
 				return new ResultDto<bool>
 				{
 					IsSuccess = false,
-					Message = "خطا در ویرایش تمرین",
+					Message = e.Message,
 				};
 			}
 		}

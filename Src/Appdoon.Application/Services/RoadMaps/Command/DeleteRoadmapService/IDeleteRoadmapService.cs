@@ -52,7 +52,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در حذف رودمپ!",
+                    Message = e.Message,
                 };
             }
         }

@@ -40,14 +40,17 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService
                     .Include(hp => hp.Homework)
                     .FirstOrDefault(hp => hp.HomeworkId == updateDto.HomeworkId && hp.UserId == updateDto.UserId);
                 homeworkProgress.Score = updateDto.Score;
-
+                var childstepprogress = _context.ChildStepProgresses
+                .FirstOrDefault(hp => hp.ChildStep.HomeworkId == homeworkProgress.Homework.Id);
                 if (updateDto.Score >= homeworkProgress.Homework.MinScore)
                 {
                     homeworkProgress.IsDone = true;
+                    childstepprogress.IsDone = true;
                 }
                 else
                 {
                     homeworkProgress.IsDone = false;
+                    childstepprogress.IsDone = false;
                 }
                 _context.SaveChanges();
                 return new ResultDto()
@@ -61,7 +64,7 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService
                 return new ResultDto()
                 {
                     IsSuccess = false,
-                    Message = "خطا در ویرایش نمره!",
+                    Message = e.Message,
                 };
             }
         }

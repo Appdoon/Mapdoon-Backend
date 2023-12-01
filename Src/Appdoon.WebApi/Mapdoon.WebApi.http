@@ -1,0 +1,14 @@
+﻿@Mapdoon.WebApi_HostAddress = https://localhost:57963
+
+GET {{Mapdoon.WebApi_HostAddress}}/api/childstep
+
+###
+
+POST {{Mapdoon.WebApi_HostAddress}}/api/childstep
+Content-Type: application/json
+
+{
+  //CreateChildStepDto
+}
+
+###

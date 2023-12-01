@@ -63,7 +63,7 @@ namespace Appdoon.Application.Services.Linkers.Query.GetIndividualLinkerService
 				return new ResultDto<LinkDto>()
 				{
 					IsSuccess = false,
-					Message = "ارسال ناموفق!",
+					Message = e.Message,
 					Data = new LinkDto(),
 				};
 			}

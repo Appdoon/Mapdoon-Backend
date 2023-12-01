@@ -26,7 +26,7 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworkSubmissions
 		Task<ResultDto<GetUserSubmissionResult>> GetUserSubmission(GetUserSubmissionDto input, int userId);
 	}
 
-	public class GetHomeworkSubmissionsService
+	public class GetHomeworkSubmissionsService : IGetHomeworkSubmissionsService
 	{
 		private readonly IDatabaseContext _databaseContext;
 
@@ -67,12 +67,12 @@ namespace Mapdoon.Application.Services.Homeworks.Query.GetHomeworkSubmissions
 					Data = result,
 				};
 			}
-			catch(Exception ex)
+			catch(Exception e)
 			{
 				return new ResultDto<GetUserSubmissionResult>()
 				{
 					IsSuccess = false,
-					Message = ex.Message,
+					Message = e.Message,
 					Data = null,
 				};
 			}

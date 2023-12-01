@@ -53,7 +53,7 @@ namespace Appdoon.Application.Services.Steps.Command.DeleteStepService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در حذف قدم!",
+					Message = e.Message,
 				};
 			}
 		}
