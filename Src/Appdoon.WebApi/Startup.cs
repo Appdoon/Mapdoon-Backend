@@ -24,6 +24,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.IO;
 using System.Text;
@@ -213,11 +214,17 @@ namespace OU_API
 
 			var dbContext = services.BuildServiceProvider().GetService<IDatabaseContext>();
 			dbContext.Database.MigrateAsync();
+			Log.Debug("Database is connected");
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			app.UseSerilogRequestLogging(configure =>
+			{
+				configure.MessageTemplate = "HTTP {RequestMethod} {RequestPath} ({UserId}) responded {StatusCode} in {Elapsed:0.0000}ms";
+			}); // We want to log all HTTP requests
+
 			//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 			app.UseCors("Dev");
 
