@@ -55,6 +55,8 @@ namespace OU_API
 			var jwtOptions = new JWTOptions();
 			config.GetSection("JWTOptions").Bind(jwtOptions);
 
+			var frontDomain = config.GetSection("FrontDomain").Value;
+
 			services.AddHttpContextAccessor();
 
 			//services.AddHostedService<AutoMigrateHosted>();
@@ -84,6 +86,7 @@ namespace OU_API
 						// Only add this to allow testing with localhost, remove this line in production!  
 						if(origin.ToLower().StartsWith("http://localhost")) return true;
 						// Insert your production domain here.  
+						if(origin.ToLower().StartsWith(frontDomain)) return true;
 						if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
 						return false;
 					});
