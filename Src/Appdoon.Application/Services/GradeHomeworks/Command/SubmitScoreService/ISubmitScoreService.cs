@@ -53,6 +53,7 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
                         UserId = submission.UserId,
                         IsRequired = true
                     };
+                    _context.ChildStepProgresses.Add(childstepprogress);
                 }
                 if (submission.Score >= homeworkProgress.Homework.MinScore)
                 {
