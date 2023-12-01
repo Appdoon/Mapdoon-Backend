@@ -92,125 +92,125 @@ namespace Appdoon.WebApi.Controllers
 
 		// GET: api/<RoadmapController>
 		[HttpGet]
-		public JsonResult Get(int PageNumber = 1, int PageSize = 15)
+		public IActionResult Get(int PageNumber = 1, int PageSize = 15)
 		{
 			var result = _getAllRoadmapsService.Execute(PageNumber, PageSize);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		// GET api/<RoadmapController>/5
 		[HttpGet("{id}")]
-		public JsonResult Get(int id)
+		public IActionResult Get(int id)
 		{
 			var result = _getIndividualRoadmapService.Execute(id);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet("{RoadmapId}")]
-		public JsonResult UserRoadmap(int RoadmapId)
+		public IActionResult UserRoadmap(int RoadmapId)
 		{
 			int UserId = _currentContext.User.Id;
 			var result = _getUserRoadmapService.Execute(RoadmapId, UserId);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		// POST api/<RoadmapController>
 		[HttpPost]
-		public JsonResult Post()
+		public IActionResult Post()
 		{
 			int CreatorId = _currentContext.User.Id;
 			var result = _createRoadmapService.Execute(Request, _env.ContentRootPath, CreatorId);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		// PUT api/<RoadmapController>/5
 		[HttpPut("{id}")]
-		public JsonResult Put(int id)
+		public IActionResult Put(int id)
 		{
 			var result = _updateRoadmapService.Execute(id, Request, _env.ContentRootPath);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		// DELETE api/<RoadmapController>/5
 		[HttpDelete("{id}")]
-		public JsonResult Delete(int id)
+		public IActionResult Delete(int id)
 		{
 			var result = _deleteRoadmapService.Execute(id);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		// GET api/<RoadmapController>
 		[HttpGet]
-		public JsonResult Search(string SearchedText, int PageNumber, int PageSize)
+		public IActionResult Search(string SearchedText, int PageNumber, int PageSize)
 		{
 			var result = _searchRoadmapsService.Execute(SearchedText, PageNumber, PageSize);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		// GET api/<RoadmapController>
 		[HttpPost]
-		public JsonResult Filter(FilterDto fliterDto)
+		public IActionResult Filter(FilterDto fliterDto)
 		{
 			var result = _filterRoadmapsService.Execute(fliterDto);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet]
-		public JsonResult HasUserRoadmap(int RoadmapId)
+		public IActionResult HasUserRoadmap(int RoadmapId)
 		{
 
 			int UserId = _currentContext.User.Id;
 			var result = _checkUserRegisterRoadmapService.Execute(RoadmapId, UserId);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpPost]
-		public JsonResult RegisterRoadmap(int RoadmapId)
+		public IActionResult RegisterRoadmap(int RoadmapId)
 		{
 			// should use cookies for geting userId not api call
 			int UserId = _currentContext.User.Id;
 			var result = _registerRoadmapService.Execute(RoadmapId, UserId);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpPost("{RoadmapId}")]
-		public JsonResult BookmarkRoadmap(int RoadmapId)
+		public IActionResult BookmarkRoadmap(int RoadmapId)
 		{
 			int userId = _currentContext.User.Id;
 			var result = _bookmarkRoadmapService.Execute(RoadmapId, userId);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpGet("{RoadmapId}")]
-		public JsonResult IsUserBookMarkedRoadmap(int RoadmapId)
+		public IActionResult IsUserBookMarkedRoadmap(int RoadmapId)
 		{
 			int userId = _currentContext.User.Id;
 			var result = _isUserBookMarkedRoadmapService.Execute(RoadmapId, userId);
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 
 		[HttpGet("{id}")]
-		public JsonResult GetPreviewRoadmap(int id)
+		public IActionResult GetPreviewRoadmap(int id)
 
 		{
 			var result = _getPreviewRoadmapService.Execute(id);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 
 		[HttpPost]
-		public JsonResult DoneChildStep(int ChildStepId)
+		public IActionResult DoneChildStep(int ChildStepId)
 		{
 			int UserId = _currentContext.User.Id;
 			var result = _doneChildStepService.Execute(ChildStepId, UserId);
 
-			return new JsonResult(result);
+			return Ok(result);
 		}
 	}
 }

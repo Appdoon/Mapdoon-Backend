@@ -72,6 +72,15 @@ namespace Mapdoon.Application.Services.Comments.Query.GetCommentsOfRoadmapServic
                         .ToList()
                     })
                     .ToList();
+                if(comment.Count == 0)
+                {
+                    return new ResultDto<AllCommentsRepliesDto>()
+                    {
+                        IsSuccess = false,
+                        Message = "نظرات یافت نشد",
+                        Data = new AllCommentsRepliesDto()
+                    };
+                }
                 AllCommentsRepliesDto allCommentsReplies = new AllCommentsRepliesDto();
                 allCommentsReplies.AllComments = comment;
 

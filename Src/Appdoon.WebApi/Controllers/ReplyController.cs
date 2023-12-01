@@ -9,7 +9,7 @@ namespace Mapdoon.WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReplyController
+    public class ReplyController : ControllerBase
     {
         private readonly ICreateReplyService _createReplyService;
         private readonly IUpdateReplyService _updateReplyService;
@@ -23,25 +23,25 @@ namespace Mapdoon.WebApi.Controllers
             _deleterReplyService = deleteReplyService;  
         }
         [HttpPost("{commentId}")]
-        public JsonResult Post(int commentId, CreateReplyDto reply, [FromServices] ICurrentContext currentContext)
+        public IActionResult Post(int commentId, CreateReplyDto reply, [FromServices] ICurrentContext currentContext)
         {
             int userId = currentContext.User.Id;
             var result = _createReplyService.Execute(commentId, userId, reply);
-            return new JsonResult(result);
+            return Ok(result);
         }
         [HttpPut("{commentId}")]
-        public JsonResult Put(int commentId, UpdateReplyDto reply, [FromServices] ICurrentContext currentContext)
+        public IActionResult Put(int commentId, UpdateReplyDto reply, [FromServices] ICurrentContext currentContext)
         {
             int userId = currentContext.User.Id;
             var result = _updateReplyService.Execute(commentId, userId, reply);
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var result = _deleterReplyService.Execute(id);
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }
