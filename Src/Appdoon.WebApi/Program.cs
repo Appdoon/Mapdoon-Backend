@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog.Events;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,15 @@ namespace OU_API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+			Log.Logger = new LoggerConfiguration()
+			.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+			.Enrich.FromLogContext()
+			.WriteTo.Console()
+			.CreateBootstrapLogger();
+
+			Log.Information("Starting web host");
+
+			CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -21,6 +31,10 @@ namespace OU_API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseSerilog((context, services, configuration) => configuration
+				.ReadFrom.Configuration(context.Configuration)
+				.ReadFrom.Services(services)
+				.Enrich.FromLogContext());
     }
 }
