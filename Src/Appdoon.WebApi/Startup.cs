@@ -217,7 +217,7 @@ namespace OU_API
 
 			var dbContext = services.BuildServiceProvider().GetService<IDatabaseContext>();
 			dbContext.Database.MigrateAsync();
-			Log.Debug("Database is connected");
+			Log.Information("Database is connected");
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
