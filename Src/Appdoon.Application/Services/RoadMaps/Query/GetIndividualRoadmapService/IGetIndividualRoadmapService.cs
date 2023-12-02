@@ -15,10 +15,10 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
     {
         ResultDto<IndividualRoadMapDto> Execute(int id);
     }
-    public class GetIndividualRoadMapService : IGetIndividualRoadmapService
+    public class GetIndividualRoadmapService : IGetIndividualRoadmapService
     {
         private readonly IDatabaseContext _context;
-        public GetIndividualRoadMapService(IDatabaseContext context)
+        public GetIndividualRoadmapService(IDatabaseContext context)
         {
             _context = context;
         }
