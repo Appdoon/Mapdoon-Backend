@@ -30,12 +30,12 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 	public class GetLessonService : IGetIndividualLessonService
 	{
 		private readonly IDatabaseContext _context;
-        private readonly IFileHandler _fileHandler;
+        private readonly IFacadeFileHandler _facadeFileHandler;
 
-        public GetLessonService(IDatabaseContext context, IFileHandler fileHandler)
+        public GetLessonService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
 		{
 			_context = context;
-			_fileHandler = fileHandler;
+            _facadeFileHandler = facadeFileHandler;
 		}
 		public async Task<ResultDto<LessonDto>> Execute(int id)
 		{
@@ -54,23 +54,21 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 						CreatorId = r.CreatorId,
                     }).FirstOrDefault();
 
-                if (lesson != null && lesson.TopBannerSrc != "" && await _fileHandler.IsObjectExist("lessons", lesson.TopBannerSrc))
+                if (lesson == null)
                 {
-                    lesson.HasNewSrc = true;
-                    lesson.TopBannerSrc = await _fileHandler.GetObjectUrl("lessons", lesson.TopBannerSrc);
+                    return new ResultDto<LessonDto>()
+                    {
+                        IsSuccess = false,
+                        Message = "درس یافت نشد!",
+                        Data = new LessonDto(),
+                    };
                 }
 
-                if (lesson == null)
-				{
-					return new ResultDto<LessonDto>()
-					{
-						IsSuccess = false,
-						Message = "درس یافت نشد!",
-						Data = new LessonDto(),
-					};
-				}
+                string url = await _facadeFileHandler.GetFileUrl("lessons", lesson.TopBannerSrc);
+                lesson.HasNewSrc = (url != lesson.TopBannerSrc);
+                lesson.TopBannerSrc = url;
 
-				return new ResultDto<LessonDto>()
+                return new ResultDto<LessonDto>()
 				{
 					IsSuccess = true,
 					Message = "درس ها ارسال شد",
