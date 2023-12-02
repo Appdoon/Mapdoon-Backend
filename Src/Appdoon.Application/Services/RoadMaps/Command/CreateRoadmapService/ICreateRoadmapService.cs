@@ -19,15 +19,13 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
     {
         ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId);
     }
-    public class CreateRoadMapIndividualService : ICreateRoadmapService
+    public class CreateRoadmapService : ICreateRoadmapService
     {
         private readonly IDatabaseContext _context;
-        private readonly IHostingEnvironment _environment;
 
-        public CreateRoadMapIndividualService(IDatabaseContext context, IHostingEnvironment environment)
+        public CreateRoadmapService(IDatabaseContext context)
         {
             _context = context;
-            _environment = environment;
         }
         public ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId)
         {

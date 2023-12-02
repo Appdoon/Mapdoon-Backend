@@ -32,11 +32,11 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
         ResultDto<AllRoadmapsDto> Execute(int page_number, int page_size);
     }
 
-    public class GetAllRoadMapService : IGetAllRoadmapsService
+    public class GetAllRoadmapsService : IGetAllRoadmapsService
     {
         private readonly IDatabaseContext _context;
 
-        public GetAllRoadMapService(IDatabaseContext context)
+        public GetAllRoadmapsService(IDatabaseContext context)
         {
             _context = context;
         }
