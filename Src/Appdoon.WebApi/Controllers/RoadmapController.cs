@@ -17,7 +17,7 @@ namespace Appdoon.WebApi.Controllers
         private readonly IDoneChildStepService _doneChildStepService;
         private readonly ICurrentContext _currentContext;
         private readonly IWebHostEnvironment _env;
-        private readonly IRoadmapServices _roadmapServices;
+        private readonly IRoadmapServiceFactory _roadmapServiceFactory;
         private readonly IIsUserBookMarkedRoadmapService _isUserBookMarkedRoadmapService;
 
         public RoadmapController(
@@ -25,12 +25,12 @@ namespace Appdoon.WebApi.Controllers
                                   IIsUserBookMarkedRoadmapService isUserBookMarkedRoadmapService,
                                   ICurrentContext currentContext,
                                   IWebHostEnvironment env,
-                                  IRoadmapServices roadmapServices)
+                                  IRoadmapServiceFactory roadmapServiceFactory)
         {
             _doneChildStepService = doneChildStepService;
             _currentContext = currentContext;
             _env = env;
-            _roadmapServices = roadmapServices;
+            _roadmapServiceFactory = roadmapServiceFactory;
             _isUserBookMarkedRoadmapService = isUserBookMarkedRoadmapService;
         }
 
@@ -38,7 +38,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpGet]
         public IActionResult Get(int PageNumber = 1, int PageSize = 15)
         {
-            var result = _roadmapServices.GetAllRoadmapsService.Execute(PageNumber, PageSize);
+            var result = _roadmapServiceFactory.GetAllRoadmapsService.Execute(PageNumber, PageSize);
             return Ok(result);
         }
 
@@ -46,7 +46,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var result = _roadmapServices.GetIndividualRoadmapService.Execute(id);
+            var result = _roadmapServiceFactory.GetIndividualRoadmapService.Execute(id);
 
             return Ok(result);
         }
@@ -55,7 +55,7 @@ namespace Appdoon.WebApi.Controllers
         public IActionResult UserRoadmap(int RoadmapId)
         {
             int UserId = _currentContext.User.Id;
-            var result = _roadmapServices.GetUserRoadmapService.Execute(RoadmapId, UserId);
+            var result = _roadmapServiceFactory.GetUserRoadmapService.Execute(RoadmapId, UserId);
 
             return Ok(result);
         }
@@ -65,7 +65,7 @@ namespace Appdoon.WebApi.Controllers
         public IActionResult Post()
         {
             int CreatorId = _currentContext.User.Id;
-            var result = _roadmapServices.CreateRoadmapService.Execute(Request, _env.ContentRootPath, CreatorId);
+            var result = _roadmapServiceFactory.CreateRoadmapService.Execute(Request, _env.ContentRootPath, CreatorId);
             return Ok(result);
         }
 
@@ -73,7 +73,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id)
         {
-            var result = _roadmapServices.UpdateRoadmapService.Execute(id, Request, _env.ContentRootPath);
+            var result = _roadmapServiceFactory.UpdateRoadmapService.Execute(id, Request, _env.ContentRootPath);
             return Ok(result);
         }
 
@@ -81,7 +81,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = _roadmapServices.DeleteRoadmapService.Execute(id);
+            var result = _roadmapServiceFactory.DeleteRoadmapService.Execute(id);
             return Ok(result);
         }
 
@@ -89,7 +89,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpGet]
         public IActionResult Search(string SearchedText, int PageNumber, int PageSize)
         {
-            var result = _roadmapServices.SearchRoadmapsService.Execute(SearchedText, PageNumber, PageSize);
+            var result = _roadmapServiceFactory.SearchRoadmapsService.Execute(SearchedText, PageNumber, PageSize);
             return Ok(result);
         }
 
@@ -97,7 +97,7 @@ namespace Appdoon.WebApi.Controllers
         [HttpPost]
         public IActionResult Filter(FilterDto fliterDto)
         {
-            var result = _roadmapServices.FilterRoadmapsService.Execute(fliterDto);
+            var result = _roadmapServiceFactory.FilterRoadmapsService.Execute(fliterDto);
             return Ok(result);
         }
 
@@ -106,7 +106,7 @@ namespace Appdoon.WebApi.Controllers
         {
 
             int UserId = _currentContext.User.Id;
-            var result = _roadmapServices.CheckUserRegisterRoadmapService.Execute(RoadmapId, UserId);
+            var result = _roadmapServiceFactory.CheckUserRegisterRoadmapService.Execute(RoadmapId, UserId);
 
             return Ok(result);
         }
@@ -116,7 +116,7 @@ namespace Appdoon.WebApi.Controllers
         {
             // should use cookies for geting userId not api call
             int UserId = _currentContext.User.Id;
-            var result = _roadmapServices.RegisterRoadmapService.Execute(RoadmapId, UserId);
+            var result = _roadmapServiceFactory.RegisterRoadmapService.Execute(RoadmapId, UserId);
 
             return Ok(result);
         }
@@ -125,7 +125,7 @@ namespace Appdoon.WebApi.Controllers
         public IActionResult BookmarkRoadmap(int RoadmapId)
         {
             int userId = _currentContext.User.Id;
-            var result = _roadmapServices.BookmarkRoadmapService.Execute(RoadmapId, userId);
+            var result = _roadmapServiceFactory.BookmarkRoadmapService.Execute(RoadmapId, userId);
 
             return Ok(result);
         }
@@ -143,7 +143,7 @@ namespace Appdoon.WebApi.Controllers
         public IActionResult GetPreviewRoadmap(int id)
 
         {
-            var result = _roadmapServices.GetPreviewRoadmapService.Execute(id);
+            var result = _roadmapServiceFactory.GetPreviewRoadmapService.Execute(id);
 
             return Ok(result);
         }
