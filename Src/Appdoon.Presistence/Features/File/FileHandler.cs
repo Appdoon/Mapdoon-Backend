@@ -48,7 +48,7 @@ namespace Mapdoon.Presistence.Features.File
         {
             if (await IsBucketExists(bucketName))
             {
-                var removeBucketArgs = new  RemoveBucketArgs().WithBucket(bucketName);
+                var removeBucketArgs = new RemoveBucketArgs().WithBucket(bucketName);
                 await MinioClient.RemoveBucketAsync(removeBucketArgs);
             }
         }
