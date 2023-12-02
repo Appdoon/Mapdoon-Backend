@@ -1,6 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,22 +14,22 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 {
 	public interface IGetUserRoadmapService : ITransientService
     {
-		ResultDto<IndividualRoadMapDto> Execute(int RoadmapId, int UserId);
+		Task<ResultDto<IndividualRoadMapDto>> Execute(int RoadmapId, int UserId);
 	}
 	public class GetUserRoadmapService : IGetUserRoadmapService
 	{
 		private readonly IDatabaseContext _context;
-		public GetUserRoadmapService(IDatabaseContext context)
+		private readonly IFacadeFileHandler _facadeFileHandler;
+
+        public GetUserRoadmapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
 		{
 			_context = context;
+			_facadeFileHandler = facadeFileHandler;
 		}
-		public ResultDto<IndividualRoadMapDto> Execute(int RoadmapId, int UserId)
+		public async Task<ResultDto<IndividualRoadMapDto>> Execute(int RoadmapId, int UserId)
 		{
 			try
 			{
-				// check user exisit ??
-
-				// check User have this roadmap
 				bool hasRoadmap = _context.Users
 					.Include(u => u.SignedRoadMaps)
 					.Where(u => u.Id == UserId)
@@ -36,34 +37,10 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 					.SignedRoadMaps
 					.Any(srp => srp.Id == RoadmapId);
 
-				/*
-				if(hasRoadmap == false)
-				{
-					return new ResultDto<IndividualRoadMapDto>()
-					{
-						IsSuccess = false,
-						Message = "شما در این رودمپ ثبت نام نکرده اید",
-						Data = new(),
-					};
-				}
-				*/
-
-
 				var roadmap = _context.RoadMaps
 					.Where(x => x.Id == RoadmapId)
 					.Include(r => r.Categories)
 					.Include(r => r.Creatore)
-
-					//1 .Include("Steps.ChildSteps.Linkers")
-					//2 .Include(r => r.Steps)
-					//	.ThenInclude(s => s.ChildSteps)
-					//		.ThenInclude(cs => cs.Linkers)
-
-					//1 .Include("Steps.ChildSteps.ChildStepProgresses");
-					//2 .Include(r => r.Steps)
-					//	.ThenInclude(s => s.ChildSteps)
-					//		.ThenInclude(cs => cs.ChildStepProgresses)
-
 					.Select(r => new IndividualRoadMapDto()
 					{
 						Id = r.Id,
@@ -113,9 +90,13 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 
 				roadmap.HomeworksNumber = _context.ChildSteps
 												  .Where(cs => cs.HomeworkId == RoadmapId && cs.HomeworkId != null)
-												  .Count();
+                .Count();
 
-				return new ResultDto<IndividualRoadMapDto>()
+                string url = await _facadeFileHandler.GetFileUrl("roadmaps", roadmap.ImageSrc);
+                roadmap.HasNewSrc = (url != roadmap.ImageSrc);
+                roadmap.ImageSrc = url;
+
+                return new ResultDto<IndividualRoadMapDto>()
 				{
 					IsSuccess = true,
 					Message = "رودمپ ها ارسال شد",
@@ -145,6 +126,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 		public string ImageSrc { get; set; } = string.Empty;
 		public float? Stars { get; set; }
 		public List<Category> Categories { get; set; }
+		public bool HasNewSrc { get; set; } = false;
 		public List<Step> Steps { get; set; }
 	}
 }

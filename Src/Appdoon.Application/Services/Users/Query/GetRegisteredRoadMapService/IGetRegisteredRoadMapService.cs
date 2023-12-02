@@ -1,79 +1,89 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
-using Appdoon.Domain.Entities.Users;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService
 {
-	public interface IGetRegisteredRoadMapService : ITransientService
+    public interface IGetRegisteredRoadMapService : ITransientService
     {
-		ResultDto<List<RegisteredRoadMapDto>> Execute(int id);
-	}
-	public class RegisteredRoadMapDto
-	{
-		public int Id;
-		public string Title;
-		public string ImageSrc;
-	}
-	public class GetRegisteredRoadMapService : IGetRegisteredRoadMapService
-	{
-		private readonly IDatabaseContext _context;
-		public GetRegisteredRoadMapService(IDatabaseContext context)
-		{
-			_context = context;
-		}
-		public ResultDto<List<RegisteredRoadMapDto>> Execute(int id)
-		{
-			try
-			{
-				var user = _context.Users
-					.Where(r => r.Id == id)
-					.Include(r => r.SignedRoadMaps)
-					.FirstOrDefault();
+        Task<ResultDto<List<RegisteredRoadMapDto>>> Execute(int id);
+    }
+    public class RegisteredRoadMapDto
+    {
+        public int Id;
+        public string Title;
+        public string ImageSrc;
+        public bool HasNewSrc = false;
+    }
+    public class GetRegisteredRoadMapService : IGetRegisteredRoadMapService
+    {
+        private readonly IDatabaseContext _context;
+        private readonly IFacadeFileHandler _facadeFileHandler;
 
-				if(user == null)
-				{
-					return new ResultDto<List<RegisteredRoadMapDto>>()
-					{
-						IsSuccess = false,
-						Message = "کاربر یافت نشد!",
-						Data = new(),
-					};
-				}
+        public GetRegisteredRoadMapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
+        {
+            _context = context;
+            _facadeFileHandler = facadeFileHandler;
+        }
+        public async Task<ResultDto<List<RegisteredRoadMapDto>>> Execute(int id)
+        {
+            try
+            {
+                var user = _context.Users
+                    .Where(r => r.Id == id)
+                    .Include(r => r.SignedRoadMaps)
+                    .FirstOrDefault();
 
-				user.SignedRoadMaps ??= new List<RoadMap>();
+                if (user == null)
+                {
+                    return new ResultDto<List<RegisteredRoadMapDto>>()
+                    {
+                        IsSuccess = false,
+                        Message = "کاربر یافت نشد!",
+                        Data = new(),
+                    };
+                }
 
-				var roadmaps = user.SignedRoadMaps
-					.Select(r => new RegisteredRoadMapDto()
-					{
-						Title = r.Title,
-						ImageSrc = r.ImageSrc,
-						Id = r.Id,
-					}).ToList();
+                user.SignedRoadMaps ??= new List<RoadMap>();
 
-				return new ResultDto<List<RegisteredRoadMapDto>>()
-				{
-					IsSuccess = true,
-					Message = "رودمپ های ثبت نام شده ی یوزر دریافت شد",
-					Data = roadmaps,
-				};
-			}
-			catch(Exception e)
-			{
-				return new ResultDto<List<RegisteredRoadMapDto>>()
-				{
-					IsSuccess = false,
-					Message = e.Message,
-					Data = new(),
-				};
-			}
-		}
-	}
+                var roadmaps = user.SignedRoadMaps
+                    .Select(r => new RegisteredRoadMapDto()
+                    {
+                        Title = r.Title,
+                        ImageSrc = r.ImageSrc,
+                        Id = r.Id,
+                    }).ToList();
+
+                foreach (var roadmap in roadmaps)
+                {
+                    string url = await _facadeFileHandler.GetFileUrl("roadmaps", roadmap.ImageSrc);
+                    roadmap.HasNewSrc = (url != roadmap.ImageSrc);
+                    roadmap.ImageSrc = url;
+                }
+
+                return new ResultDto<List<RegisteredRoadMapDto>>()
+                {
+                    IsSuccess = true,
+                    Message = "رودمپ های ثبت نام شده ی یوزر دریافت شد",
+                    Data = roadmaps,
+                };
+            }
+            catch (Exception e)
+            {
+                return new ResultDto<List<RegisteredRoadMapDto>>()
+                {
+                    IsSuccess = false,
+                    Message = e.Message,
+                    Data = new(),
+                };
+            }
+        }
+    }
 }

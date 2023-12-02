@@ -1,10 +1,13 @@
 ﻿using Appdoon.Application.Services.Progress.Command.DoneChildStep;
+using Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService;
+using Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
 using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
 using Mapdoon.Application.Services.Roadmaps;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,44 +39,44 @@ namespace Appdoon.WebApi.Controllers
 
         // GET: api/<RoadmapController>
         [HttpGet]
-        public IActionResult Get(int PageNumber = 1, int PageSize = 15)
+        public async Task<IActionResult> Get(int PageNumber = 1, int PageSize = 15)
         {
-            var result = _roadmapServiceFactory.GetAllRoadmapsService.Execute(PageNumber, PageSize);
+            var result = await _roadmapServiceFactory.GetAllRoadmapsService.Execute(PageNumber, PageSize);
             return Ok(result);
         }
 
         // GET api/<RoadmapController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _roadmapServiceFactory.GetIndividualRoadmapService.Execute(id);
+            var result = await _roadmapServiceFactory.GetIndividualRoadmapService.Execute(id);
 
             return Ok(result);
         }
 
         [HttpGet("{RoadmapId}")]
-        public IActionResult UserRoadmap(int RoadmapId)
+        public async Task<IActionResult> UserRoadmap(int RoadmapId)
         {
             int UserId = _currentContext.User.Id;
-            var result = _roadmapServiceFactory.GetUserRoadmapService.Execute(RoadmapId, UserId);
+            var result = await _roadmapServiceFactory.GetUserRoadmapService.Execute(RoadmapId, UserId);
 
             return Ok(result);
         }
 
         // POST api/<RoadmapController>
         [HttpPost]
-        public IActionResult Post()
+        public async Task<IActionResult> Post([FromForm] CreateRoadmapDto createRoadmapDto)
         {
-            int CreatorId = _currentContext.User.Id;
-            var result = _roadmapServiceFactory.CreateRoadmapService.Execute(Request, _env.ContentRootPath, CreatorId);
+            int userId = _currentContext.User.Id;
+            var result = await _roadmapServiceFactory.CreateRoadmapService.Execute(createRoadmapDto, userId);
             return Ok(result);
         }
 
         // PUT api/<RoadmapController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id)
+        public async Task<IActionResult> Put([FromForm] UpdateRoadmapDto updateRoadmapDto, int id)
         {
-            var result = _roadmapServiceFactory.UpdateRoadmapService.Execute(id, Request, _env.ContentRootPath);
+            var result = await _roadmapServiceFactory.UpdateRoadmapService.Execute(updateRoadmapDto, id);
             return Ok(result);
         }
 
@@ -87,17 +90,17 @@ namespace Appdoon.WebApi.Controllers
 
         // GET api/<RoadmapController>
         [HttpGet]
-        public IActionResult Search(string SearchedText, int PageNumber, int PageSize)
+        public async Task<IActionResult> Search(string SearchedText, int PageNumber, int PageSize)
         {
-            var result = _roadmapServiceFactory.SearchRoadmapsService.Execute(SearchedText, PageNumber, PageSize);
+            var result = await _roadmapServiceFactory.SearchRoadmapsService.Execute(SearchedText, PageNumber, PageSize);
             return Ok(result);
         }
 
         // GET api/<RoadmapController>
         [HttpPost]
-        public IActionResult Filter(FilterDto fliterDto)
+        public async Task<IActionResult> Filter(FilterDto fliterDto)
         {
-            var result = _roadmapServiceFactory.FilterRoadmapsService.Execute(fliterDto);
+            var result = await _roadmapServiceFactory.FilterRoadmapsService.Execute(fliterDto);
             return Ok(result);
         }
 
@@ -140,10 +143,9 @@ namespace Appdoon.WebApi.Controllers
 
 
         [HttpGet("{id}")]
-        public IActionResult GetPreviewRoadmap(int id)
-
+        public async Task<IActionResult> GetPreviewRoadmap(int id)
         {
-            var result = _roadmapServiceFactory.GetPreviewRoadmapService.Execute(id);
+            var result = await _roadmapServiceFactory.GetPreviewRoadmapService.Execute(id);
 
             return Ok(result);
         }

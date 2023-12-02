@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Appdoon.Common.Pagination;
 using Mapdoon.Common.Interfaces;
+using Mapdoon.Application.Interfaces;
 
 namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
 {
@@ -19,6 +20,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
         public float? Stars { get; set; }
+        public bool HasNewSrc { get; set; } = false;
         public List<Category> Categories { get; set; }
     }
     public class AllRoadmapsDto
@@ -28,17 +30,19 @@ namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
     }
     public interface ISearchRoadmapsService : ITransientService
     {
-        ResultDto<AllRoadmapsDto> Execute(string searched_text, int page_number, int page_size);
+        Task<ResultDto<AllRoadmapsDto>> Execute(string searched_text, int page_number, int page_size);
     }
     public class SearchRoadmapsService : ISearchRoadmapsService
     {
         private readonly IDatabaseContext _context;
-        public SearchRoadmapsService(IDatabaseContext context)
+        private readonly IFacadeFileHandler _facadeFileHandler;
+        public SearchRoadmapsService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
+            _facadeFileHandler = facadeFileHandler;
         }
 
-        public ResultDto<AllRoadmapsDto> Execute(string searched_text, int page_number, int page_size)
+        public async Task<ResultDto<AllRoadmapsDto>> Execute(string searched_text, int page_number, int page_size)
         {
             try
             {
@@ -56,6 +60,13 @@ namespace Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService
                         Categories = r.Categories,
                     }).ToPaged(page_number, page_size, out rowCount)
                     .ToList();
+
+                foreach (var roadmap in roadmaps)
+                {
+                    string url = await _facadeFileHandler.GetFileUrl("roadmaps", roadmap.ImageSrc);
+                    roadmap.HasNewSrc = (url != roadmap.ImageSrc);
+                    roadmap.ImageSrc = url;
+                }
 
                 AllRoadmapsDto allRoadmapsDto = new AllRoadmapsDto();
                 allRoadmapsDto.Roadmaps = roadmaps;

@@ -1,98 +1,68 @@
 ﻿using Appdoon.Application.Interfaces;
-using Appdoon.Application.Validatores.RoadMapValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService
 {
+    public class UpdateRoadmapDto
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string PhotoFileName { get; set; }
+        public IFormFile RoadmapPhoto { get; set; }
+        public List<string> CategoryNames { get; set; }
+    }
     public interface IUpdateRoadmapService : ITransientService
     {
-        ResultDto Execute(int id, HttpRequest httpRequest, string currentpath);
+        Task<ResultDto> Execute(UpdateRoadmapDto updateRoadmapDto, int id);
     }
 
     public class UpdateRoadmapService : IUpdateRoadmapService
     {
         private readonly IDatabaseContext _context;
-
-        public UpdateRoadmapService(IDatabaseContext context)
+        private readonly IFacadeFileHandler _facadeFileHandler;
+        public UpdateRoadmapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
+            _facadeFileHandler = facadeFileHandler;
         }
-        public ResultDto Execute(int id, HttpRequest httpRequest, string currentpath)
+        public async Task<ResultDto> Execute(UpdateRoadmapDto updateRoadmapDto, int id)
         {
             try
             {
-                List<string> data = new List<string>();
-
-                foreach (var key in httpRequest.Form.Keys)
-                {
-                    var val = httpRequest.Form[key];
-                    data.Add(val);
-                }
-
-                var Title = data[0];
-                var Description = data[1];
-                var PhotoFileName = data[2];
-
-                List<string> CategoriesName = new List<string>();
-
-                for (int i = 3; i < data.Count; i++)
-                {
-                    CategoriesName.Add(data[i]);
-                }
-
-                var imageSrc = "";
-                var TimeNow = DateTime.Now;
-                var ImageName = Title+"_"+TimeNow.Ticks.ToString();
-
-                if (httpRequest.Form.Files.Count() != 0)
-                {
-                    var postedFile = httpRequest.Form.Files[0];
-                    string filename = postedFile.FileName;
-                    var physicalPath = currentpath + "/Photos/Roadmap/" + $"({ImageName})" + filename;
-                    using (var stream = new FileStream(physicalPath, FileMode.Create))
-                    {
-                        postedFile.CopyTo(stream);
-                    }
-                    imageSrc = $"({ImageName})" + PhotoFileName.ToString();
-                }
-                else
-                {
-                    PhotoFileName = "1.jpg";
-                    imageSrc = PhotoFileName;
-                }
-
-                var road = _context.RoadMaps.Include(r => r.Categories).Where(r => r.Id == id).FirstOrDefault();
+                var roadmap = _context.RoadMaps.Include(r => r.Categories).Where(r => r.Id == id).FirstOrDefault();
 
                 List<Category> categories = new List<Category>();
-                if (CategoriesName.Count != 0)
+                if (updateRoadmapDto.CategoryNames.Count != 0)
                 {
-                    foreach (var item in CategoriesName)
+                    foreach (var item in updateRoadmapDto.CategoryNames)
                     {
                         Category category = _context.Categories.Where(s => s.Name == item).FirstOrDefault();
                         categories.Add(category);
                     }
                 }
 
-                road.UpdateTime = TimeNow;
+                roadmap.ImageSrc = await _facadeFileHandler.UpdateFile(
+                    updateRoadmapDto.Title,
+                    updateRoadmapDto.PhotoFileName,
+                    "roadmaps",
+                    "image/jpg",
+                    roadmap.ImageSrc,
+                    updateRoadmapDto.RoadmapPhoto
+                    );
 
-
-                if(imageSrc != "1.jpg")
-                {
-                    road.ImageSrc = imageSrc;
-                }
-                road.Title = Title;
-                road.Description = Description;
-
-
-                road.Categories = categories;
+                roadmap.UpdateTime = DateTime.Now;
+                roadmap.Title = updateRoadmapDto.Title;
+                roadmap.Description = updateRoadmapDto.Description;
+                roadmap.Categories = categories;
 
                 _context.SaveChanges();
 
