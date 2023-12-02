@@ -11,6 +11,7 @@ using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
 using Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 
 namespace Mapdoon.Application.Services.Roadmaps
@@ -33,9 +34,11 @@ namespace Mapdoon.Application.Services.Roadmaps
     internal class RoadmapServiceFactory : IRoadmapServiceFactory
     {
         private readonly IDatabaseContext _context;
-        public RoadmapServiceFactory(IDatabaseContext context)
+        private readonly IFacadeFileHandler _facadeFileHandler;
+        public RoadmapServiceFactory(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
+            _facadeFileHandler = facadeFileHandler;
         }
 
         private IBookmarkRoadmapService _bookmarkRoadmapService;
@@ -52,7 +55,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _createRoadmapService ??= new CreateRoadmapService(_context);
+                return _createRoadmapService ??= new CreateRoadmapService(_context, _facadeFileHandler);
             }
         }
 
@@ -79,7 +82,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _updateRoadmapService ??= new UpdateRoadmapService(_context);
+                return _updateRoadmapService ??= new UpdateRoadmapService(_context, _facadeFileHandler);
             }
         }
 
@@ -97,7 +100,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _filterRoadmapsService ??= new FilterRoadmapsService(_context);
+                return _filterRoadmapsService ??= new FilterRoadmapsService(_context, _facadeFileHandler);
             }
         }
 
@@ -106,7 +109,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _getAllRoadmapsService ??= new GetAllRoadmapsService(_context);
+                return _getAllRoadmapsService ??= new GetAllRoadmapsService(_context, _facadeFileHandler);
             }
         }
 
@@ -115,7 +118,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _getIndividualRoadmapService ??= new GetIndividualRoadmapService(_context);
+                return _getIndividualRoadmapService ??= new GetIndividualRoadmapService(_context, _facadeFileHandler);
             }
         }
 
@@ -124,7 +127,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _getPreviewRoadmapService ??= new GetPreviewRoadmapService(_context);
+                return _getPreviewRoadmapService ??= new GetPreviewRoadmapService(_context, _facadeFileHandler);
             }
         }
 
@@ -133,7 +136,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _getUserRoadmapService ??= new GetUserRoadmapService(_context);
+                return _getUserRoadmapService ??= new GetUserRoadmapService(_context, _facadeFileHandler);
             }
         }
 
@@ -142,7 +145,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _searchRoadmapsService ??= new SearchRoadmapsService(_context);
+                return _searchRoadmapsService ??= new SearchRoadmapsService(_context, _facadeFileHandler);
             }
         }
     }
