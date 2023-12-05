@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Mapdoon.Domain.Entities.Chat;
 
 namespace Appdoon.Application.Interfaces
 {
@@ -33,6 +34,7 @@ namespace Appdoon.Application.Interfaces
 		DbSet<RateRoadMap> Rates { get; set; }
 		DbSet<Comment> Comments { get; set; }
 		DbSet<Reply> Replies { get; set; }	
+		DbSet<ChatMessage> ChatMessages { get; set; }
         int SaveChanges(bool acceptAllChangesOnSuccess);
         int SaveChanges();
 
