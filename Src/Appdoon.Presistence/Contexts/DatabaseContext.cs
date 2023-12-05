@@ -35,7 +35,7 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<Lesson> Lessons { get; set; }
 		public DbSet<StepProgress> StepProgresses { get; set; }
 		public DbSet<ChildStepProgress> ChildStepProgresses { get; set; }
-        public DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
+		public DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		public DbSet<Homework> Homeworks { get; set; }
 		public DbSet<Question> Questions { get; set; }
 		public DbSet<RateRoadMap> Rates { get; set; }
@@ -49,30 +49,23 @@ namespace Appdoon.Presistence.Contexts
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Teacher.ToString(), Id = (int)UserRole.Teacher });
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.User.ToString(), Id = (int)UserRole.User });
 
-			modelBuilder.Entity<User>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<Role>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<RoadMap>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<Category>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<Step>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<ChildStep>().HasQueryFilter(u => u.IsRemoved == false);
+			// Apply Query filter for IsRemoved property
+			Expression<Func<BaseEntity, bool>> filterExpr = e => !e.IsRemoved;
+			foreach(var mutableEntityType in modelBuilder.Model.GetEntityTypes())
+			{
+				if(mutableEntityType.ClrType.IsAssignableTo(typeof(BaseEntity)))
+				{
+					var parameter = Expression.Parameter(mutableEntityType.ClrType);
+					var body = ReplacingExpressionVisitor.Replace(filterExpr.Parameters.First(), parameter, filterExpr.Body);
+					var lambdaExpression = Expression.Lambda(body, parameter);
 
-			modelBuilder.Entity<Linker>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<Lesson>().HasQueryFilter(u => u.IsRemoved == false);
+					// set filter
+					mutableEntityType.SetQueryFilter(lambdaExpression);
+				}
+			}
 
-			modelBuilder.Entity<StepProgress>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<ChildStepProgress>().HasQueryFilter(u => u.IsRemoved == false);
-
-			modelBuilder.Entity<Homework>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<HomeworkProgress>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<Question>().HasQueryFilter(u => u.IsRemoved == false);
-
-			modelBuilder.Entity<RateRoadMap>().HasQueryFilter(u => u.IsRemoved == false);
-
-			modelBuilder.Entity<Comment>().HasQueryFilter(u => u.IsRemoved == false);
-			modelBuilder.Entity<Reply>().HasQueryFilter(u => u.IsRemoved == false);
-
-            // Registerd RoadMaps for User
-            modelBuilder.Entity<User>()
+			// Registerd RoadMaps for User
+			modelBuilder.Entity<User>()
 				.HasMany<RoadMap>(u => u.SignedRoadMaps)
 				.WithMany(r => r.Students);
 
