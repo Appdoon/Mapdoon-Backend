@@ -77,7 +77,7 @@ namespace OU_API
 				options.AddPolicy("Dev", builder =>
 				{
 					// Allow multiple methods  
-					builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT", "WS")
+					builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
 					.WithHeaders(
 						HeaderNames.Accept,
 						HeaderNames.ContentType,
@@ -85,13 +85,13 @@ namespace OU_API
 					.AllowCredentials()
 					.SetIsOriginAllowed(origin =>
 					{
-						//if(string.IsNullOrWhiteSpace(origin)) return false;
-						//// Only add this to allow testing with localhost, remove this line in production!  
-						//if(origin.ToLower().StartsWith("http://localhost")) return true;
-						//// Insert your production domain here.  
-						//if(origin.ToLower().StartsWith(frontDomain)) return true;
-						//if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
-						return true;
+						if(string.IsNullOrWhiteSpace(origin)) return false;
+						// Only add this to allow testing with localhost, remove this line in production!  
+						if(origin.ToLower().StartsWith("http://localhost")) return true;
+						// Insert your production domain here.  
+						if(origin.ToLower().StartsWith(frontDomain)) return true;
+						if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
+						return false;
 					});
 				})
 			);
