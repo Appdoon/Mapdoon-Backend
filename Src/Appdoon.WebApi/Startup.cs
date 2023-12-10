@@ -13,6 +13,7 @@ using Mapdoon.Presistence;
 using Mapdoon.Presistence.Features.Email;
 using Mapdoon.WebApi.Application.Dependencies;
 using Mapdoon.WebApi.OptionsSetup;
+using Mapdoon.WebApi.WebSocket.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,6 +60,8 @@ namespace OU_API
 
 			services.AddHttpContextAccessor();
 
+			services.AddSignalR();
+
 			//services.AddHostedService<AutoMigrateHosted>();
 			//services.AddHostedService<BackgroundMigration>();
 
@@ -74,7 +77,7 @@ namespace OU_API
 				options.AddPolicy("Dev", builder =>
 				{
 					// Allow multiple methods  
-					builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
+					builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT", "WS")
 					.WithHeaders(
 						HeaderNames.Accept,
 						HeaderNames.ContentType,
@@ -82,13 +85,13 @@ namespace OU_API
 					.AllowCredentials()
 					.SetIsOriginAllowed(origin =>
 					{
-						if(string.IsNullOrWhiteSpace(origin)) return false;
-						// Only add this to allow testing with localhost, remove this line in production!  
-						if(origin.ToLower().StartsWith("http://localhost")) return true;
-						// Insert your production domain here.  
-						if(origin.ToLower().StartsWith(frontDomain)) return true;
-						if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
-						return false;
+						//if(string.IsNullOrWhiteSpace(origin)) return false;
+						//// Only add this to allow testing with localhost, remove this line in production!  
+						//if(origin.ToLower().StartsWith("http://localhost")) return true;
+						//// Insert your production domain here.  
+						//if(origin.ToLower().StartsWith(frontDomain)) return true;
+						//if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
+						return true;
 					});
 				})
 			);
@@ -246,7 +249,11 @@ namespace OU_API
 				app.UseEndpoints(endpoints =>
 				{
 					endpoints.MapControllers();
+					endpoints.MapHub<MapdoonHub>("/api_hub");
 				});
+
+				//app.ma<MapdoonHub>("/Hub");
+
 
 				app.UseStaticFiles(new StaticFileOptions
 				{

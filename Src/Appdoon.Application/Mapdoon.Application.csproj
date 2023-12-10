@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\Chat\" />
     <Folder Include="Services\Progress\Query\" />
     <Folder Include="Services\Questions\Query\" />
   </ItemGroup>
