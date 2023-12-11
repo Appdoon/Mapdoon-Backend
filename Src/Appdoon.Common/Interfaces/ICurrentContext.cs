@@ -22,11 +22,11 @@ namespace Mapdoon.Common.Interfaces
 		{
 			get
 			{
-				var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+				var token = _httpContextAccessor.HttpContext.Request?.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
 				// Really??
-				//if (string.IsNullOrWhiteSpace(token) == true)
-				//    return null;
+				if(string.IsNullOrWhiteSpace(token) == true)
+					return new MapdoonUser();
 
 				var jwtHandler = new JwtSecurityTokenHandler();
 				var jwtToken = jwtHandler.ReadJwtToken(token);
