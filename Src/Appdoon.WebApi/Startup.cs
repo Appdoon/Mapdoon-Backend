@@ -13,6 +13,7 @@ using Mapdoon.Presistence;
 using Mapdoon.Presistence.Features.Email;
 using Mapdoon.WebApi.Application.Dependencies;
 using Mapdoon.WebApi.OptionsSetup;
+using Mapdoon.WebApi.WebSocket.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,6 +60,8 @@ namespace OU_API
 
 			services.AddHttpContextAccessor();
 
+			services.AddSignalR();
+
 			//services.AddHostedService<AutoMigrateHosted>();
 			//services.AddHostedService<BackgroundMigration>();
 
@@ -74,11 +77,14 @@ namespace OU_API
 				options.AddPolicy("Dev", builder =>
 				{
 					// Allow multiple methods  
-					builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
-					.WithHeaders(
-						HeaderNames.Accept,
-						HeaderNames.ContentType,
-						HeaderNames.Authorization)
+					builder
+					.AllowAnyMethod()
+					//.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
+					//.WithHeaders(
+					//	HeaderNames.Accept,
+					//	HeaderNames.ContentType,
+					//	HeaderNames.Authorization)
+					.AllowAnyHeader()
 					.AllowCredentials()
 					.SetIsOriginAllowed(origin =>
 					{
@@ -246,7 +252,11 @@ namespace OU_API
 				app.UseEndpoints(endpoints =>
 				{
 					endpoints.MapControllers();
+					endpoints.MapHub<MapdoonHub>("/api_hub");
 				});
+
+				//app.ma<MapdoonHub>("/Hub");
+
 
 				app.UseStaticFiles(new StaticFileOptions
 				{
