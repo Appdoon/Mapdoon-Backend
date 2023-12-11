@@ -17,7 +17,7 @@ namespace Mapdoon.WebApi.Controllers
 		[HttpPost]
 		public IActionResult Post(string message)
 		{
-			_webSocketMessageSender.SendToAll("ReveiveMessage", message);
+			_webSocketMessageSender.SendToAll("ReceiveMessage", message);
 			return Ok();
 		}
 	}

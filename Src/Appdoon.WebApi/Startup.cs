@@ -77,11 +77,14 @@ namespace OU_API
 				options.AddPolicy("Dev", builder =>
 				{
 					// Allow multiple methods  
-					builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
-					.WithHeaders(
-						HeaderNames.Accept,
-						HeaderNames.ContentType,
-						HeaderNames.Authorization)
+					builder
+					.AllowAnyMethod()
+					//.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
+					//.WithHeaders(
+					//	HeaderNames.Accept,
+					//	HeaderNames.ContentType,
+					//	HeaderNames.Authorization)
+					.AllowAnyHeader()
 					.AllowCredentials()
 					.SetIsOriginAllowed(origin =>
 					{
