@@ -1,5 +1,6 @@
 ﻿using Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageService;
 using Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService;
+using Mapdoon.Application.Services.ChatSystem.Query.GetRegisterdUsersService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,11 +20,14 @@ namespace Mapdoon.WebApi.Controllers
     {
         private readonly ICreateChatMessageService _createChatMessageService;
         private readonly IGetAllMessagesService _getallmessageservice;
+        private readonly IGetRegisterdUsersService _getregisterdusersservice;
         public ChatSystemController(ICreateChatMessageService createChatMessageService
-                                    , IGetAllMessagesService getallmessageservice)
+                                    , IGetAllMessagesService getallmessageservice
+                                    ,IGetRegisterdUsersService getregisterdusersservice)
         {
             _createChatMessageService = createChatMessageService;
             _getallmessageservice = getallmessageservice;
+            _getregisterdusersservice = getregisterdusersservice;
         }
         [HttpPost("{RoadMapId}")]
         public IActionResult Post(int RoadMapId, CreateMessageDto message,[FromServices] ICurrentContext currentContext)
@@ -36,6 +40,12 @@ namespace Mapdoon.WebApi.Controllers
         public IActionResult Get(int RoadMapId , int PageNumber = 1, int PageSize = 15)
         {
             var result = _getallmessageservice.Execute(RoadMapId , PageNumber , PageSize);
+            return Ok(result);
+        }
+        [HttpGet("{RoadMapId}")]
+        public IActionResult GetRegisteredUsers(int RoadMapId)
+        {
+            var result = _getregisterdusersservice.Execute(RoadMapId);
             return Ok(result);
         }
     }
