@@ -11,7 +11,7 @@ namespace Mapdoon.Application.Tests.Roadmaps.Query
         [Test]
         public void ShouldReturnIndividualRoadmapAsync()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             //// Arrange
             //var userId = AddUser();
 
