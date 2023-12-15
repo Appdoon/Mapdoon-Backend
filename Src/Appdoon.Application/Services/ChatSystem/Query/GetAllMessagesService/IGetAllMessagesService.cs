@@ -85,6 +85,7 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
                             }
                         }
                         m.Replies.OrderByDescending(m => m.CreatedAtDate);
+                        message.Remove(m);
                     }
                 }
                 if (message.Count == 0)
