@@ -1,13 +1,13 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Appdoon.Domain.Entities.Users;
 using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService
@@ -62,12 +62,13 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                         }).ToList(),
                         CreatorId = r.CreatoreId,
                         CreatorUserName = r.Creatore.Username,
+                        Students = r.Students,
                     }).FirstOrDefault();
 
                 // get number of homeworks with this roadmap id
                 roadmap.HomeworksNumber = _context.ChildSteps
-                                                  .Where(cs => cs.HomeworkId == id && cs.HomeworkId != null)
-                .Count();
+                    .Where(cs => cs.HomeworkId == id && cs.HomeworkId != null)
+                    .Count();
 
                 if (roadmap == null)
                 {
@@ -115,6 +116,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
         public string CreatorUserName { get; set; }
         public int HomeworksNumber { get; set; }
         public bool HasNewSrc { get; set; } = false;
-        public int RateCount;
+        public int RateCount { get; set; }
+        public List<User> Students { get; set; }
     }
 }
