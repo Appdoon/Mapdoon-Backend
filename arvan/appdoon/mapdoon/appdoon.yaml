@@ -5,7 +5,7 @@ metadata:
   namespace: appdoon
 spec:
   interval: 1m
-  path: ./deployment/mapdoon/manifests
+  path: ./arvan/appdoon/mapdoon/manifests
   prune: false
   sourceRef:
     kind: GitRepository
