@@ -60,7 +60,7 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
                         CreatedAtTime = m.InsertTime.ToString("hh:mm tt"),
                         Replies = new List<ChatMessageDto>()
                     })
-                    .OrderByDescending(m => m.CreatedAtDate)
+                    .OrderBy(m => m.CreatedAtDate)
                     .ToPaged(PageNumber, PageSize, out rowCount)
                     .ToList();
                 foreach(var m in message)
@@ -84,7 +84,7 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
                                 r.Replies.Add(reply);
                             }
                         }
-                        m.Replies.OrderByDescending(m => m.CreatedAtDate);
+                        m.Replies.OrderBy(m => m.CreatedAtDate);
                         message.Remove(m);
                     }
                 }
