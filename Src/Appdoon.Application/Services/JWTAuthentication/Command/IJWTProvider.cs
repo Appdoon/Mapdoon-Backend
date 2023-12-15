@@ -1,6 +1,8 @@
 ﻿using Appdoon.Application.Services.Users.Command.LoginUserService;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Mapdoon.Common.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,10 +21,14 @@ namespace Mapdoon.Application.Services.JWTAuthentication.Command
 	public class JWTProvider : IJWTProvider
 	{
 		private readonly JWTOptions _options;
+		private readonly IHttpContextAccessor _httpContextAccessor;
+		private readonly IUserHubConnectionIdManager _userHubConnectionIdManager;
 
-		public JWTProvider(IOptions<JWTOptions> options)
+		public JWTProvider(IOptions<JWTOptions> options, IHttpContextAccessor httpContextAccessor, IUserHubConnectionIdManager userHubConnectionIdManager)
 		{
 			_options = options.Value;
+			_httpContextAccessor = httpContextAccessor;
+			_userHubConnectionIdManager = userHubConnectionIdManager;
 		}
 		public string Generate(UserLoginInfoDto userLoginInfoDto)
 		{
@@ -48,7 +54,20 @@ namespace Mapdoon.Application.Services.JWTAuthentication.Command
 
 			var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
+			SaveHubConnectionId(userLoginInfoDto);
+
 			return tokenValue;
+		}
+
+		private void SaveHubConnectionId(UserLoginInfoDto userLoginInfoDto)
+		{
+			// get connectionId from headers
+			var connectionId = _httpContextAccessor.HttpContext.Request?.Headers["connectionId"].ToString();
+
+			if(string.IsNullOrEmpty(connectionId) == false)
+			{
+				_userHubConnectionIdManager.Add(userLoginInfoDto.Id.ToString(), connectionId);
+			}
 		}
 	}
 
