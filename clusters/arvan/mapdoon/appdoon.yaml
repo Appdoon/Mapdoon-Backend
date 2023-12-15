@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: appdoon
+  namespace: appdoon
+spec:
+  interval: 1m
+  targetNamespace: appdoon
+  releaseName: appdoon
+  chart:
+    spec:
+      chart: ./clusters/arvan/mapdoon/chart
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      interval: 1
+      reconcileStrategy: Revision
+
