@@ -34,3 +34,6 @@
     - name: Print Docker PS Output
       debug:
         var: docker_ps_output.stdout_lines
+
+    - name: rollout restart appdoon
+      command: kubectl rollout restart deployment appdoon -n appdoon
