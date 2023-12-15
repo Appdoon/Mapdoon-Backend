@@ -1,28 +1,32 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Appdoon.Domain.Entities.Users;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService
 {
     public interface IGetIndividualRoadmapService : ITransientService
     {
-        ResultDto<IndividualRoadMapDto> Execute(int id);
+        Task<ResultDto<IndividualRoadMapDto>> Execute(int id);
     }
-    public class GetIndividualRoadMapService : IGetIndividualRoadmapService
+    public class GetIndividualRoadmapService : IGetIndividualRoadmapService
     {
         private readonly IDatabaseContext _context;
-        public GetIndividualRoadMapService(IDatabaseContext context)
+        private readonly IFacadeFileHandler _facadeFileHandler;
+
+        public GetIndividualRoadmapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
+            _facadeFileHandler = facadeFileHandler;
         }
-        public ResultDto<IndividualRoadMapDto> Execute(int id)
+        public async Task<ResultDto<IndividualRoadMapDto>> Execute(int id)
         {
             try
             {
@@ -58,12 +62,13 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                         }).ToList(),
                         CreatorId = r.CreatoreId,
                         CreatorUserName = r.Creatore.Username,
+                        Students = r.Students,
                     }).FirstOrDefault();
 
                 // get number of homeworks with this roadmap id
                 roadmap.HomeworksNumber = _context.ChildSteps
-                                                  .Where(cs => cs.HomeworkId == id && cs.HomeworkId != null)
-                                                  .Count();
+                    .Where(cs => cs.HomeworkId == id && cs.HomeworkId != null)
+                    .Count();
 
                 if (roadmap == null)
                 {
@@ -74,6 +79,10 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                         Data = new IndividualRoadMapDto(),
                     };
                 }
+
+                string url = await _facadeFileHandler.GetFileUrl("roadmaps", roadmap.ImageSrc);
+                roadmap.HasNewSrc = (url != roadmap.ImageSrc);
+                roadmap.ImageSrc = url;
 
                 return new ResultDto<IndividualRoadMapDto>()
                 {
@@ -106,6 +115,8 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
         public int CreatorId { get; set; }
         public string CreatorUserName { get; set; }
         public int HomeworksNumber { get; set; }
-        public int RateCount;
+        public bool HasNewSrc { get; set; } = false;
+        public int RateCount { get; set; }
+        public List<User> Students { get; set; }
     }
 }

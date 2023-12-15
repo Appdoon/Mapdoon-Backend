@@ -32,12 +32,12 @@ namespace Appdoon.Application.Services.Lessons.Query.SearchLessonsService
     public class SearchLessonsService : ISearchLessonsService
     {
         private readonly IDatabaseContext _context;
-        private readonly IFileHandler _fileHandler;
+        private readonly IFacadeFileHandler _facadeFileHandler;
 
-        public SearchLessonsService(IDatabaseContext context, IFileHandler fileHandler)
+        public SearchLessonsService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
-            _fileHandler = fileHandler;
+            _facadeFileHandler = facadeFileHandler;
         }
 
         public async Task<ResultDto<AllLessonsDto>> Execute(string searched_text, int page_number, int page_size)
@@ -58,11 +58,9 @@ namespace Appdoon.Application.Services.Lessons.Query.SearchLessonsService
 
                 foreach (var lesson in lessons)
                 {
-                    if (lesson.TopBannerSrc != "" && await _fileHandler.IsObjectExist("lessons", lesson.TopBannerSrc))
-                    {
-                        lesson.HasNewSrc = true;
-                        lesson.TopBannerSrc = await _fileHandler.GetObjectUrl("lessons", lesson.TopBannerSrc);
-                    }
+                    string url = await _facadeFileHandler.GetFileUrl("lessons", lesson.TopBannerSrc);
+                    lesson.HasNewSrc = (url != lesson.TopBannerSrc);
+                    lesson.TopBannerSrc = url;
                 }
 
                 AllLessonsDto allLessonsDto = new AllLessonsDto();

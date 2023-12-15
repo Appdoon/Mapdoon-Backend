@@ -18,14 +18,18 @@ namespace Mapdoon.Presistence.Features.File
 
         public FileHandler()
         {
-            var endponit = "188.121.116.198:9000";
-            var accessKey = "minioadmin";
-            var secretKey = "minioadmin";
+            var minioHost = Environment.GetEnvironmentVariable("MINIO_HOST");
+            var minioAccessKey = Environment.GetEnvironmentVariable("MINIO_ACCESS_KEY");
+            var minioSecretKey = Environment.GetEnvironmentVariable("MINIO_SECRET_KEY");
+
+            var endpoint = minioHost ?? "188.121.116.198:31900";
+            var accessKey = minioAccessKey ?? "minioadmin";
+            var secretKey = minioSecretKey ?? "minioadmin";
 
             try
             {
                 _minioClient = new MinioClient()
-                    .WithEndpoint(endponit)
+                    .WithEndpoint(endpoint)
                     .WithCredentials(accessKey, secretKey)
                     .Build();
             }
@@ -48,7 +52,7 @@ namespace Mapdoon.Presistence.Features.File
         {
             if (await IsBucketExists(bucketName))
             {
-                var removeBucketArgs = new  RemoveBucketArgs().WithBucket(bucketName);
+                var removeBucketArgs = new RemoveBucketArgs().WithBucket(bucketName);
                 await MinioClient.RemoveBucketAsync(removeBucketArgs);
             }
         }

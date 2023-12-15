@@ -2,58 +2,43 @@
 using Appdoon.Application.Validatores.RoadMapValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 
 namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
 {
+    public class CreateRoadmapDto
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string PhotoFileName { get; set; }
+        public IFormFile RoadmapPhoto { get; set; }
+        public List<string> CategoryNames { get; set; }
+    }
     public interface ICreateRoadmapService : ITransientService
     {
-        ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId);
+        Task<ResultDto> Execute(CreateRoadmapDto createRoadmapDto, int userId);
     }
-    public class CreateRoadMapIndividualService : ICreateRoadmapService
+    public class CreateRoadmapService : ICreateRoadmapService
     {
         private readonly IDatabaseContext _context;
-        private readonly IHostingEnvironment _environment;
+        private readonly IFacadeFileHandler _facadeFileHandler;
 
-        public CreateRoadMapIndividualService(IDatabaseContext context, IHostingEnvironment environment)
+        public CreateRoadmapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
-            _environment = environment;
+            _facadeFileHandler = facadeFileHandler;
         }
-        public ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId)
+        public async Task<ResultDto> Execute(CreateRoadmapDto createRoadmapDto, int userId)
         {
             try
             {
-                List<string> data = new List<string>();
-
-                foreach (var key in httpRequest.Form.Keys)
-                {
-                    var val = httpRequest.Form[key];
-                    data.Add(val);
-                }
-
-                var Title = data[0];
-                var Description = data[1];
-                var PhotoFileName = data[2];
-
-                List<string> CategoriesName = new List<string>();
-
-                for (int i = 3; i < data.Count; i++)
-                {
-                    CategoriesName.Add(data[i]);
-                }
-
-                //Uniqueness(Title)
-                if (_context.RoadMaps.Any(s => s.Title == Title.ToString()) == true)
+                if (_context.RoadMaps.Any(s => s.Title == createRoadmapDto.Title.ToString()) == true)
                 {
                     return new ResultDto()
                     {
@@ -62,42 +47,10 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                     };
                 }
 
-                var imageSrc = "";
-                var TimeNow = DateTime.Now;
-                var ImageName = Title + "_" + TimeNow.Ticks.ToString();
-                // we should check create those file is 
-                // they not exist !!!!!!
-                if (httpRequest.Form.Files.Count() != 0)
-                {
-                    var postedFile = httpRequest.Form.Files[0];
-                    string filename = postedFile.FileName;
-
-                    // create Photoes\Roadmap\ folder
-                    string folder = @$"Photos\Roadmap\";
-                    var uploadFolder = Path.Combine(currentpath, folder);
-					if(Directory.Exists(uploadFolder) == false)
-					{
-                        Directory.CreateDirectory(uploadFolder);
-					}
-
-                    var physicalPath = currentpath + "/Photos/Roadmap/" + $"({ImageName})" + filename;
-
-                    using (var stream = new FileStream(physicalPath, FileMode.Create))
-                    {
-                        postedFile.CopyTo(stream);
-                    }
-                    imageSrc = $"({ImageName})" + PhotoFileName.ToString();
-                }
-                else
-                {
-                    PhotoFileName = "1.jpg";
-                    imageSrc = PhotoFileName;
-                }
-
                 List<Category> categories = new List<Category>();
-                if (CategoriesName.Count != 0)
+                if (createRoadmapDto.CategoryNames.Count != 0)
                 {
-                    foreach (var item in CategoriesName)
+                    foreach (var item in createRoadmapDto.CategoryNames)
                     {
                         Category category = _context.Categories.Where(s => s.Name == item).FirstOrDefault();
                         if (category != null)
@@ -105,14 +58,11 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                     }
                 }
 
-                //////////////////////
-                ///
-
                 var creator = _context.Users
-                    .Where(c => c.Id == CreatorId)
+                    .Where(c => c.Id == userId)
                     .FirstOrDefault();
 
-                if(creator == null)
+                if (creator == null)
                 {
                     return new ResultDto()
                     {
@@ -121,11 +71,17 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                     };
                 }
 
+                string imageSrc = await _facadeFileHandler.CreateFile(
+                    createRoadmapDto.Title,
+                    createRoadmapDto.PhotoFileName,
+                    "roadmaps", "image/jpg",
+                    createRoadmapDto.RoadmapPhoto
+                    );
 
                 var roadmap = new RoadMap()
                 {
-                    Title = Title.ToString(),
-                    Description = Description.ToString(),
+                    Title = createRoadmapDto.Title,
+                    Description = createRoadmapDto.Description,
                     ImageSrc = imageSrc,
                     Categories = categories,
                     Creatore = creator,

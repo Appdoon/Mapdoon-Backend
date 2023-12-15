@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.RoadMaps;
+using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,6 +26,7 @@ namespace Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService
         public string Description { get; set; }
         public string ImageSrc { get; set; } = string.Empty;
         public float? Stars { get; set; }
+        public bool HasNewSrc { get; set; } = false;
         public List<Category> Categories { get; set; }
     }
     public class AllRoadmapsDto
@@ -34,17 +36,20 @@ namespace Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService
     }
     public interface IFilterRoadmapsService : ITransientService
     {
-        ResultDto<AllRoadmapsDto> Execute(FilterDto filterDto);
+        Task<ResultDto<AllRoadmapsDto>> Execute(FilterDto filterDto);
     }
     public class FilterRoadmapsService : IFilterRoadmapsService
     {
         private readonly IDatabaseContext _context;
-        public FilterRoadmapsService(IDatabaseContext context)
+        private readonly IFacadeFileHandler _facadeFileHandler;
+
+        public FilterRoadmapsService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
         {
             _context = context;
+            _facadeFileHandler = facadeFileHandler;
         }
 
-        public ResultDto<AllRoadmapsDto> Execute(FilterDto filterDto)
+        public async Task<ResultDto<AllRoadmapsDto>> Execute(FilterDto filterDto)
         {
             try
             {
@@ -62,6 +67,13 @@ namespace Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService
                         Categories = r.Categories,
                     }).ToPaged(filterDto.PageNumber, filterDto.PageSize, out rowCount)
                     .ToList();
+
+                foreach (var roadmap in roadmaps)
+                {
+                    string url = await _facadeFileHandler.GetFileUrl("roadmaps", roadmap.ImageSrc);
+                    roadmap.HasNewSrc = (url != roadmap.ImageSrc);
+                    roadmap.ImageSrc = url;
+                }
 
                 AllRoadmapsDto allRoadmapsDto = new AllRoadmapsDto();
                 allRoadmapsDto.Roadmaps = roadmaps;

@@ -599,21 +599,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 11, 16, 20, 22, 20, 833, DateTimeKind.Local).AddTicks(9281),
+                            InsertTime = new DateTime(2023, 12, 5, 22, 4, 7, 79, DateTimeKind.Local).AddTicks(8865),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 11, 24, 14, 58, 6, 627, DateTimeKind.Local).AddTicks(9661),
+                            InsertTime = new DateTime(2023, 12, 5, 22, 4, 7, 79, DateTimeKind.Local).AddTicks(8940),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 11, 24, 14, 58, 6, 627, DateTimeKind.Local).AddTicks(9671),
+                            InsertTime = new DateTime(2023, 12, 5, 22, 4, 7, 79, DateTimeKind.Local).AddTicks(8949),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -690,6 +690,50 @@ namespace Mapdoon.Presistence.Migrations
                     b.HasIndex("LinkersId");
 
                     b.ToTable("ChildStepLinker");
+                });
+
+            modelBuilder.Entity("Mapdoon.Domain.Entities.Chat.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReplyMessageId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoadMapId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReplyMessageId");
+
+                    b.HasIndex("RoadMapId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessages");
                 });
 
             modelBuilder.Entity("RoadMapUser", b =>
@@ -936,6 +980,29 @@ namespace Mapdoon.Presistence.Migrations
                         .HasForeignKey("LinkersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Mapdoon.Domain.Entities.Chat.ChatMessage", b =>
+                {
+                    b.HasOne("Mapdoon.Domain.Entities.Chat.ChatMessage", "ReplyMessage")
+                        .WithMany()
+                        .HasForeignKey("ReplyMessageId");
+
+                    b.HasOne("Appdoon.Domain.Entities.RoadMaps.RoadMap", "RoadMap")
+                        .WithMany()
+                        .HasForeignKey("RoadMapId");
+
+                    b.HasOne("Appdoon.Domain.Entities.Users.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReplyMessage");
+
+                    b.Navigation("RoadMap");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("RoadMapUser", b =>

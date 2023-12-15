@@ -8,10 +8,11 @@ using Appdoon.Application.Services.Users.Query.GetUserService;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Appdoon.WebApi.Controllers
 {
-	[Authorize(policy: "User")]
+	//[Authorize(policy: "User")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class ProfileController : Controller
@@ -69,41 +70,41 @@ namespace Appdoon.WebApi.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult RegisteredRoadMaps()
+		public async Task<IActionResult> RegisteredRoadMaps()
 		{
 			int Id = GetIdFromCookie();
 
-			var result = _getRegisteredRoadMapService.Execute(Id);
+			var result = await _getRegisteredRoadMapService.Execute(Id);
 
 			return Ok(result);
 		}
 
 		[HttpGet]
-		public IActionResult BookMarkedRoadMaps()
+		public async Task<IActionResult> BookMarkedRoadMaps()
 		{
 			int Id = GetIdFromCookie();
 
-			var result = _getBookMarkRoadMapService.Execute(Id);
+			var result = await _getBookMarkRoadMapService.Execute(Id);
 
 			return Ok(result);
 		}
 
 		[HttpGet]
-		public IActionResult GetCreatedRoadmaps()
+		public async Task<IActionResult> GetCreatedRoadmaps()
 		{
 			var userId = GetIdFromCookie();
 
-			var result = _getCreatedRoadMapService.Execute(userId);
+			var result = await _getCreatedRoadMapService.Execute(userId);
 
 			return Ok(result);
 		}
 
 		[HttpGet]
-		public IActionResult GetCreatedLessons()
+		public async Task<IActionResult> GetCreatedLessons()
 		{
 			var userId = GetIdFromCookie();
 
-			var result = _getCreatedLessonsService.Execute(userId);
+			var result = await _getCreatedLessonsService.Execute(userId);
 			return Ok(result);
 		}
 
