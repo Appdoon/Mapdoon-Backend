@@ -62,7 +62,7 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
                     })
                     .OrderBy(m => m.CreatedAtDate)
                     .ToPaged(PageNumber, PageSize, out rowCount)
-                    .Distinct()
+                    .DistinctBy(m => m.Id)
                     .ToList();
                 var MustDeleteMessages = new List<ChatMessageDto>();
                 foreach (var m in message)
