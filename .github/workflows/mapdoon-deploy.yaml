@@ -64,3 +64,15 @@ jobs:
           inventory: |
             [target_vm]
             mapdoon ansible_host=188.121.116.198 ansible_user=ubuntu
+ 
+  post-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Trigger FluxCD sync
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+        git commit --allow-empty -m "feat: trigger fluxCD"
+        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Appdoon/Mapdoon-Backend.git main
