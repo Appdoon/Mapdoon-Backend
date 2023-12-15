@@ -35,10 +35,15 @@ namespace Mapdoon.Application.Services.Roadmaps
     {
         private readonly IDatabaseContext _context;
         private readonly IFacadeFileHandler _facadeFileHandler;
-        public RoadmapServiceFactory(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
+        private readonly IRoadmapPermissionManager _roadmapPermissionManager;
+
+        public RoadmapServiceFactory(IDatabaseContext context,
+            IFacadeFileHandler facadeFileHandler,
+            IRoadmapPermissionManager roadmapPermissionManager)
         {
             _context = context;
             _facadeFileHandler = facadeFileHandler;
+            _roadmapPermissionManager = roadmapPermissionManager;
         }
 
         private IBookmarkRoadmapService _bookmarkRoadmapService;
@@ -55,7 +60,7 @@ namespace Mapdoon.Application.Services.Roadmaps
         {
             get
             {
-                return _createRoadmapService ??= new CreateRoadmapService(_context, _facadeFileHandler);
+                return _createRoadmapService ??= new CreateRoadmapService(_context, _facadeFileHandler, _roadmapPermissionManager);
             }
         }
 
