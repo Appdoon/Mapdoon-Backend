@@ -21,6 +21,8 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
         public int SenderId { get; set; }
         public string Username { get; set; }
         public int? ReplyMessageId { get; set; }
+        public DateTime CreatedAtDate { get; set; }
+        public string CreatedAtTime { get; set; }
         public List<ChatMessageDto> Replies { get; set; } = new List<ChatMessageDto>();
     }
     public class AllChatMessagesDto
@@ -54,8 +56,11 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
                         SenderId = m.SenderId,
                         Username = m.Sender.Username,
                         ReplyMessageId = m.ReplyMessageId,
+                        CreatedAtDate = m.InsertTime,
+                        CreatedAtTime = m.InsertTime.ToString("hh:mm tt"),
                         Replies = new List<ChatMessageDto>()
                     })
+                    .OrderByDescending(m => m.CreatedAtDate)
                     .ToPaged(PageNumber, PageSize, out rowCount)
                     .ToList();
                 foreach(var m in message)
@@ -72,22 +77,15 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
                                     Message = m.Message,
                                     SenderId = m.SenderId,
                                     Username = _context.Users.FirstOrDefault(u => u.Id == m.SenderId).Username,
-                                    ReplyMessageId = m.ReplyMessageId
+                                    ReplyMessageId = m.ReplyMessageId,
+                                    CreatedAtDate = m.CreatedAtDate,
+                                    CreatedAtTime = m.CreatedAtTime
                                 };
                                 r.Replies.Add(reply);
                             }
                         }
+                        m.Replies.OrderByDescending(m => m.CreatedAtDate);
                     }
-                    //var replis = _context.ChatMessages
-                    //            .Include(r => r.Sender)
-                    //            .Where(r => r.ReplyMessageId == m.Id)
-                    //            .Select(r => new ChatMessageDto
-                    //            {
-                    //                Id = m.Id,
-                    //                Message = m.Message,
-                    //                SenderId = m.SenderId,
-                    //                ReplyMessageId = m.ReplyMessageId,
-                    //            }).FirstOrDefault();
                 }
                 if (message.Count == 0)
                 {
