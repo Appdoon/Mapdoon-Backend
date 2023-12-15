@@ -75,5 +75,6 @@ jobs:
       run: |
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
+        git checkout -b main
         git commit --allow-empty -m "feat: trigger fluxCD"
-        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Appdoon/Mapdoon-Backend.git main
+        git push origin main
