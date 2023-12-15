@@ -1,6 +1,7 @@
 ﻿using Mapdoon.Application.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mapdoon.Common.HubManager
 {
@@ -27,6 +28,7 @@ namespace Mapdoon.Common.HubManager
 				value.Add(connectionId);
 			}
 
+			value = value.Distinct().ToList();
 			_cacheProvider.Set(key, value);
 		}
 
