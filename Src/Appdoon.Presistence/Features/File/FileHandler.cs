@@ -22,7 +22,7 @@ namespace Mapdoon.Presistence.Features.File
             var minioAccessKey = Environment.GetEnvironmentVariable("MINIO_ACCESS_KEY");
             var minioSecretKey = Environment.GetEnvironmentVariable("MINIO_SECRET_KEY");
 
-            var endpoint = minioHost ?? "188.121.116.198:9000";
+            var endpoint = minioHost ?? "188.121.116.198:31900";
             var accessKey = minioAccessKey ?? "minioadmin";
             var secretKey = minioSecretKey ?? "minioadmin";
 
