@@ -20,13 +20,9 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetRegisterdUsersService
         public string Username { get; set; }
         public string Role {  get; set; }
     }
-    public class AllRegisterdUsersDto
-    {
-        public List<RegisterdUsersDto> RegisteredUsers { get; set; }
-    }
     public interface IGetRegisterdUsersService : ITransientService
     {
-        ResultDto<AllRegisterdUsersDto> Execute(int roadmapId);
+        ResultDto<List<RegisterdUsersDto>> Execute(int roadmapId);
     }
     public class GetRegisterdUsersService : IGetRegisterdUsersService
     {
@@ -35,51 +31,53 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetRegisterdUsersService
         {
             _context = context;
         }
-        public ResultDto<AllRegisterdUsersDto> Execute(int roadmapId)
+        public ResultDto<List<RegisterdUsersDto>> Execute(int roadmapId)
         {
             try
             {
                 var roadmap = _context.RoadMaps
-                    .FirstOrDefault(rm => rm.Id == roadmapId);
+                                      .AsNoTracking()
+                                      .Include(rm => rm.Students)
+                                      .FirstOrDefault(rm => rm.Id == roadmapId);
+
                 var users = roadmap.Students
-                    .Select(s => new RegisterdUsersDto
-                    {
-                        Id = s.Id,
-                        Firstname = s.FirstName,
-                        Lastname = s.LastName,
-                        Username = s.Username,
-                        Role = "User"
-                    })
-                    .ToList();
-                var t = _context.Users.FirstOrDefault(u => u.Id == roadmap.CreatoreId);
+                                   .Select(s => new RegisterdUsersDto
+                                   {
+                                       Id = s.Id,
+                                       Firstname = s.FirstName,
+                                       Lastname = s.LastName,
+                                       Username = s.Username,
+                                       Role = "User"
+                                   })
+                                   .ToList();
+
+                var teacherUser = _context.Users.FirstOrDefault(u => u.Id == roadmap.CreatoreId);
+
                 var teacher = new RegisterdUsersDto
                 {
-                    Id = t.Id,
-                    Firstname = t.FirstName,
-                    Lastname = t.LastName,
-                    Username = t.Username,
+                    Id = teacherUser.Id,
+                    Firstname = teacherUser.FirstName,
+                    Lastname = teacherUser.LastName,
+                    Username = teacherUser.Username,
                     Role = "Teacher"
                 };
 
                 users.Add(teacher);
 
-                AllRegisterdUsersDto allregistereduseres = new AllRegisterdUsersDto();
-                allregistereduseres.RegisteredUsers = users;
-
-                return new ResultDto<AllRegisterdUsersDto>()
+                return new ResultDto<List<RegisterdUsersDto>>()
                 {
                     IsSuccess = true,
                     Message = "کاربران ارسال شدند",
-                    Data = allregistereduseres
+                    Data = users,
                 };
             }
             catch (Exception e)
             {
-                return new ResultDto<AllRegisterdUsersDto>()
+                return new ResultDto<List<RegisterdUsersDto>>()
                 {
                     IsSuccess = false,
                     Message = e.Message,
-                    Data = new AllRegisterdUsersDto()
+                    Data = new()
                 };
             }
         }
