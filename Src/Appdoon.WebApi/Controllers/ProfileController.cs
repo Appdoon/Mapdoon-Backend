@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.WebApi.Controllers
 {
-	[Authorize(policy: "User")]
+	//[Authorize(policy: "User")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class ProfileController : Controller
