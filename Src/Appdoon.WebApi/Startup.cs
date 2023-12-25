@@ -29,6 +29,7 @@ using Serilog;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OU_API
 {
@@ -138,6 +139,20 @@ namespace OU_API
 										  ValidAudience = jwtOptions.Audience,
 										  IssuerSigningKey = new SymmetricSecurityKey(
 																  Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
+									  };
+									  options.Events = new JwtBearerEvents
+									  {
+										  OnMessageReceived = context =>
+										  {
+											  var accessToken = context.Request.Query["access_token"];
+											  var path = context.HttpContext.Request.Path;
+											  if(string.IsNullOrEmpty(accessToken) == false && path.StartsWithSegments("/api_hub"))
+											  {
+												  // Read the token out of the query string
+												  context.Token = accessToken;
+											  }
+											  return Task.CompletedTask;
+										  }
 									  };
 								  }
 								);
