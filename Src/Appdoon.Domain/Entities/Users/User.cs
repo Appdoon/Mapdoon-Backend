@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mapdoon.Domain.Entities.Notification;
 
 namespace Appdoon.Domain.Entities.Users
 {
@@ -30,5 +31,6 @@ namespace Appdoon.Domain.Entities.Users
 		public List<Lesson> CreatedLessons { get; set; } = new();
 		public List<Homework> CreatedHomeworks { get; set; } = new();
 		public List<RateRoadMap> Rates { get; set; } = new();
-	}
+		public List<Notification> UserNotifications { get; set; } = new();
+    }
 }
