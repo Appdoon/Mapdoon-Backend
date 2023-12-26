@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Mapdoon.Domain.Entities.Chat;
+using Mapdoon.Domain.Entities.Notification;
 
 namespace Appdoon.Application.Interfaces
 {
@@ -35,6 +36,8 @@ namespace Appdoon.Application.Interfaces
 		DbSet<Comment> Comments { get; set; }
 		DbSet<Reply> Replies { get; set; }	
 		DbSet<ChatMessage> ChatMessages { get; set; }
+		DbSet<Notification> Notifications { get; set; }
+
         int SaveChanges(bool acceptAllChangesOnSuccess);
         int SaveChanges();
 
