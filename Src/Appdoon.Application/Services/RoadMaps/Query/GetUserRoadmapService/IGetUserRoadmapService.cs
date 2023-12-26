@@ -38,11 +38,11 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 		{
 			try
 			{
-				var connectionId = _httpContextAccessor.HttpContext.Request?.Headers["connectionId"].ToString();
-				if(UserId != 0 && string.IsNullOrEmpty(connectionId) == false)
-				{
-					_userHubConnectionIdManager.Add(UserId.ToString(), connectionId);
-				}
+				//var connectionId = _httpContextAccessor.HttpContext.Request?.Headers["connectionId"].ToString();
+				//if(UserId != 0 && string.IsNullOrEmpty(connectionId) == false)
+				//{
+				//	_userHubConnectionIdManager.Add(UserId.ToString(), connectionId);
+				//}
 
 				bool hasRoadmap = _context.Users
 					.Include(u => u.SignedRoadMaps)

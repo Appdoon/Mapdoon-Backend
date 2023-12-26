@@ -52,12 +52,12 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
 		{
 			try
 			{
-				var userId = _currentContext.User?.Id;
-				var connectionId = _httpContextAccessor.HttpContext.Request?.Headers["connectionId"].ToString();
-				if(userId != null && userId != 0 && string.IsNullOrEmpty(connectionId) == false)
-				{
-					_userHubConnectionIdManager.Add(userId.ToString(), connectionId);
-				}
+				//var userId = _currentContext.User?.Id;
+				//var connectionId = _httpContextAccessor.HttpContext.Request?.Headers["connectionId"].ToString();
+				//if(userId != null && userId != 0 && string.IsNullOrEmpty(connectionId) == false)
+				//{
+				//	_userHubConnectionIdManager.Add(userId.ToString(), connectionId);
+				//}
 
 				int rowCount = 0;
 				var message = _context.ChatMessages
