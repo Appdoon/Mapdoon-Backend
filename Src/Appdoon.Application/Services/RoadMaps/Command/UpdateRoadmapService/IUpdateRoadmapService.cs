@@ -19,6 +19,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService
         public string PhotoFileName { get; set; }
         public IFormFile RoadmapPhoto { get; set; }
         public List<string> CategoryNames { get; set; }
+        public float? Price { get; set; }
     }
     public interface IUpdateRoadmapService : ITransientService
     {
@@ -63,6 +64,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService
                 roadmap.Title = updateRoadmapDto.Title;
                 roadmap.Description = updateRoadmapDto.Description;
                 roadmap.Categories = categories;
+                roadmap.Price = updateRoadmapDto.Price;
 
                 _context.SaveChanges();
 
