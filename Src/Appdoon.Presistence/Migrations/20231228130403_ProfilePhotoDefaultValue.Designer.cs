@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231228130403_ProfilePhotoDefaultValue")]
+    partial class ProfilePhotoDefaultValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -510,9 +513,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
-                    b.Property<float?>("Price")
-                        .HasColumnType("real");
-
                     b.Property<int>("RateCount")
                         .HasColumnType("int");
 
@@ -602,21 +602,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 12, 28, 19, 44, 15, 637, DateTimeKind.Local).AddTicks(2940),
+                            InsertTime = new DateTime(2023, 12, 28, 16, 34, 3, 134, DateTimeKind.Local).AddTicks(9044),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 12, 28, 19, 44, 15, 637, DateTimeKind.Local).AddTicks(3017),
+                            InsertTime = new DateTime(2023, 12, 28, 16, 34, 3, 134, DateTimeKind.Local).AddTicks(9169),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 12, 28, 19, 44, 15, 637, DateTimeKind.Local).AddTicks(3028),
+                            InsertTime = new DateTime(2023, 12, 28, 16, 34, 3, 134, DateTimeKind.Local).AddTicks(9185),
                             IsRemoved = false,
                             Name = "User"
                         });

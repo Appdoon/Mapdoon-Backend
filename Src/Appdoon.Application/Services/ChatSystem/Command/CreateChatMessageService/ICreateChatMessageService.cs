@@ -116,11 +116,10 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
         public async Task SendToGroup(WebSocketChatMessage chatMessage, int roadmapId)
         {
             var getUsersResult = _getRegisteredRoadMapService.Execute(roadmapId);
-            _webSocketMessageSender.SendToAll("ReceiveMessage", chatMessage);
-            //foreach(var user in getUsersResult.Data)
-            //{
-                //_webSocketMessageSender.SendToUser("ReceiveMessage", user.Id.ToString(), chatMessage);
-            //}
+            foreach(var user in getUsersResult.Data)
+            {
+                _webSocketMessageSender.SendToUser("ReceiveMessage", user.Id.ToString(), chatMessage);
+            }
         }
     }
 }

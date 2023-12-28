@@ -38,6 +38,7 @@ namespace Mapdoon.Application.Services.Roadmaps
 		private readonly IFacadeFileHandler _facadeFileHandler;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IUserHubConnectionIdManager _userHubConnectionIdManager;
+		private readonly IRoadmapPermissionManager _roadmapPermissionManager;
 
 		public RoadmapServiceFactory(IDatabaseContext context, IFacadeFileHandler facadeFileHandler, IHttpContextAccessor httpContextAccessor, IUserHubConnectionIdManager userHubConnectionIdManager)
 		{
@@ -45,8 +46,7 @@ namespace Mapdoon.Application.Services.Roadmaps
 			_facadeFileHandler = facadeFileHandler;
 			_httpContextAccessor = httpContextAccessor;
 			_userHubConnectionIdManager = userHubConnectionIdManager;
-
-		}
+    }
 
 		private IBookmarkRoadmapService _bookmarkRoadmapService;
 		public IBookmarkRoadmapService BookmarkRoadmapService
@@ -62,7 +62,7 @@ namespace Mapdoon.Application.Services.Roadmaps
 		{
 			get
 			{
-				return _createRoadmapService ??= new CreateRoadmapService(_context, _facadeFileHandler);
+				return _createRoadmapService ??= new CreateRoadmapService(_context, _facadeFileHandler, _roadmapPermissionManager);
 			}
 		}
 
