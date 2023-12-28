@@ -53,7 +53,7 @@ namespace Appdoon.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(EditUserDto UserDto)
+        public async Task<IActionResult> Edit([FromForm] EditUserDto UserDto)
         {
             int Id = GetIdFromCookie();
             var result = await _editUserService.Execute(Id, UserDto);
