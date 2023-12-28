@@ -2,7 +2,9 @@
 using Appdoon.Application.Validatores.RoadMapValidatore;
 using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
+using FluentAssertions;
 using Mapdoon.Application.Interfaces;
+using Mapdoon.Application.Services.Roadmaps;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -28,16 +30,22 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
     {
         private readonly IDatabaseContext _context;
         private readonly IFacadeFileHandler _facadeFileHandler;
+        private readonly IRoadmapPermissionManager _roadmapPermissionManager;
 
-        public CreateRoadmapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
+        public CreateRoadmapService(IDatabaseContext context,
+            IFacadeFileHandler facadeFileHandler,
+            IRoadmapPermissionManager roadmapPermissionManager)
         {
             _context = context;
             _facadeFileHandler = facadeFileHandler;
+            _roadmapPermissionManager = roadmapPermissionManager;
         }
         public async Task<ResultDto> Execute(CreateRoadmapDto createRoadmapDto, int userId)
         {
             try
             {
+                PermissionManager.CheckPermission(_roadmapPermissionManager.CanCreate(userId));
+
                 if (_context.RoadMaps.Any(s => s.Title == createRoadmapDto.Title.ToString()) == true)
                 {
                     return new ResultDto()

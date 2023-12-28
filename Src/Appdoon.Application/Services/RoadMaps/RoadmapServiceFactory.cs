@@ -45,8 +45,16 @@ namespace Mapdoon.Application.Services.Roadmaps
 			_facadeFileHandler = facadeFileHandler;
 			_httpContextAccessor = httpContextAccessor;
 			_userHubConnectionIdManager = userHubConnectionIdManager;
+    }
 
-		}
+    private ICreateRoadmapService _createRoadmapService;
+    public ICreateRoadmapService CreateRoadmapService
+    {
+        get
+        {
+            return _createRoadmapService ??= new CreateRoadmapService(_context, _facadeFileHandler, _roadmapPermissionManager);
+        }
+    }
 
 		private IBookmarkRoadmapService _bookmarkRoadmapService;
 		public IBookmarkRoadmapService BookmarkRoadmapService
