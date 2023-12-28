@@ -19,6 +19,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
         public string PhotoFileName { get; set; }
         public IFormFile RoadmapPhoto { get; set; }
         public List<string> CategoryNames { get; set; }
+        public float? Price { get; set; }
     }
     public interface ICreateRoadmapService : ITransientService
     {
@@ -85,6 +86,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                     ImageSrc = imageSrc,
                     Categories = categories,
                     Creatore = creator,
+                    Price = createRoadmapDto.Price
                 };
 
                 // validate inputes
