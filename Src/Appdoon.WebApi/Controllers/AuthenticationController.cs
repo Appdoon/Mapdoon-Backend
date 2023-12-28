@@ -76,10 +76,10 @@ namespace Appdoon.WebApi.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Register(RequestRegisterUserDto user)
+		public async Task<JsonResult> Register(RequestRegisterUserDto user)
 		{
 			// use new regiser user service
-			var result = _registerUserService.Execute(user);
+			var result = await _registerUserService.Execute(user);
 
 			if(result.IsSuccess == true)
 			{
