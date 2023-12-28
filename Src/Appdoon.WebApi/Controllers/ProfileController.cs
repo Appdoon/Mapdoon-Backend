@@ -4,6 +4,7 @@ using Appdoon.Application.Services.Users.Query.GetBookMarkRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetCreatedLessonsService;
 using Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
+using Appdoon.Application.Services.Users.Query.GetUserPreviewService;
 using Appdoon.Application.Services.Users.Query.GetUserService;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace Appdoon.WebApi.Controllers
         private readonly IEditPasswordService _editPasswordService;
         private readonly IGetCreatedRoadMapService _getCreatedRoadMapService;
         private readonly IGetCreatedLessonsService _getCreatedLessonsService;
+        private readonly IGetUserPreviewService _getUserPreviewService;
         private readonly ICurrentContext _currentContext;
 
         public ProfileController(IGetUserService getUserService,
@@ -33,6 +35,7 @@ namespace Appdoon.WebApi.Controllers
                                  IEditPasswordService editPasswordService,
                                  IGetCreatedRoadMapService getCreatedRoadMapService,
                                  IGetCreatedLessonsService getCreatedLessonsService,
+                                 IGetUserPreviewService getUserPreviewService,
                                  ICurrentContext currentContext)
         {
             _getUserService = getUserService;
@@ -42,6 +45,7 @@ namespace Appdoon.WebApi.Controllers
             _editPasswordService = editPasswordService;
             _getCreatedRoadMapService = getCreatedRoadMapService;
             _getCreatedLessonsService = getCreatedLessonsService;
+            _getUserPreviewService = getUserPreviewService;
             _currentContext = currentContext;
         }
         [HttpGet]
@@ -49,6 +53,13 @@ namespace Appdoon.WebApi.Controllers
         {
             int Id = GetIdFromCookie();
             var result = await _getUserService.Execute(Id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PreviewInfo(int id)
+        {
+            var result = await _getUserPreviewService.Execute(id);
             return Ok(result);
         }
 
