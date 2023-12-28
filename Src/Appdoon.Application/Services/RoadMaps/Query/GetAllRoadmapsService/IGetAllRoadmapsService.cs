@@ -23,6 +23,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
         public bool HasNewSrc { get; set; } = false;
         public int RateCount;
         public List<Category> Categories { get; set; }
+        public float? Price { get; set; }   
     }
     public class AllRoadmapsDto
     {
@@ -61,6 +62,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService
                         Title = r.Title,
                         Categories = r.Categories,
                         RateCount = r.RateCount,
+                        Price = r.Price
 
                     })
                     .ToPaged(PageNumber, PageSize, out rowCount)

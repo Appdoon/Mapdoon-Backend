@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231228161415_add-price")]
+    partial class addprice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -653,10 +656,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfileImageSrc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
@@ -741,40 +740,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("ChatMessages");
-                });
-
-            modelBuilder.Entity("Mapdoon.Domain.Entities.Notification.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("InsertTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSeen")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("RoadMapUser", b =>
@@ -1046,15 +1011,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Mapdoon.Domain.Entities.Notification.Notification", b =>
-                {
-                    b.HasOne("Appdoon.Domain.Entities.Users.User", "Receiver")
-                        .WithMany("UserNotifications")
-                        .HasForeignKey("ReceiverId");
-
-                    b.Navigation("Receiver");
-                });
-
             modelBuilder.Entity("RoadMapUser", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.RoadMap", null)
@@ -1148,8 +1104,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.Navigation("Rates");
 
                     b.Navigation("StepProgresses");
-
-                    b.Navigation("UserNotifications");
                 });
 #pragma warning restore 612, 618
         }
