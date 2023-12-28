@@ -10,6 +10,7 @@ using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.User;
 using Mapdoon.Domain.Entities.Chat;
+using Mapdoon.Domain.Entities.Notification;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -42,8 +43,9 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Reply> Replies { get; set; }
 		public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Admin.ToString(), Id = (int)UserRole.Admin });
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Teacher.ToString(), Id = (int)UserRole.Teacher });

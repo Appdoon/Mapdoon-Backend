@@ -4,6 +4,7 @@ using Appdoon.Presistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mapdoon.Presistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231226135639_Add_Notification")]
+    partial class Add_Notification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -599,21 +602,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 12, 28, 16, 34, 3, 134, DateTimeKind.Local).AddTicks(9044),
+                            InsertTime = new DateTime(2023, 12, 26, 17, 26, 38, 890, DateTimeKind.Local).AddTicks(6709),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 12, 28, 16, 34, 3, 134, DateTimeKind.Local).AddTicks(9169),
+                            InsertTime = new DateTime(2023, 12, 26, 17, 26, 38, 890, DateTimeKind.Local).AddTicks(6771),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 12, 28, 16, 34, 3, 134, DateTimeKind.Local).AddTicks(9185),
+                            InsertTime = new DateTime(2023, 12, 26, 17, 26, 38, 890, DateTimeKind.Local).AddTicks(6779),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -648,10 +651,6 @@ namespace Mapdoon.Presistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfileImageSrc")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateTime")

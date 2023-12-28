@@ -8,6 +8,7 @@ using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
 using Appdoon.Common.Dtos;
 using Mapdoon.Application.Interfaces;
 using Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService;
+using Mapdoon.Application.Services.ChatSystem.Query.GetRegisterdUsersService;
 using Mapdoon.Application.Services.Comments.Command.CreateCommentService;
 using Mapdoon.Common.Interfaces;
 using Mapdoon.Domain.Entities.Chat;
@@ -21,7 +22,20 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
         public int? ReplyMessageId { get; set; }
     }
 
-    public interface ICreateChatMessageService : ITransientService
+	public class WebSocketChatMessage
+	{
+		public int Id { get; set; }
+		public string Message { get; set; }
+		public int SenderId { get; set; }
+		public string Username { get; set; }
+		public DateTime CreatedAtDate { get; set; }
+		public string CreatedAtTime { get; set; }
+		public int? ReplyMessageId { get; set; }
+        public string? ReplySenderUsername { get; set; }
+        public string? RepliedMessage { get; set; }
+    }
+
+	public interface ICreateChatMessageService : ITransientService
     {
 		Task<ResultDto> Execute(int roadmapId, int userId, CreateMessageDto message);
     }
@@ -29,10 +43,10 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
     public class CreateChatMessageService : ICreateChatMessageService
     {
         private readonly IDatabaseContext _context;
-		private readonly IGetRegisteredRoadMapService _getRegisteredRoadMapService;
+		private readonly IGetRegisterdUsersService _getRegisteredRoadMapService;
 		private readonly IWebSocketMessageSender _webSocketMessageSender;
 
-		public CreateChatMessageService(IDatabaseContext context, IGetRegisteredRoadMapService getRegisteredRoadMapService, IWebSocketMessageSender webSocketMessageSender)
+		public CreateChatMessageService(IDatabaseContext context, IGetRegisterdUsersService getRegisteredRoadMapService, IWebSocketMessageSender webSocketMessageSender)
         {
             this._context = context;
             _getRegisteredRoadMapService = getRegisteredRoadMapService;
@@ -54,14 +68,33 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
                 _context.ChatMessages.Add(chatmessage);
                 _context.SaveChanges();
 
-                var webSocketMessage = new ChatMessageDto()
+                var senderUserName = _context.Users
+                                             .Where(u => u.Id == userId)
+                                             .Select(u => u.Username)
+                                             .FirstOrDefault();
+
+                var webSocketMessage = new WebSocketChatMessage()
                 {
                     Id = chatmessage.Id,
                     Message = chatmessage.Message,
                     SenderId = chatmessage.SenderId,
-                    Username = chatmessage.Sender.Username,
+                    Username = senderUserName,
+                    CreatedAtDate = DateTime.Now,
+                    CreatedAtTime = DateTime.Now.ToString("hh:mm tt"),
                     ReplyMessageId = chatmessage.ReplyMessageId,
-                };
+                    //RepliedMessage = ,
+                    //ReplySenderId = ,
+				};
+
+                if(webSocketMessage.ReplyMessageId != null)
+                {
+                    var repliedMessage = _context.ChatMessages.Where(m => m.Id == webSocketMessage.ReplyMessageId).FirstOrDefault();
+                    webSocketMessage.RepliedMessage = repliedMessage.Message;
+
+                    var replyMessageSender = _context.Users.Where(u => u.Id == repliedMessage.SenderId).Select(u => u.Username).FirstOrDefault();
+                    webSocketMessage.ReplySenderUsername = replyMessageSender;
+                }
+
                 await SendToGroup(webSocketMessage, roadmapId);
 
                 return new ResultDto()
@@ -80,9 +113,9 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
             }
         }
 
-        public async Task SendToGroup(ChatMessageDto chatMessage, int roadmapId)
+        public async Task SendToGroup(WebSocketChatMessage chatMessage, int roadmapId)
         {
-            var getUsersResult = await _getRegisteredRoadMapService.Execute(roadmapId);
+            var getUsersResult = _getRegisteredRoadMapService.Execute(roadmapId);
             foreach(var user in getUsersResult.Data)
             {
                 _webSocketMessageSender.SendToUser("ReceiveMessage", user.Id.ToString(), chatMessage);
