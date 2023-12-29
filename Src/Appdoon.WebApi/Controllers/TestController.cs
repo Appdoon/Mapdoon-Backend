@@ -15,9 +15,16 @@ namespace Mapdoon.WebApi.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Post(string message)
+		public IActionResult ChatMessage(string message)
 		{
 			_webSocketMessageSender.SendToAll("ReceiveMessage", message);
+			return Ok();
+		}
+
+		[HttpPost]
+		public IActionResult NotificationMessage(string message)
+		{
+			_webSocketMessageSender.SendToAll("ReceiveNotification", message);
 			return Ok();
 		}
 	}
