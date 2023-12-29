@@ -1,6 +1,5 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
-using Appdoon.Domain.Entities.Homeworks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.Interfaces;
