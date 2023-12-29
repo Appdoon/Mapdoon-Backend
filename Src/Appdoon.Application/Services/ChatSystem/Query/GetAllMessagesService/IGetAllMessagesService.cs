@@ -17,10 +17,13 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
 		public string Message { get; set; }
 		public int SenderId { get; set; }
 		public string Username { get; set; }
-		public int? ReplyMessageId { get; set; }
 		public DateTime CreatedAtDate { get; set; }
 		public string CreatedAtTime { get; set; }
-		public List<ChatMessageDto> Replies { get; set; } = new List<ChatMessageDto>();
+		public int? ReplyMessageId { get; set; }
+		public string? ReplySenderUsername { get; set; }
+		public string? RepliedMessage { get; set; }
+
+		//public List<ChatMessageDto> Replies { get; set; } = new List<ChatMessageDto>();
 	}
 	public class AllChatMessagesDto
 	{
@@ -61,54 +64,25 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
 
 				int rowCount = 0;
 				var message = _context.ChatMessages
-					.Include(m => m.Sender)
-					.Where(m => m.RoadMapId == roadmapId)
-					.Select(m => new ChatMessageDto
-					{
-						Id = m.Id,
-						Message = m.Message,
-						SenderId = m.SenderId,
-						Username = m.Sender.Username,
-						ReplyMessageId = m.ReplyMessageId,
-						CreatedAtDate = m.InsertTime,
-						CreatedAtTime = m.InsertTime.ToString("hh:mm tt"),
-						Replies = new List<ChatMessageDto>()
-					})
-					.OrderBy(m => m.CreatedAtDate)
-					.ToPaged(PageNumber, PageSize, out rowCount)
-					.DistinctBy(m => m.Id)
-					.ToList();
-				var MustDeleteMessages = new List<ChatMessageDto>();
-				foreach(var m in message)
-				{
-					if(m.ReplyMessageId != null)
-					{
-						foreach(var r in message)
-						{
-							if(r.Id == m.ReplyMessageId)
-							{
-								var reply = new ChatMessageDto
-								{
-									Id = m.Id,
-									Message = m.Message,
-									SenderId = m.SenderId,
-									Username = _context.Users.FirstOrDefault(u => u.Id == m.SenderId).Username,
-									ReplyMessageId = m.ReplyMessageId,
-									CreatedAtDate = m.CreatedAtDate,
-									CreatedAtTime = m.CreatedAtTime
-								};
-								r.Replies.Add(reply);
-							}
-						}
-						m.Replies.OrderBy(m => m.CreatedAtDate);
-						MustDeleteMessages.Add(m);
-					}
+									  .Where(m => m.RoadMapId == roadmapId)
+									  .Include(m => m.ReplyMessage)
+									  .Include(m => m.Sender)
+									  .Select(m => new ChatMessageDto()
+									  {
+										  Id = m.Id,
+										  Message = m.Message,
+										  SenderId = m.SenderId,
+										  Username = m.Sender.Username,
+										  ReplyMessageId = m.ReplyMessageId,
+										  CreatedAtDate = m.InsertTime,
+										  CreatedAtTime = m.InsertTime.ToString("hh:mm tt"),
+										  RepliedMessage = m.ReplyMessageId == null ? null : m.ReplyMessage.Message,
+										  ReplySenderUsername = m.ReplyMessageId == null ? null : m.Sender.Username,
+									  })
+									 .OrderByDescending(m => m.Id)
+									 .ToPaged(PageNumber, PageSize, out rowCount)
+									 .ToList();
 
-				}
-				foreach(var m in MustDeleteMessages)
-				{
-					message.Remove(m);
-				}
 				if(message.Count == 0)
 				{
 					return new ResultDto<AllChatMessagesDto>()
@@ -120,6 +94,7 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
 				}
 				AllChatMessagesDto allchatmessages = new AllChatMessagesDto();
 				allchatmessages.Messages = message;
+				allchatmessages.RowCount = rowCount;
 
 				return new ResultDto<AllChatMessagesDto>()
 				{
