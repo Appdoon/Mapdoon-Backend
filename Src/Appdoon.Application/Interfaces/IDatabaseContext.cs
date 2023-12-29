@@ -1,5 +1,4 @@
-﻿using Appdoon.Domain.Entities.Homeworks;
-using Appdoon.Domain.Entities.HomeWorks;
+﻿using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Rates;
@@ -31,7 +30,6 @@ namespace Appdoon.Application.Interfaces
 		DbSet<ChildStepProgress> ChildStepProgresses { get; set; }
 		DbSet<Homework> Homeworks { get; set; }
 		DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
-		DbSet<Question> Questions { get; set; }
 		DbSet<RateRoadMap> Rates { get; set; }
 		DbSet<Comment> Comments { get; set; }
 		DbSet<Reply> Replies { get; set; }	

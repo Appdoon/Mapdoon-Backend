@@ -1,7 +1,6 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Domain.Commons;
 using Appdoon.Domain.Entities.Comments;
-using Appdoon.Domain.Entities.Homeworks;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.Rates;
@@ -38,7 +37,6 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<ChildStepProgress> ChildStepProgresses { get; set; }
 		public DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		public DbSet<Homework> Homeworks { get; set; }
-		public DbSet<Question> Questions { get; set; }
 		public DbSet<RateRoadMap> Rates { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Reply> Replies { get; set; }
