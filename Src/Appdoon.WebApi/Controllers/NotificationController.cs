@@ -18,7 +18,7 @@ namespace Mapdoon.WebApi.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllNotifications([FromServices] IGetAllNotificationsService getAllNotificationsService, GetNotificationDto input)
+		public async Task<IActionResult> GetAllNotifications([FromServices] IGetAllNotificationsService getAllNotificationsService, [FromQuery] GetNotificationDto input)
 		{
 			var userId = _currentContext.User.Id;
 			var result = await getAllNotificationsService.GetAllNotifications(input, userId);
