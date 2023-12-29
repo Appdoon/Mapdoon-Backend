@@ -25,7 +25,7 @@ namespace Mapdoon.WebApi.Controllers
 			return Ok(result);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public async Task<IActionResult> MarkAllNotificationsAsRead([FromServices] IMarkNotificationAsReadService markNotificationAsReadService)
 		{
 			var result = await markNotificationAsReadService.MarkAllNotificationsAsRead();
