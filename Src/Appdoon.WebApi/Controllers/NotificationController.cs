@@ -1,12 +1,12 @@
-﻿using Mapdoon.Application.Services.Notification.Command.MarkNotificationAsRead;
-using Mapdoon.Application.Services.Notification.Query.GetAllNotificationsService;
+﻿using Mapdoon.Application.Services.Notifications.Command.MarkNotificationAsRead;
+using Mapdoon.Application.Services.Notifications.Query.GetAllNotificationsService;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Mapdoon.WebApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
+	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class NotificationController : Controller
 	{

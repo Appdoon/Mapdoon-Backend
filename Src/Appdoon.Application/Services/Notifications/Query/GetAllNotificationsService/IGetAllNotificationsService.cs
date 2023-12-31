@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mapdoon.Application.Services.Notification.Query.GetAllNotificationsService
+namespace Mapdoon.Application.Services.Notifications.Query.GetAllNotificationsService
 {
 	public interface IGetAllNotificationsService : ITransientService
 	{
@@ -17,14 +17,14 @@ namespace Mapdoon.Application.Services.Notification.Query.GetAllNotificationsSer
 	public class GetNotificationDto
 	{
 		public bool UnSeenNotificationsOnly { get; set; } = true;
-    }
+	}
 
 	public class GetNotificationResultDto
 	{
 		public int NotificationId { get; set; }
-        public string Message { get; set; }
-        public DateTime CreateDate { get; set; }
-    }
+		public string Message { get; set; }
+		public DateTime CreateDate { get; set; }
+	}
 
 	public class GetAllNotificationsService : IGetAllNotificationsService
 	{
