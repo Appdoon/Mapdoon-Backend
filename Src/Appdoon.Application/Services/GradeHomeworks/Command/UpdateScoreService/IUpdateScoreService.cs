@@ -4,6 +4,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
+using Mapdoon.Application.Services.Notifications.Command.SendNotificationService;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,10 +29,14 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService
     public class UpdateScoreService : IUpdateScoreService
     {
         private readonly IDatabaseContext _context;
-        public UpdateScoreService(IDatabaseContext context)
+		private readonly ISendNotificationService _sendNotificationService;
+
+		public UpdateScoreService(IDatabaseContext context, ISendNotificationService sendNotificationService)
         {
             _context = context;
-        }
+            _sendNotificationService = sendNotificationService;
+
+		}
         public ResultDto Execute(HomeworkProgressUpdateDto updateDto)
         {
             try
@@ -53,6 +58,9 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService
                     childstepprogress.IsDone = false;
                 }
                 _context.SaveChanges();
+
+                _sendNotificationService.SendNotification($"نمره شما برای تکلیف {homeworkProgress.Homework.Title} به {updateDto.Score} تغییر کرد.", updateDto.UserId);
+
                 return new ResultDto()
                 {
                     IsSuccess = true,

@@ -10,8 +10,10 @@ using Mapdoon.Application.Interfaces;
 using Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService;
 using Mapdoon.Application.Services.ChatSystem.Query.GetRegisterdUsersService;
 using Mapdoon.Application.Services.Comments.Command.CreateCommentService;
+using Mapdoon.Application.Services.Notifications.Command.SendNotificationService;
 using Mapdoon.Common.Interfaces;
 using Mapdoon.Domain.Entities.Chat;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageService
 {
@@ -44,14 +46,18 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
     {
         private readonly IDatabaseContext _context;
 		private readonly IGetRegisterdUsersService _getRegisteredRoadMapService;
+		private readonly ISendNotificationService _sendNotificationService;
 		private readonly IWebSocketMessageSender _webSocketMessageSender;
 
-		public CreateChatMessageService(IDatabaseContext context, IGetRegisterdUsersService getRegisteredRoadMapService, IWebSocketMessageSender webSocketMessageSender)
+		public CreateChatMessageService(IDatabaseContext context, 
+                                        IGetRegisterdUsersService getRegisteredRoadMapService,
+                                        ISendNotificationService sendNotificationService,
+                                        IWebSocketMessageSender webSocketMessageSender)
         {
             this._context = context;
             _getRegisteredRoadMapService = getRegisteredRoadMapService;
-            _webSocketMessageSender = webSocketMessageSender;
-
+            _sendNotificationService = sendNotificationService;
+			_webSocketMessageSender = webSocketMessageSender;
 		}
         public async Task<ResultDto> Execute(int roadmapId, int userId, CreateMessageDto message)
         {
@@ -68,17 +74,17 @@ namespace Mapdoon.Application.Services.ChatSystem.Command.CreateChatMessageServi
                 _context.ChatMessages.Add(chatmessage);
                 _context.SaveChanges();
 
-                var senderUserName = _context.Users
-                                             .Where(u => u.Id == userId)
-                                             .Select(u => u.Username)
-                                             .FirstOrDefault();
+                var sender = _context.Users
+                                     .Include(u => u.Roles)
+                                     .Where(u => u.Id == userId)
+                                     .FirstOrDefault();
 
                 var webSocketMessage = new WebSocketChatMessage()
                 {
                     Id = chatmessage.Id,
                     Message = chatmessage.Message,
                     SenderId = chatmessage.SenderId,
-                    Username = senderUserName,
+                    Username = sender.Username,
                     CreatedAtDate = DateTime.Now,
                     CreatedAtTime = DateTime.Now.ToString("hh:mm tt"),
                     ReplyMessageId = chatmessage.ReplyMessageId,
