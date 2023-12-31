@@ -4,6 +4,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Common.Pagination;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
+using FluentAssertions.Equivalency.Tracing;
 using Mapdoon.Application.Services.Notifications.Command.SendNotificationService;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -70,9 +71,11 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.SubmitScoreService
                     homeworkProgress.IsDone = false;
                     childstepprogress.IsDone = false;
                 }
-                _context.SaveChanges();
+				_context.SaveChanges();
 
-                _sendNotificationService.SendNotification($"نمره شما برای تکلیف {homeworkProgress.Homework.Title} ثبت شد.", submission.UserId);
+                var teacher = _context.Users.FirstOrDefault(u => u.Id == homeworkProgress.Homework.CreatorId);
+
+                _sendNotificationService.SendNotification($"نمره شما در رودمپ {homeworkProgress.Homework.Title} توسط {teacher.Username} به مقدار {submission.Score} تغییر پیدا کرد!", submission.UserId);
 
                 return new ResultDto()
                 {

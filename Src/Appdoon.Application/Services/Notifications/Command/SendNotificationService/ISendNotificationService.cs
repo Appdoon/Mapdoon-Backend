@@ -44,7 +44,11 @@ namespace Mapdoon.Application.Services.Notifications.Command.SendNotificationSer
 				_databaseContext.Notifications.Add(notificaiton);
 				await _databaseContext.SaveChangesAsync();
 
-				_webSocketMessageSender.SendToUser(NotificationMethodName, receiverId.ToString(), message);
+				_webSocketMessageSender.SendToUser(NotificationMethodName, receiverId.ToString(), new
+				{
+					Message = message,
+					Date = notificaiton.InsertTime,
+				});
 
 				return new ResultDto<bool>()
 				{
