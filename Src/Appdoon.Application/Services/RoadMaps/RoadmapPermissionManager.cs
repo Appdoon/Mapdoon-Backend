@@ -3,6 +3,7 @@ using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 using Mapdoon.Application.Interfaces;
+using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ namespace Mapdoon.Application.Services.Roadmaps
 {
     public interface IRoadmapPermissionManager : IPermissionManager
     {
+
     }
-    internal class RoadmapPermissionManager : PermissionManager, IRoadmapPermissionManager
+    public class RoadmapPermissionManager : PermissionManager, IRoadmapPermissionManager
     {
         private readonly IDatabaseContext _context;
         public RoadmapPermissionManager(IDatabaseContext context)
@@ -27,6 +29,11 @@ namespace Mapdoon.Application.Services.Roadmaps
                 .Where(u => u.Id == userId)
                 .Select(u => u.Roles)
                 .FirstOrDefault();
+
+            if (roles == null)
+            {
+                return false;
+            }
 
             List<string> roleNames = roles.Select(r => r.Name).ToList();
 
