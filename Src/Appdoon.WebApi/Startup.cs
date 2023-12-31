@@ -28,6 +28,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -161,6 +162,7 @@ namespace OU_API
 			services.ConfigureOptions<JwtBearerOptionsSetup>();
 			services.ConfigureOptions<EmailOptionsSetup>();
 			services.ConfigureOptions<ForgetPasswordOptionsSetup>();
+			services.ConfigureOptions<RabbitMQOptionsSetup>();
 
 			// Authorization policies with Cookie
 			//services.AddAuthorization(options =>
@@ -231,6 +233,10 @@ namespace OU_API
 			// Injection for user validatore
 			// Be aware of UserValidatore class in Asp.Net
 			services.AddScoped<IValidator<RequestRegisterUserDto>, UserValidatore>();
+
+			var rabbitMQOption = new RabbitMQOption();
+			Configuration.GetSection("RabbitMq").Bind(rabbitMQOption);
+			services.AddMapdoonMassTransit(Configuration, rabbitMQOption, new[] { Assembly.GetAssembly(typeof(ApplicationAssembly)) });
 
 			// Add EF Core
 			services.AddEntityFrameworkSqlServer()

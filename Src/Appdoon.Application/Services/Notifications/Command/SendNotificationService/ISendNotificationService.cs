@@ -2,12 +2,10 @@
 using Appdoon.Common.Dtos;
 using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
+using Mapdoon.Common.Messages.Events;
 using Mapdoon.Domain.Entities.Notification;
-using Microsoft.AspNetCore.Http.HttpResults;
+using MassTransit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mapdoon.Application.Services.Notifications.Command.SendNotificationService
@@ -20,14 +18,15 @@ namespace Mapdoon.Application.Services.Notifications.Command.SendNotificationSer
 	public class SendNotificationService : ISendNotificationService
 	{
 		private readonly IDatabaseContext _databaseContext;
+		private readonly IPublishEndpoint _publishEndpoint;
 		private readonly IWebSocketMessageSender _webSocketMessageSender;
 
 		public string NotificationMethodName { get; } = "ReceiveNotification";
 
-        public SendNotificationService(IDatabaseContext databaseContext, IWebSocketMessageSender webSocketMessageSender)
+		public SendNotificationService(IDatabaseContext databaseContext, IPublishEndpoint publishEndpoint)
 		{
 			_databaseContext = databaseContext;
-			_webSocketMessageSender = webSocketMessageSender;
+			_publishEndpoint = publishEndpoint;
 		}
 		public async Task<ResultDto<bool>> SendNotification(string message, int receiverId)
 		{
@@ -44,11 +43,12 @@ namespace Mapdoon.Application.Services.Notifications.Command.SendNotificationSer
 				_databaseContext.Notifications.Add(notificaiton);
 				await _databaseContext.SaveChangesAsync();
 
-				_webSocketMessageSender.SendToUser(NotificationMethodName, receiverId.ToString(), new
+				await _publishEndpoint.Publish(new SendNotificationEvent
 				{
 					NotificationId = notificaiton.Id,
-					Message = message,
-					Date = notificaiton.InsertTime,
+					Notification = notificaiton.Message,
+					ReceiverId = notificaiton.ReceiverId,
+					SendTime = notificaiton.InsertTime,
 				});
 
 				return new ResultDto<bool>()
