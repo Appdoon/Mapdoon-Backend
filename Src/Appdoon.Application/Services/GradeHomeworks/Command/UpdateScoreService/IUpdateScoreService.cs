@@ -59,7 +59,9 @@ namespace Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService
                 }
                 _context.SaveChanges();
 
-                _sendNotificationService.SendNotification($"نمره شما برای تکلیف {homeworkProgress.Homework.Title} به {updateDto.Score} تغییر کرد.", updateDto.UserId);
+                var teacher = _context.Users.FirstOrDefault(u => u.Id == homeworkProgress.Homework.CreatorId);
+
+                _sendNotificationService.SendNotification($"نمره شما در رودمپ {homeworkProgress.Homework.Title} توسط {teacher.Username} به مقدار {updateDto.Score} ثبت شد!", updateDto.UserId);
 
                 return new ResultDto()
                 {
