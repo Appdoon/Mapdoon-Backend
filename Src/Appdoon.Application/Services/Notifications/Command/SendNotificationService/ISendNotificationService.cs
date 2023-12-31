@@ -46,6 +46,7 @@ namespace Mapdoon.Application.Services.Notifications.Command.SendNotificationSer
 
 				_webSocketMessageSender.SendToUser(NotificationMethodName, receiverId.ToString(), new
 				{
+					NotificationId = notificaiton.Id,
 					Message = message,
 					Date = notificaiton.InsertTime,
 				});
