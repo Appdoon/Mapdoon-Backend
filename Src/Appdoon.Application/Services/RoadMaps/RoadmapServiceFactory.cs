@@ -40,12 +40,17 @@ namespace Mapdoon.Application.Services.Roadmaps
 		private readonly IUserHubConnectionIdManager _userHubConnectionIdManager;
 		private readonly IRoadmapPermissionManager _roadmapPermissionManager;
 
-		public RoadmapServiceFactory(IDatabaseContext context, IFacadeFileHandler facadeFileHandler, IHttpContextAccessor httpContextAccessor, IUserHubConnectionIdManager userHubConnectionIdManager)
+		public RoadmapServiceFactory(IDatabaseContext context, 
+			IFacadeFileHandler facadeFileHandler, 
+			IHttpContextAccessor httpContextAccessor, 
+			IUserHubConnectionIdManager userHubConnectionIdManager,
+            IRoadmapPermissionManager roadmapPermissionManager)
 		{
 			_context = context;
 			_facadeFileHandler = facadeFileHandler;
 			_httpContextAccessor = httpContextAccessor;
 			_userHubConnectionIdManager = userHubConnectionIdManager;
+			_roadmapPermissionManager = roadmapPermissionManager;
     }
 
 		private IBookmarkRoadmapService _bookmarkRoadmapService;

@@ -79,7 +79,7 @@ namespace Mapdoon.Application.Services.ChatSystem.Query.GetAllMessagesService
 										  RepliedMessage = m.ReplyMessageId == null ? null : m.ReplyMessage.Message,
 										  ReplySenderUsername = m.ReplyMessageId == null ? null : m.Sender.Username,
 									  })
-									 .OrderByDescending(m => m.Id)
+									 .OrderBy(m => m.Id)
 									 .ToPaged(PageNumber, PageSize, out rowCount)
 									 .ToList();
 
