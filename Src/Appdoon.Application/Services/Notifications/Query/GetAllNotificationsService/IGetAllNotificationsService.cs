@@ -22,9 +22,10 @@ namespace Mapdoon.Application.Services.Notifications.Query.GetAllNotificationsSe
 	public class GetNotificationResultDto
 	{
 		public int NotificationId { get; set; }
-		public string Message { get; set; }
-		public DateTime CreateDate { get; set; }
-	}
+        public string Message { get; set; }
+        public DateTime CreateDate { get; set; }
+        public bool IsSeen { get; set; }
+    }
 
 	public class GetAllNotificationsService : IGetAllNotificationsService
 	{
@@ -47,6 +48,7 @@ namespace Mapdoon.Application.Services.Notifications.Query.GetAllNotificationsSe
 													   NotificationId = n.Id,
 													   Message = n.Message,
 													   CreateDate = n.InsertTime,
+													   IsSeen = n.IsSeen,
 												   }).ToListAsync();
 
 				return new ResultDto<List<GetNotificationResultDto>>()
