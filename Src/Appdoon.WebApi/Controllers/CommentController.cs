@@ -16,13 +16,13 @@ namespace Mapdoon.WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CommentControllers : ControllerBase
+    public class CommentController : ControllerBase
     {
         private readonly ICreateCommentService _createCommentService;
         private readonly IUpdateCommentService _updateCommentService;
         private readonly IGetCommentsOfRoadmapService _getCommentsOfRoadmapService;
         private readonly IDeleteCommentService _deleteCommentService;
-        public CommentControllers(ICreateCommentService createCommentService,
+        public CommentController(ICreateCommentService createCommentService,
                                  IUpdateCommentService updateCommentService,
                                  IGetCommentsOfRoadmapService getCommentsOfRoadmapService,
                                  IDeleteCommentService deleteCommentService)
