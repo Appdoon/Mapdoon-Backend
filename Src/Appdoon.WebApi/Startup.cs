@@ -212,13 +212,13 @@ namespace OU_API
 
 
 			// Dependecy Injection for All services which inherit from ITransientService
-			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistanceAssembly), typeof(Program), typeof(CommonAssembly))
+			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistenceAssembly), typeof(Program), typeof(CommonAssembly))
 				.AddClasses(classes => classes.AssignableTo<ITransientService>())
 				.AsImplementedInterfaces()
 				.WithTransientLifetime());
 
 			// Dependecy Injection for All services which inherit from IScopedService
-			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistanceAssembly), typeof(Program), typeof(CommonAssembly))
+			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistenceAssembly), typeof(Program), typeof(CommonAssembly))
 				.AddClasses(classes => classes.AssignableTo<IScopedService>())
 				.AsImplementedInterfaces()
 				.WithScopedLifetime());
