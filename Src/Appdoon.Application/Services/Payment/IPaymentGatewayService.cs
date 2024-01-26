@@ -25,7 +25,7 @@ namespace Mapdoon.Application.Services.PaymentGatway
     public interface IPaymentGatewayService : ITransientService
     {
         ResultDto<string> ExecutePayment(int RoadmapId ,  int UserId);
-        Task<ResultDto> CheckVerification(int paymentid, string authority, int userId);
+        Task<ResultDto<int>> CheckVerification(int paymentid, string authority, int userId);
 
     }
     public class PaymentGatewayService : IPaymentGatewayService
@@ -102,7 +102,7 @@ namespace Mapdoon.Application.Services.PaymentGatway
 
         }
 
-        public async Task<ResultDto> CheckVerification(int paymentid , string authority , int userId)
+        public async Task<ResultDto<int>> CheckVerification(int paymentid , string authority , int userId)
         {
             var paymentrecord = _databaseContext.Payments.FirstOrDefault(p => p.Id == paymentid);
             var roadmap = _databaseContext.RoadMaps.FirstOrDefault(r => r.Id == paymentrecord.RoadmapId);
@@ -118,18 +118,20 @@ namespace Mapdoon.Application.Services.PaymentGatway
                 _registerRoadmapService.Execute(roadmap.Id, userId);
                 _databaseContext.Payments.FirstOrDefault(p => p.Id == paymentid).IsFinaly = true;
                 _databaseContext.SaveChanges();
-                return new ResultDto()
+                return new ResultDto<int>()
                 {
                     IsSuccess = true,
-                    Message = "پرداخت با موفقیت انجام شد"
+                    Message = "پرداخت با موفقیت انجام شد",
+                    Data = roadmap.Id
                 };
             }
             else
             {
-                return new ResultDto()
+                return new ResultDto<int>()
                 {
                     IsSuccess = false,
-                    Message = "پرداخت انجام نشد"
+                    Message = "پرداخت انجام نشد",
+                    Data = roadmap.Id
                 };
             }
         }
