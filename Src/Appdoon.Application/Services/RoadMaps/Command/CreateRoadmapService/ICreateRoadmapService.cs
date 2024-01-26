@@ -21,7 +21,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
         public string PhotoFileName { get; set; }
         public IFormFile RoadmapPhoto { get; set; }
         public List<string> CategoryNames { get; set; }
-        public float? Price { get; set; }
+        public int? Price { get; set; }
     }
     public interface ICreateRoadmapService : ITransientService
     {
@@ -45,7 +45,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
         {
             try
             {
-                PermissionManager.CheckPermission(_roadmapPermissionManager.CanCreate(userId));
+                //PermissionManager.CheckPermission(_roadmapPermissionManager.CanCreate(userId));
 
                 if (_context.RoadMaps.Any(s => s.Title == createRoadmapDto.Title.ToString()) == true)
                 {

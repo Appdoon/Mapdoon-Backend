@@ -25,6 +25,6 @@ namespace Appdoon.Domain.Entities.RoadMaps
 		public int RateCount { get; set; } = 0;
 		public List<RateRoadMap> Rates {get;set;} = new();
 		public List<Comment> Comments { get; set; } = new();
-		public float? Price { get; set; }
+		public int? Price { get; set; }
 	}
 }

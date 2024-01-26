@@ -19,7 +19,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService
         public string PhotoFileName { get; set; }
         public IFormFile RoadmapPhoto { get; set; }
         public List<string> CategoryNames { get; set; }
-        public float? Price { get; set; }
+        public int? Price { get; set; }
     }
     public interface IUpdateRoadmapService : ITransientService
     {
