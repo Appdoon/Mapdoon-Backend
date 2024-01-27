@@ -14,6 +14,11 @@ namespace Mapdoon.WebApi.Application.Dependencies
 		public static IServiceCollection AddMapdoonMassTransit(this IServiceCollection services,
 			IConfiguration configuration, RabbitMQOption rabbitMQOption, params Assembly[] assemblies)
 		{
+			rabbitMQOption.Host = Environment.GetEnvironmentVariable("RABIITMQ_HOST");
+			rabbitMQOption.VirtualPath = Environment.GetEnvironmentVariable("RABIITMQ_VIRTUALPATH");
+			rabbitMQOption.Username = Environment.GetEnvironmentVariable("RABIITMQ_USERNAME");
+			rabbitMQOption.Password = Environment.GetEnvironmentVariable("RABIITMQ_PASSWORD");
+
 			services.AddMassTransit(x =>
 			{
 				x.AddConsumers(assemblies);
