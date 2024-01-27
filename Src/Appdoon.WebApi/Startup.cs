@@ -224,7 +224,7 @@ namespace OU_API
 				.WithScopedLifetime());
 
 			var emailSettings = new EmailSettings();
-			Configuration.GetSection("EmailSettings").Bind(emailSettings);
+			config.GetSection("EmailSettings").Bind(emailSettings);
 			services.AddFluentEmail(emailSettings);
 
 			// Dependency Injection for Database Context
@@ -235,7 +235,7 @@ namespace OU_API
 			services.AddScoped<IValidator<RequestRegisterUserDto>, UserValidatore>();
 
 			var rabbitMQOption = new RabbitMQOption();
-			Configuration.GetSection("RabbitMq").Bind(rabbitMQOption);
+			config.GetSection("RabbitMq").Bind(rabbitMQOption);
 			services.AddMapdoonMassTransit(Configuration, rabbitMQOption, new[] { Assembly.GetAssembly(typeof(ApplicationAssembly)) });
 
 			// Add EF Core
