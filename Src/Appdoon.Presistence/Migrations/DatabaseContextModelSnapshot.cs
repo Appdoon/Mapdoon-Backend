@@ -102,51 +102,6 @@ namespace Mapdoon.Presistence.Migrations
                     b.ToTable("Homeworks");
                 });
 
-            modelBuilder.Entity("Appdoon.Domain.Entities.Homeworks.Question", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Answer")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("InsertTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Option1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Option2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Option3")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Option4")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QuestionDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Questions");
-                });
-
             modelBuilder.Entity("Appdoon.Domain.Entities.Progress.ChildStepProgress", b =>
                 {
                     b.Property<int>("Id")
@@ -510,6 +465,9 @@ namespace Mapdoon.Presistence.Migrations
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("RateCount")
                         .HasColumnType("int");
 
@@ -599,21 +557,21 @@ namespace Mapdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2023, 12, 5, 22, 4, 7, 79, DateTimeKind.Local).AddTicks(8865),
+                            InsertTime = new DateTime(2023, 12, 29, 3, 32, 9, 40, DateTimeKind.Local).AddTicks(5772),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2023, 12, 5, 22, 4, 7, 79, DateTimeKind.Local).AddTicks(8940),
+                            InsertTime = new DateTime(2023, 12, 29, 3, 32, 9, 40, DateTimeKind.Local).AddTicks(5906),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2023, 12, 5, 22, 4, 7, 79, DateTimeKind.Local).AddTicks(8949),
+                            InsertTime = new DateTime(2023, 12, 29, 3, 32, 9, 40, DateTimeKind.Local).AddTicks(5915),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -648,6 +606,10 @@ namespace Mapdoon.Presistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImageSrc")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateTime")
@@ -734,6 +696,40 @@ namespace Mapdoon.Presistence.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("Mapdoon.Domain.Entities.Notification.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("RoadMapUser", b =>
@@ -1005,6 +1001,15 @@ namespace Mapdoon.Presistence.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("Mapdoon.Domain.Entities.Notification.Notification", b =>
+                {
+                    b.HasOne("Appdoon.Domain.Entities.Users.User", "Receiver")
+                        .WithMany("UserNotifications")
+                        .HasForeignKey("ReceiverId");
+
+                    b.Navigation("Receiver");
+                });
+
             modelBuilder.Entity("RoadMapUser", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.RoadMap", null)
@@ -1098,6 +1103,8 @@ namespace Mapdoon.Presistence.Migrations
                     b.Navigation("Rates");
 
                     b.Navigation("StepProgresses");
+
+                    b.Navigation("UserNotifications");
                 });
 #pragma warning restore 612, 618
         }

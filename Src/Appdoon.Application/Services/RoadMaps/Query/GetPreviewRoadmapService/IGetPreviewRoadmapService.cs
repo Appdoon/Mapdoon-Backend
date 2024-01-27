@@ -48,7 +48,9 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService
                         ImageSrc = r.ImageSrc,
                         Stars = r.Stars,
                         Categories = r.Categories,
+                        Price = r.Price,
                         Steps = r.Steps.Take(3).ToList(),
+                       
                     })
                     .FirstOrDefault();
 
@@ -94,5 +96,6 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService
         public List<Category> Categories { get; set; }
         public bool HasNewSrc { get; set; } = false;
         public List<Step> Steps { get; set; }
+        public float? Price { get; set; }
     }
 }

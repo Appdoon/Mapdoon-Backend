@@ -1,6 +1,5 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Common.Dtos;
-using Appdoon.Domain.Entities.Homeworks;
 using Mapdoon.Common.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mapdoon.Presistence.Features.File
 {
-    internal class FacadeFileHandler : IFacadeFileHandler
+    public class FacadeFileHandler : IFacadeFileHandler
     {
         private readonly IFileHandler _fileHandler;
         public FacadeFileHandler(IFileHandler fileHandler)

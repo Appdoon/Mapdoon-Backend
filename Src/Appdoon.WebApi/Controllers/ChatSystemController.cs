@@ -14,7 +14,7 @@ using Mapdoon.Common.Interfaces;
 
 namespace Mapdoon.WebApi.Controllers
 {
-    [Authorize(policy: "User")]
+    //[Authorize(policy: "User")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ChatSystemController : ControllerBase

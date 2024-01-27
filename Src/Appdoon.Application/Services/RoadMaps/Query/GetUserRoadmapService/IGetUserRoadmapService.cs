@@ -3,6 +3,7 @@ using Appdoon.Common.Dtos;
 using Appdoon.Domain.Entities.RoadMaps;
 using Mapdoon.Application.Interfaces;
 using Mapdoon.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,16 +21,29 @@ namespace Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService
 	{
 		private readonly IDatabaseContext _context;
 		private readonly IFacadeFileHandler _facadeFileHandler;
+		private readonly IHttpContextAccessor _httpContextAccessor;
+		private readonly IUserHubConnectionIdManager _userHubConnectionIdManager;
 
-        public GetUserRoadmapService(IDatabaseContext context, IFacadeFileHandler facadeFileHandler)
+		public GetUserRoadmapService(IDatabaseContext context, 
+			                         IFacadeFileHandler facadeFileHandler,
+									 IHttpContextAccessor httpContextAccessor,
+									 IUserHubConnectionIdManager userHubConnectionIdManager)
 		{
 			_context = context;
 			_facadeFileHandler = facadeFileHandler;
+			_httpContextAccessor = httpContextAccessor;
+			_userHubConnectionIdManager = userHubConnectionIdManager;
 		}
 		public async Task<ResultDto<IndividualRoadMapDto>> Execute(int RoadmapId, int UserId)
 		{
 			try
 			{
+				//var connectionId = _httpContextAccessor.HttpContext.Request?.Headers["connectionId"].ToString();
+				//if(UserId != 0 && string.IsNullOrEmpty(connectionId) == false)
+				//{
+				//	_userHubConnectionIdManager.Add(UserId.ToString(), connectionId);
+				//}
+
 				bool hasRoadmap = _context.Users
 					.Include(u => u.SignedRoadMaps)
 					.Where(u => u.Id == UserId)

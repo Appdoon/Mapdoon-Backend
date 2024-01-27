@@ -1,11 +1,11 @@
-﻿using Appdoon.Domain.Entities.Homeworks;
-using Appdoon.Domain.Entities.HomeWorks;
+﻿using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Rates;
 using Appdoon.Domain.Entities.Users;
 using Appdoon.Domain.Entities.Comments;
 using Appdoon.Domain.Entities.Replies;
+using Mapdoon.Domain.Entities.Paymnet;
 using Mapdoon.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Mapdoon.Domain.Entities.Chat;
+using Mapdoon.Domain.Entities.Notification;
+using ZarinPal.Class;
 
 namespace Appdoon.Application.Interfaces
 {
@@ -30,11 +32,13 @@ namespace Appdoon.Application.Interfaces
 		DbSet<ChildStepProgress> ChildStepProgresses { get; set; }
 		DbSet<Homework> Homeworks { get; set; }
 		DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
-		DbSet<Question> Questions { get; set; }
 		DbSet<RateRoadMap> Rates { get; set; }
 		DbSet<Comment> Comments { get; set; }
 		DbSet<Reply> Replies { get; set; }	
 		DbSet<ChatMessage> ChatMessages { get; set; }
+		DbSet<Notification> Notifications { get; set; }
+		DbSet<PaymentRecords> Payments { get; set; }
+
         int SaveChanges(bool acceptAllChangesOnSuccess);
         int SaveChanges();
 

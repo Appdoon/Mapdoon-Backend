@@ -28,7 +28,9 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OU_API
 {
@@ -139,6 +141,20 @@ namespace OU_API
 										  IssuerSigningKey = new SymmetricSecurityKey(
 																  Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
 									  };
+									  options.Events = new JwtBearerEvents
+									  {
+										  OnMessageReceived = context =>
+										  {
+											  var accessToken = context.Request.Query["access_token"];
+											  var path = context.HttpContext.Request.Path;
+											  if(string.IsNullOrEmpty(accessToken) == false && path.StartsWithSegments("/api_hub"))
+											  {
+												  // Read the token out of the query string
+												  context.Token = accessToken;
+											  }
+											  return Task.CompletedTask;
+										  }
+									  };
 								  }
 								);
 
@@ -146,6 +162,7 @@ namespace OU_API
 			services.ConfigureOptions<JwtBearerOptionsSetup>();
 			services.ConfigureOptions<EmailOptionsSetup>();
 			services.ConfigureOptions<ForgetPasswordOptionsSetup>();
+			services.ConfigureOptions<RabbitMQOptionsSetup>();
 
 			// Authorization policies with Cookie
 			//services.AddAuthorization(options =>
@@ -195,19 +212,19 @@ namespace OU_API
 
 
 			// Dependecy Injection for All services which inherit from ITransientService
-			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistanceAssembly), typeof(Program), typeof(CommonAssembly))
+			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistenceAssembly), typeof(Program), typeof(CommonAssembly))
 				.AddClasses(classes => classes.AssignableTo<ITransientService>())
 				.AsImplementedInterfaces()
 				.WithTransientLifetime());
 
 			// Dependecy Injection for All services which inherit from IScopedService
-			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistanceAssembly), typeof(Program), typeof(CommonAssembly))
+			services.Scan(scan => scan.FromAssembliesOf(typeof(DomainAssembly), typeof(ApplicationAssembly), typeof(PersistenceAssembly), typeof(Program), typeof(CommonAssembly))
 				.AddClasses(classes => classes.AssignableTo<IScopedService>())
 				.AsImplementedInterfaces()
 				.WithScopedLifetime());
 
 			var emailSettings = new EmailSettings();
-			Configuration.GetSection("EmailSettings").Bind(emailSettings);
+			config.GetSection("EmailSettings").Bind(emailSettings);
 			services.AddFluentEmail(emailSettings);
 
 			// Dependency Injection for Database Context
@@ -216,6 +233,10 @@ namespace OU_API
 			// Injection for user validatore
 			// Be aware of UserValidatore class in Asp.Net
 			services.AddScoped<IValidator<RequestRegisterUserDto>, UserValidatore>();
+
+			var rabbitMQOption = new RabbitMQOption();
+			config.GetSection("RabbitMq").Bind(rabbitMQOption);
+			services.AddMapdoonMassTransit(Configuration, rabbitMQOption, new[] { Assembly.GetAssembly(typeof(ApplicationAssembly)) });
 
 			// Add EF Core
 			services.AddEntityFrameworkSqlServer()

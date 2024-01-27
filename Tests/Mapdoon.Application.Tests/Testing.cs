@@ -1,13 +1,14 @@
-﻿using Appdoon.Presistence.Contexts;
+﻿using Appdoon.Domain.Commons;
+using Appdoon.Domain.Entities.Users;
+using Appdoon.Presistence.Contexts;
+using Mapdoon.Presistence.Features.File;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Respawn;
-using Appdoon.Domain.Commons;
-using Appdoon.Domain.Entities.Users;
-using Microsoft.AspNetCore.Hosting;
-using OU_API;
-using Respawn.Graph;
 using Moq;
+using OU_API;
+using Respawn;
+using Respawn.Graph;
 
 namespace Mapdoon.Application.Tests
 {
@@ -19,6 +20,7 @@ namespace Mapdoon.Application.Tests
         private static string _connectionString;
         private static Respawner _respawner;
         private static DatabaseContext? _databaseContext;
+        private static FacadeFileHandler? _facadeFileHandler;
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTestsAsync()
@@ -44,7 +46,7 @@ namespace Mapdoon.Application.Tests
 
             //_respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
             //{
-            //    TablesToIgnore = new Table[]{ "__EFMigrationsHistory" },
+            //    TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
             //});
         }
 
@@ -80,7 +82,7 @@ namespace Mapdoon.Application.Tests
 
         public static DatabaseContext GetDatabaseContext()
         {
-            if(_databaseContext != null)
+            if (_databaseContext != null)
             {
                 return _databaseContext;
             }
@@ -90,9 +92,26 @@ namespace Mapdoon.Application.Tests
             return _databaseContext;
         }
 
+        public static FacadeFileHandler GetFacadeFileHandler()
+        {
+            if (_facadeFileHandler != null)
+            {
+                return _facadeFileHandler;
+            }
+
+            var scope = _scopeFactory.CreateScope();
+            _facadeFileHandler = scope.ServiceProvider.GetService<FacadeFileHandler>();
+            return _facadeFileHandler;
+        }
+
         public static void ResetDatabaseContext()
         {
             _databaseContext = null;
+        }
+
+        public static void ResetFacadeFileHandler()
+        {
+            _facadeFileHandler = null;
         }
     }
 }

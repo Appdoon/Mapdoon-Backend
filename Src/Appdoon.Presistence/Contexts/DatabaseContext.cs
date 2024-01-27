@@ -1,7 +1,7 @@
 ﻿using Appdoon.Application.Interfaces;
 using Appdoon.Domain.Commons;
+using Mapdoon.Domain.Entities.Paymnet;
 using Appdoon.Domain.Entities.Comments;
-using Appdoon.Domain.Entities.Homeworks;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Progress;
 using Appdoon.Domain.Entities.Rates;
@@ -10,12 +10,14 @@ using Appdoon.Domain.Entities.RoadMaps;
 using Appdoon.Domain.Entities.Users;
 using Mapdoon.Common.User;
 using Mapdoon.Domain.Entities.Chat;
+using Mapdoon.Domain.Entities.Notification;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using ZarinPal.Class;
 
 namespace Appdoon.Presistence.Contexts
 {
@@ -37,13 +39,14 @@ namespace Appdoon.Presistence.Contexts
 		public DbSet<ChildStepProgress> ChildStepProgresses { get; set; }
 		public DbSet<HomeworkProgress> HomeworkProgresses { get; set; }
 		public DbSet<Homework> Homeworks { get; set; }
-		public DbSet<Question> Questions { get; set; }
 		public DbSet<RateRoadMap> Rates { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Reply> Replies { get; set; }
 		public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+		public DbSet<PaymentRecords> Payments { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Admin.ToString(), Id = (int)UserRole.Admin });
 			modelBuilder.Entity<Role>().HasData(new Role() { Name = UserRole.Teacher.ToString(), Id = (int)UserRole.Teacher });
@@ -88,30 +91,22 @@ namespace Appdoon.Presistence.Contexts
 			//	.HasForeignKey(h => h.CreatorId)
 			//	.OnDelete(DeleteBehavior.NoAction);
 
-			//// HomeworkProgress and User
+			// HomeworkProgress and User
 			//modelBuilder.Entity<HomeworkProgress>()
 			//	.HasOne(h => h.User)
 			//	.WithMany(u => u.HomeworkProgresses)
 			//	.HasForeignKey(h => h.UserId)
 			//	.OnDelete(DeleteBehavior.NoAction);
 
-			//// Homework Progress and Homework
-			//modelBuilder.Entity<HomeworkProgress>()
+
+   //         // Homework Progress and Homework
+   //         modelBuilder.Entity<HomeworkProgress>()
 			//	.HasOne(h => h.Homework)
 			//	.WithMany(h => h.HomeworkProgresses)
 			//	.HasForeignKey(h => h.HomeworkId)
 			//	.OnDelete(DeleteBehavior.NoAction);
 
-			// // fk user and rate
-			// modelBuilder.Entity<RateRoadMap>()
-			// .HasOne(r => r.User)
-			// .WithOne()
-			// .HasForeignKey<RateRoadMap>(r => r.UserId);
-			// //fk roadmap and rate
-			// modelBuilder.Entity<RateRoadMap>()
-			// .HasOne(r => r.RoadMap)
-			// .WithOne()
-			// .HasForeignKey<RateRoadMap>(r => r.RoadMapId);
+
 
 			//var temp = Database.GetPendingMigrations();
 			//Database.MigrateAsync();

@@ -47,6 +47,7 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
                         Title = r.Title,
                         Categories = r.Categories,
                         RateCount = r.RateCount,
+                        Price = r.Price,
                         Steps = r.Steps.Select(s => new Step()
                         {
                             Id = s.Id,
@@ -118,5 +119,6 @@ namespace Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapServic
         public bool HasNewSrc { get; set; } = false;
         public int RateCount { get; set; }
         public List<User> Students { get; set; }
+        public float? Price { get; set; }
     }
 }

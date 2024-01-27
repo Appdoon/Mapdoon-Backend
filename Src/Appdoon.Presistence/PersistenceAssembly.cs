@@ -1,5 +1,5 @@
 ﻿namespace Mapdoon.Presistence;
 
-public class PersistanceAssembly
+public class PersistenceAssembly
 {
 }
