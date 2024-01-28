@@ -1,6 +1,7 @@
 ﻿using Appdoon.Domain.Commons;
 using Appdoon.Domain.Entities.Users;
 using Appdoon.Presistence.Contexts;
+using Mapdoon.Application.Services.Notifications.Command.SendNotificationService;
 using Mapdoon.Presistence.Features.File;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,7 @@ namespace Mapdoon.Application.Tests
         private static Respawner _respawner;
         private static DatabaseContext? _databaseContext;
         private static FacadeFileHandler? _facadeFileHandler;
+        private static SendNotificationService? _notificationService;
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTestsAsync()
@@ -104,6 +106,18 @@ namespace Mapdoon.Application.Tests
             return _facadeFileHandler;
         }
 
+        public static SendNotificationService GetNotificationService()
+        {
+            if (_notificationService != null)
+            {
+                return _notificationService;
+            }
+
+            var scope = _scopeFactory.CreateScope();
+            _notificationService = scope.ServiceProvider.GetService<SendNotificationService>();
+            return _notificationService;
+        }
+
         public static void ResetDatabaseContext()
         {
             _databaseContext = null;
@@ -112,6 +126,11 @@ namespace Mapdoon.Application.Tests
         public static void ResetFacadeFileHandler()
         {
             _facadeFileHandler = null;
+        }
+
+        public static void ResetNotificationService()
+        {
+            _notificationService = null;
         }
     }
 }
