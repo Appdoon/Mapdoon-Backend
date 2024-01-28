@@ -1,4 +1,5 @@
 ﻿using Appdoon.Application.Services.Homeworks.Query.GetAllHomeworksService;
+using Appdoon.Application.Services.LandingPage.Query.GetStatisticsService;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.RoadMaps;
 using FluentAssertions;
@@ -42,9 +43,8 @@ namespace Mapdoon.Application.Tests.LandingPage.Queries
                 GetDatabaseContext().SaveChanges();
             }
 
-            var result = new GetAllHomeworksService(GetDatabaseContext()).Execute();
+            var result = new GetStatisticsService(GetDatabaseContext()).Execute();
             result.IsSuccess.Should().BeTrue();
-            result.Data.Homeworks.Should().HaveCount(10);
         }
     }
 }
