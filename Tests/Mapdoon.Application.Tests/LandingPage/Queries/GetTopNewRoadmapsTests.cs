@@ -1,4 +1,5 @@
 ﻿using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
+using Appdoon.Application.Services.LandingPage.Query.GetTopNewRoadmapsService;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.RoadMaps;
 using FluentAssertions;
@@ -9,7 +10,7 @@ namespace Mapdoon.Application.Tests.LandingPage.Queries
     internal class GetTopNewRoadmapsTests : TestBase
     {
         [Test]
-        public void ShouldTopNewRoadmaps()
+        public async Task ShouldTopNewRoadmaps()
         {
             int userId = AddUser();
 
@@ -39,9 +40,8 @@ namespace Mapdoon.Application.Tests.LandingPage.Queries
             GetDatabaseContext().ChildSteps.Find(childStepId).HomeworkId = homeworkId;
             GetDatabaseContext().SaveChanges();
 
-            var result = new GetHomeworkService(GetDatabaseContext()).Execute(homeworkId);
-            result.IsSuccess.Should().BeTrue();
-            result.Data.Should().NotBeNull();
+            var result = await new GetTopNewRoadmapsService(GetDatabaseContext(), GetFacadeFileHandler()).Execute(5);
+            result.IsSuccess.Should().BeFalse();
         }
     }
 }

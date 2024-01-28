@@ -9,6 +9,7 @@
             await ResetStateAsync();
             ResetDatabaseContext();
             ResetFacadeFileHandler();
+            ResetNotificationService();
         }
     }
 }
