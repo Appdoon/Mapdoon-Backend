@@ -6,6 +6,7 @@ using Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetUserPreviewService;
 using Appdoon.Application.Services.Users.Query.GetUserService;
+using Mapdoon.Application.Services.Users.Query.GetCompletedRoadmaps;
 using Mapdoon.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -26,7 +27,8 @@ namespace Appdoon.WebApi.Controllers
         private readonly IGetCreatedRoadMapService _getCreatedRoadMapService;
         private readonly IGetCreatedLessonsService _getCreatedLessonsService;
         private readonly IGetUserPreviewService _getUserPreviewService;
-        private readonly ICurrentContext _currentContext;
+		private readonly IGetCompletedRoadmapsService _getCompletedRoadmapsService;
+		private readonly ICurrentContext _currentContext;
 
         public ProfileController(IGetUserService getUserService,
                                  IEditUserService editUserService,
@@ -36,6 +38,7 @@ namespace Appdoon.WebApi.Controllers
                                  IGetCreatedRoadMapService getCreatedRoadMapService,
                                  IGetCreatedLessonsService getCreatedLessonsService,
                                  IGetUserPreviewService getUserPreviewService,
+                                 IGetCompletedRoadmapsService getCompletedRoadmapsService,
                                  ICurrentContext currentContext)
         {
             _getUserService = getUserService;
@@ -46,7 +49,8 @@ namespace Appdoon.WebApi.Controllers
             _getCreatedRoadMapService = getCreatedRoadMapService;
             _getCreatedLessonsService = getCreatedLessonsService;
             _getUserPreviewService = getUserPreviewService;
-            _currentContext = currentContext;
+            _getCompletedRoadmapsService = getCompletedRoadmapsService;
+			_currentContext = currentContext;
         }
         [HttpGet]
         public async Task<IActionResult> Info()
@@ -99,7 +103,17 @@ namespace Appdoon.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+		[HttpGet]
+		public async Task<IActionResult> CompletedRoadMaps()
+		{
+			int Id = GetIdFromCookie();
+
+			var result = await _getCompletedRoadmapsService.Execute(Id);
+
+			return Ok(result);
+		}
+
+		[HttpGet]
         public async Task<IActionResult> GetCreatedRoadmaps()
         {
             var userId = GetIdFromCookie();
