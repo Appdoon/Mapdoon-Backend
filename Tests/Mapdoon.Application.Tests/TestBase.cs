@@ -6,10 +6,9 @@
         [SetUp]
         public async Task SetUp()
         {
-            Assert.Pass();
-            //await ResetStateAsync();
-            //ResetDatabaseContext();
-            //ResetFacadeFileHandler();
+            await ResetStateAsync();
+            ResetDatabaseContext();
+            ResetFacadeFileHandler();
         }
     }
 }
