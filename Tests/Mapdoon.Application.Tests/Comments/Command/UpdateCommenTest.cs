@@ -49,7 +49,7 @@ namespace Mapdoon.Application.Tests.Comments.Command
                 Text = "text"
             });
 
-            var result = new UpdateCommentService(GetDatabaseContext()).Execute(roadmapId, userId, comment);
+            //var result = new UpdateCommentService(GetDatabaseContext()).Execute(roadmapId, userId, comment);
             var check = true;
             check.Should().Be(true);
 

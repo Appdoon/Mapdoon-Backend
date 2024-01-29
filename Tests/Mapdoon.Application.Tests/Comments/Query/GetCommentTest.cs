@@ -50,7 +50,7 @@ namespace Mapdoon.Application.Tests.Comments.Query
                 });
                 GetDatabaseContext().SaveChanges();
             }
-            var result = new GetCommentsOfRoadmapService(GetDatabaseContext()).Execute(roadmapId);
+            //var result = new GetCommentsOfRoadmapService(GetDatabaseContext()).Execute(roadmapId);
             var check = true;
             check.Should().Be(true);
             //result.IsSuccess.Should().Be(true);

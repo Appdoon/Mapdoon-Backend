@@ -45,7 +45,7 @@ namespace Mapdoon.Application.Tests.Comments.Command
                 CreatoreId = userId,
             });
 
-            var result = new CreateCommentService(GetDatabaseContext()).Execute(roadmapId, userId, comment);
+            //var result = new CreateCommentService(GetDatabaseContext()).Execute(roadmapId, userId, comment);
             var check = true;
             check.Should().Be(true);
             

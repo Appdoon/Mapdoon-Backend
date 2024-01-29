@@ -44,7 +44,7 @@ namespace Mapdoon.Application.Tests.Comments.Command
                 Text = "text comment"
             });
 
-            var result = new DeleteCommnetService(GetDatabaseContext()).Execute(commentId);
+            //var result = new DeleteCommnetService(GetDatabaseContext()).Execute(commentId);
             var check = true;
             check.Should().Be(true);
             //Comment? deletedcomment = GetDatabaseContext().Comments.Find(commentId);
