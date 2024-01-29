@@ -48,10 +48,8 @@ jobs:
   #       run: dotnet test --configuration Release Tests/Mapdoon.Application.Tests
 
   deploy:
+    permissions: write-all
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
