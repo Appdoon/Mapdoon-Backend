@@ -7,45 +7,45 @@ on:
       - develop
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v2
-  #       with:
-  #         dotnet-version: '7.0.113'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0.113'
 
-  #     - name: Build the project
-  #       run: dotnet build --configuration Release
-  #       working-directory: Src/
+      - name: Build the project
+        run: dotnet build --configuration Release
+        working-directory: Src/
 
-  # test:
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   services:
-  #     sqlserver:
-  #       image: mcr.microsoft.com/mssql/server
-  #       env:
-  #         SA_PASSWORD: appdoon@test0
-  #         ACCEPT_EULA: Y
-  #       ports:
-  #         - "1433:1433"
+  test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server
+        env:
+          SA_PASSWORD: appdoon@test0
+          ACCEPT_EULA: Y
+        ports:
+          - "1433:1433"
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v2
-  #       with:
-  #         dotnet-version: '7.0.113'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0.113'
 
-  #     - name: Test with dotnet test
-  #       run: dotnet test --configuration Release Tests/Mapdoon.Application.Tests
+      - name: Test with dotnet test
+        run: dotnet test --configuration Release Tests/Mapdoon.Application.Tests
 
   deploy:
     permissions: write-all
@@ -54,27 +54,27 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
       
-      # - name: Log in to the Container registry
-      #   uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GHCR_TOKEN }}
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
       
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-      #   with:
-      #     images: |
-      #       ghcr.io/sharyash81/appdoon
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: |
+            ghcr.io/sharyash81/appdoon
             
-      # - name: Build and push Docker images
-      #   uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-      #   with:
-      #     context: ./Src
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}-${{ vars.TAG }}
-      #     token: ${{ secrets.REPO_ACCESS_TOKEN }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: ./Src
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}-${{ vars.TAG }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Auto Increment tag
         env:
