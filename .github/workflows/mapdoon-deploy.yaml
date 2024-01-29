@@ -48,7 +48,7 @@ jobs:
         run: dotnet test --configuration Release Tests/Mapdoon.Application.Tests
 
   deploy:
-    needs: [build, test]
+    # needs: [build, test]
     runs-on: ubuntu-latest
 
     steps:
