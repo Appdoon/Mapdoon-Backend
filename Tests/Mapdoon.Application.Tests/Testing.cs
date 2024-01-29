@@ -43,7 +43,7 @@ namespace Mapdoon.Application.Tests
             _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
             _connectionString = _configuration.GetConnectionString("OUAppCon");
-
+            Console.WriteLine("TESTCON:" + _connectionString);
             _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
             {
                TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
