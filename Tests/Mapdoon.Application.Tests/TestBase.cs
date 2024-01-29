@@ -10,7 +10,7 @@ namespace Mapdoon.Application.Tests
             await ResetStateAsync();
             ResetDatabaseContext();
             ResetFacadeFileHandler();
-            // ResetNotificationService();
+            ResetNotificationService();
         }
     }
 }
