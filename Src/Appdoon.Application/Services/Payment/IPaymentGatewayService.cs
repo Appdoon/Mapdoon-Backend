@@ -78,7 +78,7 @@ namespace Mapdoon.Application.Services.PaymentGatway
                     new ZarinpalTest.PaymentGatewayImplementationServicePortTypeClient();
             string Authority = "";
             var status = zp.PaymentRequest("YOUR-ZARINPAL-MERCHANT-CODE", (int)(roadmap.Price), "درگاه پرداخت",
-                "email@gmail.com", "000000000", $"http://localhost:3000/payment?PaymentId={paymentId}", out Authority);
+                "email@gmail.com", "000000000", $"http://disino.ir/payment?PaymentId={paymentId}", out Authority);
 
             if (status == 100)
             {
