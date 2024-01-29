@@ -9,7 +9,6 @@ on:
     branches:
       - main
       - develop
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,8 +25,8 @@ jobs:
       - name: Build the project
         run: dotnet build --configuration Release
         working-directory: Src/
-
-  test:
+  
+  test:    
     needs: [build]
     runs-on: ubuntu-latest
     services:
@@ -38,6 +37,7 @@ jobs:
           ACCEPT_EULA: 'Y'
         ports:
           - 1433:1433
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -49,3 +49,4 @@ jobs:
 
       - name: Test with dotnet test
         run: dotnet test --configuration Release Tests/Mapdoon.Application.Tests
+
