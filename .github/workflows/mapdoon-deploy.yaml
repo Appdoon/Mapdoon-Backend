@@ -82,5 +82,6 @@ jobs:
         run: |
           new_tag=$((${{ vars.TAG}}+1))
           echo $new_tag
-          gh auth login --with-token $PAT_TOKEN
+          echo $PAT_TOKEN > token.txt
+          gh auth login --with-token < token.txt
           gh variable set TAG --body "$new_tag"
