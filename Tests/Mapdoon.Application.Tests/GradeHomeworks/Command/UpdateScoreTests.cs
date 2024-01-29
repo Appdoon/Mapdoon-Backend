@@ -1,4 +1,4 @@
-﻿using Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService;
+using Mapdoon.Application.Services.GradeHomeworks.Command.UpdateScoreService;
 using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;

@@ -1,4 +1,4 @@
-﻿namespace Mapdoon.Application.Tests
+namespace Mapdoon.Application.Tests
 {
     using static Testing;
     public class TestBase
@@ -6,11 +6,11 @@
         [SetUp]
         public async Task SetUp()
         {
-            Assert.Pass();
-            //await ResetStateAsync();
-            //ResetDatabaseContext();
-            //ResetFacadeFileHandler();
-            //ResetNotificationService();
+            // Assert.Pass();
+            await ResetStateAsync();
+            ResetDatabaseContext();
+            ResetFacadeFileHandler();
+            // ResetNotificationService();
         }
     }
 }
