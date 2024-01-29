@@ -90,13 +90,13 @@ namespace OU_API
 					.AllowCredentials()
 					.SetIsOriginAllowed(origin =>
 					{
-						if(string.IsNullOrWhiteSpace(origin)) return false;
+						if(string.IsNullOrWhiteSpace(origin)) return true;
 						// Only add this to allow testing with localhost, remove this line in production!  
 						if(origin.ToLower().StartsWith("http://localhost")) return true;
 						// Insert your production domain here.  
 						if(origin.ToLower().StartsWith(frontDomain)) return true;
 						if(origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
-						return false;
+						return true;
 					});
 				})
 			);
