@@ -78,7 +78,7 @@ jobs:
 
       - name: Auto Increment tag
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           new_tag=$((${{ vars.TAG}}+1))
           echo $new_tag
