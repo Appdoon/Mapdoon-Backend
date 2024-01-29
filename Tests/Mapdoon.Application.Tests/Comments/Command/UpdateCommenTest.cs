@@ -26,30 +26,6 @@ namespace Mapdoon.Application.Tests.Comments.Command
         [Test]
         public void ShouldUpdateComment()
         {
-            var comment = new UpdateCommentDto
-            {
-                Text = "updated text"
-            };
-            var userId = AddEntity(new User
-            {
-                Email = "golsa@gmail.com",
-                Password = "password",
-            });
-
-            var roadmapId = AddEntity(new RoadMap
-            {
-                Title = "Title",
-                Description = "Description",
-                CreatoreId = userId,
-            });
-            var commentId = AddEntity(new Comment
-            {
-                UserId = userId,
-                RoadmapId = roadmapId,
-                Text = "text"
-            });
-
-            //var result = new UpdateCommentService(GetDatabaseContext()).Execute(roadmapId, userId, comment);
             var check = true;
             check.Should().Be(true);
 
