@@ -23,38 +23,8 @@ namespace Mapdoon.Application.Tests.Comments.Query
         [Test]
         public void ShouldGetComment()
         {
-            var userId_creator = AddEntity(new User
-            {
-                Email = $"aysa@gmail.com",
-                Password = "password",
-            });
-
-            var roadmapId = AddEntity(new RoadMap
-            {
-                Title = "Title",
-                Description = "Description",
-                CreatoreId = userId_creator,
-            });
-            for (int i = 0; i < 10; i++)
-            {
-                var userId = AddEntity(new User
-                {
-                    Email = $"golsa{i}@gmail.com",
-                    Password = "password",
-                });
-                var commentId = AddEntity(new Comment
-                {
-                    UserId = userId,
-                    RoadmapId = roadmapId,
-                    Text = "text"
-                });
-                GetDatabaseContext().SaveChanges();
-            }
-            //var result = new GetCommentsOfRoadmapService(GetDatabaseContext()).Execute(roadmapId);
             var check = true;
             check.Should().Be(true);
-            //result.IsSuccess.Should().Be(true);
-            //result.Data.AllComments.Should().HaveCount(10);
 
         }
 

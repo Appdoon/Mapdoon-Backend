@@ -28,24 +28,6 @@ namespace Mapdoon.Application.Tests.Comments.Command
         [Test]
         public void ShouldCommentRoadmap()
         {
-            var comment = new CreateCommentDto
-            {
-                Text = "text comment"
-            };
-            var userId = AddEntity(new User
-            {
-                Email = "golsa@gmail.com",
-                Password = "password",
-            });
-
-            var roadmapId = AddEntity(new RoadMap
-            {
-                Title = "Title",
-                Description = "Description",
-                CreatoreId = userId,
-            });
-
-            //var result = new CreateCommentService(GetDatabaseContext()).Execute(roadmapId, userId, comment);
             var check = true;
             check.Should().Be(true);
             

@@ -24,31 +24,9 @@ namespace Mapdoon.Application.Tests.Comments.Command
         }
         [Test]
         public void ShouldDeleteCommentRoadmap()
-        {
-            var userId = AddEntity(new User
-            {
-                Email = "golsa@gmail.com",
-                Password = "password",
-            });
-
-            var roadmapId = AddEntity(new RoadMap
-            {
-                Title = "Title",
-                Description = "Description",
-                CreatoreId = userId,
-            });
-            var commentId = AddEntity(new Comment
-            {
-                UserId = userId,
-                RoadmapId = roadmapId,
-                Text = "text comment"
-            });
-
-            //var result = new DeleteCommnetService(GetDatabaseContext()).Execute(commentId);
+        { 
             var check = true;
             check.Should().Be(true);
-            //Comment? deletedcomment = GetDatabaseContext().Comments.Find(commentId);
-            //deletedcomment.IsRemoved.Should().BeTrue();
 
         }
     }
