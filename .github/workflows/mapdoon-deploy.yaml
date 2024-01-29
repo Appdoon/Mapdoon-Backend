@@ -1,4 +1,4 @@
-name: Mapdoon Test Pipeline
+name: Mapdoon Deploy Pipeline
 
 on:
   push:
