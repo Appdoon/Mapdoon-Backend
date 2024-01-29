@@ -76,4 +76,4 @@ jobs:
         with:
           context: ./Src
           push: true
-          tags:  ${{ env.IMAGE }}:${{ job_id }}
+          tags: ${{ steps.meta.outputs.tags }}
