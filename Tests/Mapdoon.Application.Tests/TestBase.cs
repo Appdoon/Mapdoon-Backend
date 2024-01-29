@@ -1,4 +1,4 @@
-﻿namespace Mapdoon.Application.Tests
+namespace Mapdoon.Application.Tests
 {
     using static Testing;
     public class TestBase

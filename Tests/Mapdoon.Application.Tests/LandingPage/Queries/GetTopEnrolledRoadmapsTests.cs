@@ -1,4 +1,5 @@
-﻿using Appdoon.Domain.Entities.HomeWorks;
+﻿using Appdoon.Application.Services.LandingPage.Query.GetTopEnrolledRoadmapsService;
+using Appdoon.Domain.Entities.HomeWorks;
 using Appdoon.Domain.Entities.Users;
 using FluentAssertions;
 using Mapdoon.Application.Services.Homeworks.Query.GetHomeworkSubmissions;
@@ -30,11 +31,10 @@ namespace Mapdoon.Application.Tests.LandingPage.Queries
             };
 
             // Act
-            var result = await new GetHomeworkSubmissionsService(GetDatabaseContext()).GetUserSubmission(submitHomeworkDto, userId);
+            var result = await new GetTopEnrolledRoadmapsService(GetDatabaseContext(), GetFacadeFileHandler()).Execute(5);
 
             // Assert
             result.IsSuccess.Should().Be(true);
-            result.Data.Should().BeNull();
         }
     }
 }
