@@ -75,4 +75,10 @@ jobs:
         with:
           context: ./Src
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ TAG }}
+
+      - name: Auto Increment tag
+        uses: action-pack/increment@v2
+        with:
+         name: 'TAG'
+         token: ${{ secrets.REPO_ACCESS_TOKEN }}
