@@ -25,18 +25,18 @@ jobs:
       - name: Build the project
         run: dotnet build --configuration Release
         working-directory: Src/
-
-  test:
+  
+  test:    
     needs: [build]
     runs-on: ubuntu-latest
     services:
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2019-latest
         env:
-          SA_PASSWORD: appdoon@test0
-          ACCEPT_EULA: Y
+          SA_PASSWORD: mapdoon@Test1
+          ACCEPT_EULA: 'Y'
         ports:
-          - "1433:1433"
+          - 1433:1433
 
     steps:
       - name: Checkout code
