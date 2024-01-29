@@ -75,7 +75,7 @@ jobs:
         with:
           context: ./Src
           push: true
-          tags: ${{ env.TAG }}
+          tags: ${{ steps.meta.outputs.tags }}-${{ env.TAG }}
 
       - name: Auto Increment tag
         uses: action-pack/increment@v2
